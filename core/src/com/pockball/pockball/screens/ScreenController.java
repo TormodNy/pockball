@@ -20,7 +20,7 @@ public class ScreenController implements Disposable {
         return screenControllerInstance;
     }
 
-    // Add additional screens into this function.
+    // Add additional screens into this function
     public void changeScreen(final ScreenModel.Screen screen) {
         Gdx.app.postRunnable(() -> {
             switch(screen) {
