@@ -2,14 +2,17 @@ package com.pockball.pockball.screens.singleplayer;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.pockball.pockball.ecs.Engine;
 
 public class SinglePlayerView implements Screen {
     private Stage stage;
     private SinglePlayerController singlePlayerController;
 
 
+
     public SinglePlayerView(SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
+        Engine.getInstance().initializeEngine();
 
     }
 
@@ -20,7 +23,7 @@ public class SinglePlayerView implements Screen {
 
     @Override
     public void render(float delta) {
-
+        Engine.getInstance().update(delta);
     }
 
     @Override
