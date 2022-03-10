@@ -26,7 +26,6 @@ public class Engine extends PooledEngine {
         engineInstance.clearPools();
         engineInstance.addSystem(new RenderSystem());
 
+        engineInstance.addEntity(entityFactory.createBall(10, 10));
     }
-
-
 }
