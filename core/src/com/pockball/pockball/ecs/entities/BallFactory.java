@@ -70,7 +70,7 @@ public class BallFactory {
         // Add physics details
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 2f;
         fixtureDef.restitution = 0.825f;
         fixtureDef.friction = 0.3f;
         physicsBody.body.createFixture(fixtureDef);
