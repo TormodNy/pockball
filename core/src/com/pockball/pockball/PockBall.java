@@ -2,11 +2,19 @@ package com.pockball.pockball;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
 public class PockBall extends Game {
+
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 15;
+	public static final String TITLE = "PockBall";
+
 	private ScreenController screenController;
+	public static Camera camera;
 
 	public PockBall() {
 		this.screenController = ScreenController.getInstance();
@@ -16,6 +24,10 @@ public class PockBall extends Game {
 	@Override
 	public void create () {
 		this.screenController.changeScreen(ScreenModel.Screen.SINGLEPLAYER);
+
+		camera = new OrthographicCamera(WIDTH, HEIGHT);
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+		camera.update();
 	}
 
 	@Override

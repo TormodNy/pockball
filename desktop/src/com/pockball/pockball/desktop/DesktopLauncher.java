@@ -7,6 +7,9 @@ import com.pockball.pockball.PockBall;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = PockBall.WIDTH * 32;
+		config.height = PockBall.HEIGHT * 32;
+		config.title = PockBall.TITLE;
 		new LwjglApplication(new PockBall(), config);
 	}
 }
