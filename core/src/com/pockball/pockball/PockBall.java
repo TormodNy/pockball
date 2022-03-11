@@ -1,31 +1,44 @@
 package com.pockball.pockball;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
 
-public class PockBall extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+public class PockBall extends Game {
+
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 15;
+	public static final String TITLE = "PockBall";
+
+	private ScreenController screenController;
+	public static Camera camera;
+
+	public PockBall() {
+		this.screenController = ScreenController.getInstance();
+	}
+
+	// Have to set this to main menu when it's implemented
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		this.screenController.changeScreen(ScreenModel.Screen.SINGLEPLAYER);
+
+		camera = new OrthographicCamera(WIDTH, HEIGHT);
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+		camera.update();
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		screenController.getScreen().render(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		if (screenController != null) {
+			screenController.dispose();
+		}
 	}
 }
