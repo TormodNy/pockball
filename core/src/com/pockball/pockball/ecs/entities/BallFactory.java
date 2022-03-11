@@ -52,6 +52,7 @@ public class BallFactory {
 
         sprite.sprite = new Sprite(new Texture("balls/ball_" + ballID + ".png"));
         sprite.sprite.setOrigin(size.width / 2, size.height / 2);
+        sprite.sprite.setPosition(position.position.x, position.position.y);
 
         // Body definition
         BodyDef bodyDef = new BodyDef();

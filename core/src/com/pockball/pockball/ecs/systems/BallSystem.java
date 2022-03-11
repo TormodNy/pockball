@@ -36,9 +36,13 @@ public class BallSystem extends IteratingSystem {
         if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE)) {
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             Vector2 input2 = new Vector2(input.x, input.y);
-            Vector2 dir = input2.sub(position.position).nor();
+            Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
+            Vector2 dir = input2.sub(origin).nor();
             float force = 3000;
             physics.body.applyForceToCenter(dir.scl(force), true);
+
+            System.out.println(position.position);
+            System.out.println(PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         }
     }
 }
