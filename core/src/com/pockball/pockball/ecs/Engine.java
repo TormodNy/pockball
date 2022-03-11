@@ -52,6 +52,15 @@ public class Engine extends PooledEngine {
         // Add more positions for different game modes.
     };
 
+    private final Vector2[] holeLocations = {
+            new Vector2(0f,15f),
+            new Vector2(12.5f, 15f),
+            new Vector2(25, 15),
+            new Vector2(0, 0),
+            new Vector2(12.5f, 0),
+            new Vector2(25, 0),
+    };
+
     private Engine() {
         entityFactory = EntityFactory.getInstance();
     }
@@ -80,6 +89,7 @@ public class Engine extends PooledEngine {
 
         createWorld();
         createTable();
+        createHoles();
 
         engineInstance.addSystem(new RenderSystem());
         engineInstance.addSystem(new PhysicsSystem());
@@ -95,8 +105,6 @@ public class Engine extends PooledEngine {
             engineInstance.addEntity(ball);
         }
 
-        Entity hole = entityFactory.createHole(1f, 1f, 1);
-        engineInstance.addEntity(hole);
     }
 
     private void createWorld() {
@@ -204,6 +212,10 @@ public class Engine extends PooledEngine {
 
     private void createHoles() {
 
+        for (int i = 0; i < holeLocations.length; i++) {
+            Entity hole = entityFactory.createHole(holeLocations[i].x, holeLocations[i].y, i);
+            engineInstance.addEntity(hole);
+        }
 
     }
 }
