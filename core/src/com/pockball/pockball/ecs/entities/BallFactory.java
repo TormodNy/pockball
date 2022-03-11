@@ -84,6 +84,8 @@ public class BallFactory {
         newBall.add(sprite);
         newBall.add(ball);
 
+        physicsBody.body.setUserData(newBall);
+
         return newBall;
     }
 }
