@@ -17,6 +17,7 @@ import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
+import com.pockball.pockball.ecs.systems.HoleListenerSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 
@@ -84,11 +85,18 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
 
+        HoleListenerSystem holeListenerSystem = new HoleListenerSystem();
+        engineInstance.addSystem(holeListenerSystem);
+        world.setContactListener(holeListenerSystem);
+
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
             engineInstance.addEntity(ball);
         }
+
+        Entity hole = entityFactory.createHole(1f, 1f, 1);
+        engineInstance.addEntity(hole);
     }
 
     private void createWorld() {
@@ -192,5 +200,10 @@ public class Engine extends PooledEngine {
 
         Body walls = world.createBody(wallsDef);
         walls.createFixture(chain, 0);
+    }
+
+    private void createHoles() {
+
+
     }
 }
