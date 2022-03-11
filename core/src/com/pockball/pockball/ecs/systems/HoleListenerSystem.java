@@ -41,6 +41,12 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
 
             Engine.getInstance().removeEntity((Entity) ballFixture.getBody().getUserData());
         }
+        if (contact.getFixtureA().isSensor()) { // fixture A er hullet
+            Fixture ballFixture = contact.getFixtureB();
+            System.out.println("contact");
+
+            Engine.getInstance().removeEntity((Entity) ballFixture.getBody().getUserData());
+        }
 
 
     }
