@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
@@ -36,8 +37,11 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
     public void beginContact(Contact contact) {
         if (contact.getFixtureB().isSensor()) { // fixture B er hullet
             Fixture ballFixture = contact.getFixtureA();
+            System.out.println("contact");
+
+            Engine.getInstance().removeEntity((Entity) ballFixture.getBody().getUserData());
         }
-        System.out.println("contact");
+
 
     }
 
