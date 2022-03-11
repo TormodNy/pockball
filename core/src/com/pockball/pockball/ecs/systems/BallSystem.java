@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
+import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
@@ -20,7 +21,7 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
 
     public BallSystem() {
-        super(Family.all(PhysicsBodyComponent.class).get());
+        super(Family.all(BallComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
