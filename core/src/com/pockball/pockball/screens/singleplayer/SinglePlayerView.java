@@ -15,7 +15,7 @@ public class SinglePlayerView implements Screen {
 
     public SinglePlayerView(SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
-        Engine.getInstance().initializeEngine();
+        Engine.getInstance().initializeEngine(0);
     }
 
     @Override

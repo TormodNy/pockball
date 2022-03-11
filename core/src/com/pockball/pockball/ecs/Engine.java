@@ -28,7 +28,28 @@ public class Engine extends PooledEngine {
     private final EntityFactory entityFactory;
 
     private World world;
-    private Body walls;
+
+    private final Vector2[][] ballLocations = {
+        {
+            new Vector2(3, 6.875f),
+            new Vector2(19.4f, 7.675f),
+            new Vector2(20.8f, 6.075f),
+            new Vector2(20.1f, 7.275f),
+            new Vector2(20.8f, 7.675f),
+            new Vector2(20.8f, 8.475f),
+            new Vector2(20.1f, 5.675f),
+            new Vector2(18.7f, 6.475f),
+            new Vector2(19.4f, 6.875f),
+            new Vector2(18, 6.875f),
+            new Vector2(20.1f, 6.475f),
+            new Vector2(20.8f, 5.275f),
+            new Vector2(18.7f, 7.275f),
+            new Vector2(20.8f, 6.875f),
+            new Vector2(20.1f, 8.075f),
+            new Vector2(19.4f, 6.075f),
+        },
+        // Add more positions for different game modes.
+    };
 
     private Engine() {
         entityFactory = EntityFactory.getInstance();
@@ -52,7 +73,7 @@ public class Engine extends PooledEngine {
         world.step(timeStep, 8, 3);
     }
 
-    public void initializeEngine() {
+    public void initializeEngine(int gameMode) {
         engineInstance.removeAllEntities();
         engineInstance.clearPools();
 
@@ -63,17 +84,11 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
 
-
-        // Create balls
-        for (int i = 1; i <= 15; i++) {
-            Entity ball = entityFactory.createBall(i + 1, 10, i);
+        // Place balls on table
+        for (int i = 0; i <= 15; i++) {
+            Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
             engineInstance.addEntity(ball);
         }
-
-        Entity ball = entityFactory.createBall(12.5f, 7.5f, 0);
-        engineInstance.addEntity(ball);
-        System.out.println("B: " + engineInstance.getEntities().size());
-
     }
 
     private void createWorld() {
@@ -98,8 +113,7 @@ public class Engine extends PooledEngine {
 
         int scl = 40;
         size.width = sprite.sprite.getWidth() / scl;
-        size.height = sprite.sprite.getHeight() / scl;
-
+        size.height = sprite.sprite.getHeight() / scl; // For reference: Height is 13.75
 
         table.add(position);
         table.add(sprite);
@@ -107,7 +121,6 @@ public class Engine extends PooledEngine {
         table.add(direction);
         engineInstance.addEntity(table);
 
-        System.out.println(sprite.sprite.getHeight()+"-"+sprite.sprite.getWidth());
         createTableWalls(table);
     }
 
@@ -176,7 +189,8 @@ public class Engine extends PooledEngine {
 
         ChainShape chain = new ChainShape();
         chain.createLoop(vs);
-        walls = world.createBody(wallsDef);
+
+        Body walls = world.createBody(wallsDef);
         walls.createFixture(chain, 0);
     }
 }
