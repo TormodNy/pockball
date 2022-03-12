@@ -12,9 +12,11 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
+import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.types.BallType;
 
 public class BallFactory {
@@ -35,6 +37,8 @@ public class BallFactory {
         BallComponent ball = Engine.getInstance().createComponent(BallComponent.class);
         PhysicsBodyComponent physicsBody = Engine.getInstance().createComponent(PhysicsBodyComponent.class);
         SpriteComponent sprite = Engine.getInstance().createComponent(SpriteComponent.class);
+        PlaceEntityComponent placeEntity = Engine.getInstance().createComponent(PlaceEntityComponent.class);
+
 
         position.position.set(x, y);
         size.width = ball.radius * 2;
@@ -83,6 +87,7 @@ public class BallFactory {
         newBall.add(physicsBody);
         newBall.add(sprite);
         newBall.add(ball);
+        newBall.add(placeEntity);
 
         physicsBody.body.setUserData(newBall);
 
