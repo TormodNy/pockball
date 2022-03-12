@@ -4,13 +4,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
@@ -19,9 +17,8 @@ import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.HoleListenerSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
+import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
-
-import sun.security.provider.ConfigFile;
 
 public class Engine extends PooledEngine {
     private static Engine engineInstance;
@@ -53,12 +50,18 @@ public class Engine extends PooledEngine {
     };
 
     private final Vector2[] holeLocations = {
-            new Vector2(0f,15f),
-            new Vector2(12.5f, 15f),
-            new Vector2(25, 15),
-            new Vector2(0, 0),
-            new Vector2(12.5f, 0),
-            new Vector2(25, 0),
+            // Upper left
+            new Vector2(0.5f,12.5f),
+            // Upper middle
+            new Vector2(12.1f, 12.8f),
+            // Upper right
+            new Vector2(23.7f, 12.5f),
+            // Lower left
+            new Vector2(0.5f, 0.45f),
+            // Lower  middle
+            new Vector2(12.1f, 0.15f),
+            // Lower right
+            new Vector2(23.7f, 0.45f),
     };
 
     private Engine() {
@@ -94,6 +97,7 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new RenderSystem());
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
+        engineInstance.addSystem(new PlaceEntitySystem());
 
         HoleListenerSystem holeListenerSystem = new HoleListenerSystem();
         engineInstance.addSystem(holeListenerSystem);
@@ -211,11 +215,9 @@ public class Engine extends PooledEngine {
     }
 
     private void createHoles() {
-
         for (int i = 0; i < holeLocations.length; i++) {
             Entity hole = entityFactory.createHole(holeLocations[i].x, holeLocations[i].y, i);
             engineInstance.addEntity(hole);
         }
-
     }
 }

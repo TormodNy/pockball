@@ -5,49 +5,49 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
-import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
+import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
 
-public class BallSystem extends IteratingSystem {
+public class PlaceEntitySystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
-    private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
+    private final ComponentMapper<BallComponent> ballMapper;
+    private final ComponentMapper<SpriteComponent> spriteMapper;
 
-    public BallSystem() {
-        super(Family.all(BallComponent.class).get());
+    public PlaceEntitySystem() {
+        super(Family.all(PlaceEntityComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
-        ballMapper = ComponentMapper.getFor(BallComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
+        ballMapper = ComponentMapper.getFor(BallComponent.class);
+        spriteMapper = ComponentMapper.getFor(SpriteComponent.class);
     }
 
     @Override
-    public void processEntity(Entity entity, float deltaTime) {
+    protected void processEntity(Entity entity, float deltaTime) {
         PositionComponent position = positionMapper.get(entity);
-        PhysicsBodyComponent physics = physicsBodyMapper.get(entity);
-        BallComponent ball = ballMapper.get(entity);
+        PhysicsBodyComponent physicsBody = physicsBodyMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
+        BallComponent ball = ballMapper.get(entity);
+        SpriteComponent sprite = spriteMapper.get(entity);
 
-        if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE) && !placeEntity.placeable) {
+        if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE) && placeEntity.placeable) {
+            placeEntity.placeable = false;
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            Vector2 input2 = new Vector2(input.x, input.y);
-            Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
-            Vector2 dir = input2.sub(origin).nor();
-            float force = 3000;
-            physics.body.applyForceToCenter(dir.scl(force), true);
 
-            System.out.println(position.position);
-            System.out.println(PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
+            physicsBody.body.setTransform(input.x - ball.radius, input.y - ball.radius, 0);
+
+            sprite.sprite.setAlpha(1);
+
         }
+
     }
 }

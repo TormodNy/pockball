@@ -19,7 +19,7 @@ public class EntityFactory {
     }
 
     public Entity createBall(float x, float y, int ballID) {
-        return ballFactory.createBall(x,y,ballID);
+        return ballFactory.createBall(x, y, ballID);
     }
 
 

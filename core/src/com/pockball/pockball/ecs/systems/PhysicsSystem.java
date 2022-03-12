@@ -29,7 +29,6 @@ public class PhysicsSystem extends IteratingSystem {
         PositionComponent position = positionMapper.get(entity);
         DirectionComponent direction = directionMapper.get(entity);
         PhysicsBodyComponent physics = physicsBodyMapper.get(entity);
-        SpriteComponent sprite = spriteMapper.get(entity);
 
         position.position.set(physics.body.getPosition());
         direction.rotation = physics.body.getAngle() * 57.3f;
