@@ -77,6 +77,7 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
                     break;
 
                 default:
+                    Engine.getInstance().removeEntity(ball);
             }
         } catch (Exception e) {
             throw e;
