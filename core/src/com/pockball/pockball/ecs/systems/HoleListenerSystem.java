@@ -16,6 +16,7 @@ import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
 
 
 public class HoleListenerSystem extends IteratingSystem implements ContactListener {
@@ -47,8 +48,7 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
         if (contact.getFixtureB().isSensor()) { // fixture B er hullet
             ball = (Entity) contact.getFixtureA().getBody().getUserData();
             handleBallInHole(ball);
-        }
-        else if (contact.getFixtureA().isSensor()) { // fixture A er hullet
+        } else if (contact.getFixtureA().isSensor()) { // fixture A er hullet
             ball = (Entity) contact.getFixtureB().getBody().getUserData();
             handleBallInHole(ball);
         }
@@ -56,22 +56,35 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
 
     private void handleBallInHole(Entity ball) {
         try {
-            if (ball.getComponent(BallComponent.class).type.equals(BallType.WHITE)) {
-                PlaceEntityComponent placeEntity = placeEntityMapper.get(ball);
-                SpriteComponent sprite = spriteMapper.get(ball);
-                PhysicsBodyComponent physics = physicsBodyMapper.get(ball);
+            BallType ballType = ball.getComponent(BallComponent.class).type;
+            // Switch on ball type
+            switch (ballType) {
+                case WHITE:
+                    // Handle white ball falling into hole
+                    PlaceEntityComponent placeEntity = placeEntityMapper.get(ball);
+                    SpriteComponent sprite = spriteMapper.get(ball);
+                    PhysicsBodyComponent physics = physicsBodyMapper.get(ball);
 
-                physics.body.setLinearVelocity(0, 0);
-                physics.body.setAngularVelocity(0);
-                sprite.sprite.setAlpha(-1);
+                    physics.body.setLinearVelocity(0, 0);
+                    physics.body.setAngularVelocity(0);
+                    sprite.sprite.setAlpha(-1);
 
-                placeEntity.placeable = true;
-            }
-            else {
-                Engine.getInstance().removeEntity(ball);
+                    placeEntity.placeable = true;
+
+                    // Fire state change
+                    Context.getInstance().getState().ballIntoHole(ballType);
+                    break;
+
+                default:
+                    // Handle ball falling into hole
+                    // TODO: Tror dette blir feil måte å gjøre det på
+                    Engine.getInstance().removeEntity(ball);
+
+                    // Fire state change
+                    Context.getInstance().getState().ballIntoHole(ballType);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
