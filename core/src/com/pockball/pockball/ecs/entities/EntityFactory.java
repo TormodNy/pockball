@@ -6,10 +6,12 @@ public class EntityFactory {
     private static EntityFactory entityFactory;
     private BallFactory ballFactory;
     private HoleFactory holeFactory;
+    private PlayerFactory playerFactory;
 
     private EntityFactory() {
         ballFactory = BallFactory.getInstance();
         holeFactory = HoleFactory.getInstance();
+        playerFactory = PlayerFactory.getInstance();
     }
 
     public static EntityFactory getInstance() {
@@ -25,5 +27,9 @@ public class EntityFactory {
 
     public Entity createHole(float x, float y, int holeID) {
         return holeFactory.createHole(x, y, holeID);
+    }
+
+    public Entity createPlayer(String playerName) {
+        return playerFactory.createPlayer(playerName);
     }
 }
