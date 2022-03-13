@@ -15,6 +15,10 @@ public class MultiplayerController {
         Context.getInstance().setState(new MultiPlayerState());
     }
 
+    public void resetGame() {
+        Context.getInstance().setState(new MultiPlayerState());
+    }
+
     public static MultiplayerController getInstance() {
         if (singlePlayerControllerInstance == null) {
             singlePlayerControllerInstance = new MultiplayerController();

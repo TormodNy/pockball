@@ -15,6 +15,7 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
+import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
 
@@ -57,7 +58,10 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
     private void handleBallInHole(Entity ball) {
         try {
             BallType ballType = ball.getComponent(BallComponent.class).type;
-            // Switch on ball type
+
+            // Fire state change
+            Context.getInstance().getState().ballIntoHole(ballType);
+
             switch (ballType) {
                 case WHITE:
                     // Handle white ball falling into hole
@@ -70,25 +74,9 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
                     sprite.sprite.setAlpha(-1);
 
                     placeEntity.placeable = true;
-
-                    // Fire state change
-                    Context.getInstance().getState().ballIntoHole(ballType);
                     break;
 
                 default:
-                    // Handle ball falling into hole
-                    /* TODO: Tror dette blir feil måte å gjøre det på
-                     * Oppstår noen feil av og til når entiteten fjernes helt, så lar det bare
-                     * være sånn selv om det er dårlig for performance.
-                     */
-                    SpriteComponent ballSprite = spriteMapper.get(ball);
-                    PhysicsBodyComponent ballPhysics = physicsBodyMapper.get(ball);
-
-                    ballPhysics.body.setLinearVelocity(0, 0);
-                    ballPhysics.body.setAngularVelocity(0);
-                    ballSprite.sprite.setAlpha(-1);
-                    // Fire state change
-                    Context.getInstance().getState().ballIntoHole(ballType);
             }
         } catch (Exception e) {
             throw e;
