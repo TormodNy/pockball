@@ -46,8 +46,8 @@ public class BallSystem extends IteratingSystem {
             float force = 3000;
             physics.body.applyForceToCenter(dir.scl(force), true);
 
-            System.out.println(position.position);
-            System.out.println(PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
+            //System.out.println(position.position);
+            //System.out.println(PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         }
     }
 }

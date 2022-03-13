@@ -26,7 +26,7 @@ public class PlayerSystem extends IteratingSystem {
         ScoreComponent score = scoreMapper.get(entity);
         TimeoutComponent timeout = timeoutMapper.get(entity);
 
-        System.out.println(playerMapper.get(entity).playerName + " " + score.balls + "\t" + timeout.timeout);
+    //    System.out.println(playerMapper.get(entity).playerName + " " + score.balls + "\t" + timeout.timeout);
 
         timeout.timeout -= deltaTime;
     }

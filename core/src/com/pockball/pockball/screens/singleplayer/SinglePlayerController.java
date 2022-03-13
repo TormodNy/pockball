@@ -13,10 +13,6 @@ public class SinglePlayerController {
     private ScreenController screenController;
 
     private SinglePlayerController() {
-        // Add player instances
-        Entity player = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
-        Engine.getInstance().addEntity(EntityFactory.getInstance().createPlayer("singlePlayerPlayer"));
-
         // Set single player state
         Context.getInstance().setState(new SinglePlayerState());
     }
