@@ -77,9 +77,16 @@ public class HoleListenerSystem extends IteratingSystem implements ContactListen
 
                 default:
                     // Handle ball falling into hole
-                    // TODO: Tror dette blir feil måte å gjøre det på
-                    Engine.getInstance().removeEntity(ball);
+                    /* TODO: Tror dette blir feil måte å gjøre det på
+                     * Oppstår noen feil av og til når entiteten fjernes helt, så lar det bare
+                     * være sånn selv om det er dårlig for performance.
+                     */
+                    SpriteComponent ballSprite = spriteMapper.get(ball);
+                    PhysicsBodyComponent ballPhysics = physicsBodyMapper.get(ball);
 
+                    ballPhysics.body.setLinearVelocity(0, 0);
+                    ballPhysics.body.setAngularVelocity(0);
+                    ballSprite.sprite.setAlpha(-1);
                     // Fire state change
                     Context.getInstance().getState().ballIntoHole(ballType);
             }
