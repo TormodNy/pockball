@@ -21,5 +21,4 @@ public class FirebaseController implements FirebaseInterface {
     @Override
     public void stopListenToAvailableRooms() {
 
-    }
 }

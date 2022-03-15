@@ -65,6 +65,10 @@ public class ScreenController implements Disposable {
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
+                case CREATE_GAME:
+                    CreateGameController createGameController = CreateGameController.getInstance();
+                    CreateGameView createGameView = new CreateGameView(createGameController);
+                    this.setScreen(createGameView);
                     break;
                 case CREATE_GAME:
                     CreateGameController createGameController = CreateGameController.getInstance();

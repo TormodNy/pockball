@@ -90,5 +90,8 @@ public class FirebaseService implements FirebaseInterface {
     }
 
 
+    public void writeToDb(String key, String value) {
+        databaseReference.child("test").child(key).setValue(value);
+    }
 }
 

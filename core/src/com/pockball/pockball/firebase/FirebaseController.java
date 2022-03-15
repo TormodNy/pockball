@@ -37,5 +37,7 @@ public class FirebaseController implements FirebaseInterface {
     @Override
     public void stopListenToAvailableRooms() {
         firebaseInterface.stopListenToAvailableRooms();
+    public void writeToDb(String key, String value) {
+        firebaseInterface.writeToDb(key, value);
     }
 }

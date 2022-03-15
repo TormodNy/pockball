@@ -6,6 +6,11 @@ import com.pockball.pockball.screens.ScreenController;
 
 import java.util.ArrayList;
 
+import com.pockball.pockball.firebase.FirebaseController;
+import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.MultiPlayerState;
+import com.pockball.pockball.screens.ScreenController;
+
 
 public class CreateGameController {
     private static CreateGameController createGameControllerInstance = null;
@@ -15,6 +20,15 @@ public class CreateGameController {
     private CreateGameController() {
         firebaseController = FirebaseController.getInstance();
         testDb();
+    }
+
+        System.out.println("MultiplayerController");
+        this.firebaseController = FirebaseController.getInstance();
+        testDb();
+    }
+
+    private void testDb() {
+        firebaseController.writeToDb("game1", "testVal2");
     }
 
     public static CreateGameController getInstance() {
@@ -40,5 +54,9 @@ public class CreateGameController {
 
     public void fireChangeInRoom(RoomModel roomModel) {
         //System.out.println("fireChangeInRoom() -> " + gameModel.gameId);
+    }
+    
+    public void checkGameOver() {
+
     }
 }

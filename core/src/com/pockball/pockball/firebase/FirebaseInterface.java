@@ -8,4 +8,5 @@ public interface FirebaseInterface {
     public void listenToRoomChanges(String target);
     public void listenToAvailableRooms();
     public void stopListenToAvailableRooms();
+    public void writeToDb(String key, String value);
 }
