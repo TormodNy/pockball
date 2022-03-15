@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.pockball.pockball.firebase.FirebaseController;
+import com.pockball.pockball.firebase.FirebaseInterface;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
@@ -15,19 +17,26 @@ public class PockBall extends Game {
 
 	private ScreenController screenController;
 	public static Camera camera;
+	private FirebaseInterface firebaseInterface;
+	private FirebaseController firebaseController;
 
-	public PockBall() {
+	public PockBall(FirebaseInterface firebaseInterface) {
 		this.screenController = ScreenController.getInstance();
+		this.firebaseInterface = firebaseInterface;
+		this.firebaseController = FirebaseController.getInstance();
 	}
 
 	// Have to set this to main menu when it's implemented
 	@Override
 	public void create () {
-		this.screenController.changeScreen(ScreenModel.Screen.MULTIPLAYER);
+		this.screenController.changeScreen(ScreenModel.Screen.CREATE_GAME);
 
 		camera = new OrthographicCamera(WIDTH, HEIGHT);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		camera.update();
+
+		firebaseController.setFirebaseInterface(firebaseInterface);
+
 	}
 
 	@Override

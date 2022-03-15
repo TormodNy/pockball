@@ -1,13 +1,13 @@
 package com.pockball.pockball.screens.multiplayer;
 
+import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.MultiPlayerState;
-import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.ScreenController;
 
 
 public class MultiplayerController {
-    private static MultiplayerController singlePlayerControllerInstance = null;
+    private static MultiplayerController multiplayerControllerInstance = null;
     private ScreenController screenController;
 
     private MultiplayerController() {
@@ -20,10 +20,10 @@ public class MultiplayerController {
     }
 
     public static MultiplayerController getInstance() {
-        if (singlePlayerControllerInstance == null) {
-            singlePlayerControllerInstance = new MultiplayerController();
+        if (multiplayerControllerInstance == null) {
+            multiplayerControllerInstance = new MultiplayerController();
         }
-        return singlePlayerControllerInstance;
+        return multiplayerControllerInstance;
     }
 
     public void checkGameOver() {
