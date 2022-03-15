@@ -4,6 +4,7 @@ public class ScreenModel {
     // List of all screens in the application
     public enum Screen {
         SINGLEPLAYER,
-        MULTIPLAYER
+        MULTIPLAYER,
+        MAINMENU
     }
 }
