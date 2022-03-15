@@ -20,7 +20,12 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void writeToDb(String key, String value) {
-        firebaseInterface.writeToDb(key, value);
+    public void writeToDb(String target, Object value) {
+        firebaseInterface.writeToDb(target, value);
+    }
+
+    @Override
+    public void listenToRoomChanges(String target) {
+        firebaseInterface.listenToRoomChanges(target);
     }
 }

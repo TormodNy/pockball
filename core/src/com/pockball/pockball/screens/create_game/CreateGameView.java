@@ -2,7 +2,6 @@ package com.pockball.pockball.screens.create_game;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.pockball.pockball.ecs.Engine;
 
 public class CreateGameView implements Screen {
     private Stage stage;

@@ -4,7 +4,12 @@ import com.pockball.pockball.firebase.FirebaseInterface;
 
 public class FirebaseController implements FirebaseInterface {
     @Override
-    public void writeToDb(String key, String value) {
+    public void writeToDb(String target, Object value) {
+
+    }
+
+    @Override
+    public void listenToRoomChanges(String target) {
 
     }
 }
