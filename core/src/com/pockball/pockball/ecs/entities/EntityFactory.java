@@ -6,10 +6,14 @@ public class EntityFactory {
     private static EntityFactory entityFactory;
     private BallFactory ballFactory;
     private CueFactory cueFactory;
+    private HoleFactory holeFactory;
+    private PlayerFactory playerFactory;
 
     private EntityFactory() {
         ballFactory = BallFactory.getInstance();
+        holeFactory = HoleFactory.getInstance();
         cueFactory = CueFactory.getInstance();
+        playerFactory = PlayerFactory.getInstance();
     }
 
     public static EntityFactory getInstance() {
@@ -19,11 +23,18 @@ public class EntityFactory {
     }
 
     public Entity createBall(float x, float y, int ballID) {
-        return ballFactory.createBall(x,y,ballID);
+        return ballFactory.createBall(x, y, ballID);
     }
 
     public Entity createCue(Entity ball) {
         return cueFactory.createCue(ball);
     }
 
+    public Entity createHole(float x, float y, int holeID) {
+        return holeFactory.createHole(x, y, holeID);
+    }
+
+    public Entity createPlayer(String playerName) {
+        return playerFactory.createPlayer(playerName);
+    }
 }

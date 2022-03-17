@@ -1,0 +1,69 @@
+package com.pockball.pockball.ecs.entities;
+
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.ecs.components.DirectionComponent;
+import com.pockball.pockball.ecs.components.HoleComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PositionComponent;
+import com.pockball.pockball.ecs.components.SizeComponent;
+
+public class HoleFactory {
+    private static HoleFactory holefactory;
+
+    private HoleFactory() {}
+
+    public static HoleFactory getInstance() {
+        if (holefactory == null)
+            holefactory = new HoleFactory();
+        return holefactory;
+    }
+// Remove comments to show the sprite of the holes if needed for testing
+    public Entity createHole(float x, float y, int holeID) {
+        PositionComponent position = Engine.getInstance().createComponent(PositionComponent.class);
+        PhysicsBodyComponent physicsBody = Engine.getInstance().createComponent(PhysicsBodyComponent.class);
+        HoleComponent hole = Engine.getInstance().createComponent(HoleComponent.class);
+        // SpriteComponent sprite = Engine.getInstance().createComponent(SpriteComponent.class);
+        DirectionComponent direction = Engine.getInstance().createComponent(DirectionComponent.class);
+        SizeComponent size = Engine.getInstance().createComponent(SizeComponent.class);
+
+//        sprite.sprite = new Sprite(new Texture("redBall.png"));
+//        sprite.sprite.setOrigin(hole.radius, hole.radius);
+//        sprite.sprite.setPosition(position.position.x, position.position.y);
+
+
+        size.width = hole.radius * 2;
+        size.height = hole.radius * 2;
+
+        hole.holeID = holeID;
+        position.position.set(x, y);
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(position.position);
+
+
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(hole.radius);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = circleShape;
+
+        physicsBody.body = Engine.getInstance().getWorld().createBody(bodyDef);
+        physicsBody.body.createFixture(fixtureDef);
+
+        Entity newHole = Engine.getInstance().createEntity();
+        newHole.add(position);
+        newHole.add(physicsBody);
+        newHole.add(hole);
+        // newHole.add(sprite);
+        newHole.add(direction);
+        newHole.add(size);
+
+        return newHole;
+    }
+
+}

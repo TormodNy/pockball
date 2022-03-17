@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
+import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
 
@@ -17,15 +19,17 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
     private final ComponentMapper<BallComponent> ballMapper;
+    private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
     private boolean justTouched = false;
 
     public BallSystem() {
-        super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class).get());
+        super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
         ballMapper = ComponentMapper.getFor(BallComponent.class);
+        placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
     }
 
     @Override
@@ -33,6 +37,7 @@ public class BallSystem extends IteratingSystem {
         PositionComponent position = positionMapper.get(entity);
         PhysicsBodyComponent physics = physicsBodyMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);
+        PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
 
         // Stop balls when they are slow (Drag is not enough)
         if (physics.body.getLinearVelocity().len() <= 0.15f) {
@@ -41,7 +46,7 @@ public class BallSystem extends IteratingSystem {
         }
 
         // Only shoot white ball with almost no speed
-        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f) {
+        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
             if (Gdx.input.isTouched()) {
                 if (!justTouched) {
                     // If first touch, set direction

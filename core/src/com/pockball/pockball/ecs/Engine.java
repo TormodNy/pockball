@@ -16,9 +16,12 @@ import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.CueSystem;
+import com.pockball.pockball.ecs.systems.HoleListenerSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
+import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
+import com.pockball.pockball.ecs.systems.PlayerSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
-
+import com.pockball.pockball.game_states.Context;
 
 public class Engine extends PooledEngine {
     private static Engine engineInstance;
@@ -49,6 +52,21 @@ public class Engine extends PooledEngine {
         // Add more positions for different game modes.
     };
 
+    private final Vector2[] holeLocations = {
+            // Upper left
+            new Vector2(0.5f,12.5f),
+            // Upper middle
+            new Vector2(12.1f, 12.8f),
+            // Upper right
+            new Vector2(23.7f, 12.5f),
+            // Lower left
+            new Vector2(0.5f, 0.45f),
+            // Lower  middle
+            new Vector2(12.1f, 0.15f),
+            // Lower right
+            new Vector2(23.7f, 0.45f),
+    };
+
     private Engine() {
         entityFactory = EntityFactory.getInstance();
     }
@@ -77,13 +95,26 @@ public class Engine extends PooledEngine {
 
         createWorld();
         createTable();
+        createHoles();
 
         engineInstance.addSystem(new RenderSystem());
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
         engineInstance.addSystem(new CueSystem());
+        engineInstance.addSystem(new PlaceEntitySystem());
+        engineInstance.addSystem(new PlayerSystem());
 
-        // Place balls on table
+        HoleListenerSystem holeListenerSystem = new HoleListenerSystem();
+        engineInstance.addSystem(holeListenerSystem);
+        world.setContactListener(holeListenerSystem);
+
+        // Add players from state context
+        Entity[] players = Context.getInstance().getState().getPlayers();
+        for (Entity player : players) {
+            engineInstance.addEntity(player);
+        }
+
+        // Place balls on ta
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
             if (i == 0) {
@@ -91,6 +122,7 @@ public class Engine extends PooledEngine {
             }
             engineInstance.addEntity(ball);
         }
+
     }
 
     private void createWorld() {
@@ -153,23 +185,23 @@ public class Engine extends PooledEngine {
         // Top left corner
         vs[7] = new Vector2(50,466).scl(scl);
         vs[8] = new Vector2(30,486).scl(scl);
-        vs[9 ] = new Vector2(0,486).scl(scl);
-        vs[10 ] = new Vector2(0,550).scl(scl);
-        vs[11 ] = new Vector2(66, 550).scl(scl);
-        vs[12 ] = new Vector2(66, 520).scl(scl);
-        vs[13 ] = new Vector2(84, 500).scl(scl);
+        vs[9] = new Vector2(0,486).scl(scl);
+        vs[10] = new Vector2(0,550).scl(scl);
+        vs[11] = new Vector2(66, 550).scl(scl);
+        vs[12] = new Vector2(66, 520).scl(scl);
+        vs[13] = new Vector2(84, 500).scl(scl);
         // Top mid
-        vs[14 ] = new Vector2(470, 500).scl(scl);
-        vs[15 ] = new Vector2(476,520).scl(scl);
-        vs[16 ] = new Vector2(476,550).scl(scl);
-        vs[17 ] = new Vector2(524, 550).scl(scl);
-        vs[18 ] = new Vector2(524, 520).scl(scl);
-        vs[19 ] = new Vector2(530, 500).scl(scl);
+        vs[14] = new Vector2(470, 500).scl(scl);
+        vs[15] = new Vector2(476,520).scl(scl);
+        vs[16] = new Vector2(476,550).scl(scl);
+        vs[17] = new Vector2(524, 550).scl(scl);
+        vs[18] = new Vector2(524, 520).scl(scl);
+        vs[19] = new Vector2(530, 500).scl(scl);
         // Top right corner
-        vs[20 ] = new Vector2(916, 500).scl(scl);
-        vs[21 ] = new Vector2(936, 520).scl(scl);
-        vs[22 ] = new Vector2(936,550).scl(scl);
-        vs[23 ] = new Vector2(1000,550).scl(scl);
+        vs[20] = new Vector2(916, 500).scl(scl);
+        vs[21] = new Vector2(936, 520).scl(scl);
+        vs[22] = new Vector2(936,550).scl(scl);
+        vs[23] = new Vector2(1000,550).scl(scl);
         vs[24] = new Vector2(1000,486).scl(scl);
         vs[25] = new Vector2(970,486).scl(scl);
         vs[26] = new Vector2(950,466).scl(scl);
@@ -182,17 +214,24 @@ public class Engine extends PooledEngine {
         vs[32] = new Vector2(936, 30).scl(scl);
         vs[33] = new Vector2(916, 50).scl(scl);
         // Top mid
-        vs[34 ] = new Vector2(530, 50).scl(scl);
-        vs[35 ] = new Vector2(524, 30).scl(scl);
-        vs[36 ] = new Vector2(524, 0).scl(scl);
-        vs[37 ] = new Vector2(476,0).scl(scl);
-        vs[38 ] = new Vector2(476,30).scl(scl);
-        vs[39 ] = new Vector2(470, 50).scl(scl);
+        vs[34] = new Vector2(530, 50).scl(scl);
+        vs[35] = new Vector2(524, 30).scl(scl);
+        vs[36] = new Vector2(524, 0).scl(scl);
+        vs[37] = new Vector2(476,0).scl(scl);
+        vs[38] = new Vector2(476,30).scl(scl);
+        vs[39] = new Vector2(470, 50).scl(scl);
 
         ChainShape chain = new ChainShape();
         chain.createLoop(vs);
 
         Body walls = world.createBody(wallsDef);
         walls.createFixture(chain, 0);
+    }
+
+    private void createHoles() {
+        for (int i = 0; i < holeLocations.length; i++) {
+            Entity hole = entityFactory.createHole(holeLocations[i].x, holeLocations[i].y, i);
+            engineInstance.addEntity(hole);
+        }
     }
 }

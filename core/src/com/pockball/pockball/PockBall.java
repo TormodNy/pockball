@@ -23,7 +23,7 @@ public class PockBall extends Game {
 	// Have to set this to main menu when it's implemented
 	@Override
 	public void create () {
-		this.screenController.changeScreen(ScreenModel.Screen.SINGLEPLAYER);
+		this.screenController.changeScreen(ScreenModel.Screen.MULTIPLAYER);
 
 		camera = new OrthographicCamera(WIDTH, HEIGHT);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
