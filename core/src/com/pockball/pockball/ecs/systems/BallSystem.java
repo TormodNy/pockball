@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
@@ -22,8 +21,10 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
+    private boolean justTouched = false;
+
     public BallSystem() {
-        super(Family.all(BallComponent.class).get());
+        super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
@@ -38,16 +39,38 @@ public class BallSystem extends IteratingSystem {
         BallComponent ball = ballMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
 
-        if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE) && !placeEntity.placeable) {
-            Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            Vector2 input2 = new Vector2(input.x, input.y);
-            Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
-            Vector2 dir = input2.sub(origin).nor();
-            float force = 3000;
-            physics.body.applyForceToCenter(dir.scl(force), true);
+        // Stop balls when they are slow (Drag is not enough)
+        if (physics.body.getLinearVelocity().len() <= 0.15f) {
+            physics.body.setLinearVelocity(physics.body.getLinearVelocity().scl(0.8f));
+            physics.body.setAngularVelocity(physics.body.getAngularVelocity() * 0.8f);
+        }
 
-            //System.out.println(position.position);
-            //System.out.println(PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
+        // Only shoot white ball with almost no speed
+        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
+            if (Gdx.input.isTouched()) {
+                if (!justTouched) {
+                    // If first touch, set direction
+                    Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                    Vector2 inputInWorld = new Vector2(input.x, input.y);
+                    Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
+                    ball.dir = inputInWorld.sub(origin);
+                }
+                justTouched = true;
+
+                // Set power by distance dragged from first touch
+                Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                Vector2 inputInWorld = new Vector2(input.x, input.y);
+                Vector2 direction = new Vector2(ball.dir);
+                Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
+                ball.power = inputInWorld.sub(origin).sub(direction);
+                System.out.println(direction + ", " + ball.power);
+                ball.power.clamp(0.1f, 3f);
+            } else if (justTouched) {
+                // Shoot ball in direction with power
+                float force = 1500;
+                physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
+                justTouched = false;
+            }
         }
     }
 }

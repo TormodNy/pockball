@@ -5,12 +5,14 @@ import com.badlogic.ashley.core.Entity;
 public class EntityFactory {
     private static EntityFactory entityFactory;
     private BallFactory ballFactory;
+    private CueFactory cueFactory;
     private HoleFactory holeFactory;
     private PlayerFactory playerFactory;
 
     private EntityFactory() {
         ballFactory = BallFactory.getInstance();
         holeFactory = HoleFactory.getInstance();
+        cueFactory = CueFactory.getInstance();
         playerFactory = PlayerFactory.getInstance();
     }
 
@@ -24,6 +26,9 @@ public class EntityFactory {
         return ballFactory.createBall(x, y, ballID);
     }
 
+    public Entity createCue(Entity ball) {
+        return cueFactory.createCue(ball);
+    }
 
     public Entity createHole(float x, float y, int holeID) {
         return holeFactory.createHole(x, y, holeID);

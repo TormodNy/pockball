@@ -15,13 +15,13 @@ import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
+import com.pockball.pockball.ecs.systems.CueSystem;
 import com.pockball.pockball.ecs.systems.HoleListenerSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.systems.PlayerSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.SinglePlayerState;
 
 public class Engine extends PooledEngine {
     private static Engine engineInstance;
@@ -100,6 +100,7 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new RenderSystem());
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
+        engineInstance.addSystem(new CueSystem());
         engineInstance.addSystem(new PlaceEntitySystem());
         engineInstance.addSystem(new PlayerSystem());
 
@@ -116,6 +117,9 @@ public class Engine extends PooledEngine {
         // Place balls on ta
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
+            if (i == 0) {
+                engineInstance.addEntity(entityFactory.createCue(ball));
+            }
             engineInstance.addEntity(ball);
         }
 

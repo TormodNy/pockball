@@ -61,6 +61,7 @@ public class BallFactory {
         // Body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.bullet = true;
         bodyDef.position.set(x, y);
         bodyDef.linearDamping = 1.5f;
         bodyDef.angularDamping = 1f;
