@@ -53,9 +53,9 @@ public class MainMenuView implements Screen {
         table.row().pad(20, 0, 0, 0);
         table.add(settingsButton).uniformX();
 
-        Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER);
-        Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER);
-        Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS);
+        Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
     }
 
 

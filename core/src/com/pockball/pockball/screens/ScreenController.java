@@ -16,6 +16,7 @@ public class ScreenController implements Disposable {
 
     private static ScreenController screenControllerInstance = null;
     private Screen screen;
+    private Screen previousScreen;
 
     private ScreenController() {}
 
@@ -27,13 +28,19 @@ public class ScreenController implements Disposable {
     }
 
     // Add additional screens into this function
-    public void changeScreen(final ScreenModel.Screen screen) {
+    public void changeScreen(final ScreenModel.Screen screenType, ScreenModel.Screen previousScreenType) {
         Gdx.app.postRunnable(() -> {
-            switch(screen) {
+            switch(screenType) {
                 case SINGLEPLAYER:
-                    SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
-                    SinglePlayerView singlePlayerView = new SinglePlayerView(singlePlayerController);
-                    this.setScreen(singlePlayerView);
+                    if (previousScreenType == ScreenModel.Screen.SETTINGS) {
+                        this.setScreen(previousScreen);
+                        previousScreen = null;
+                    }
+                    else {
+                        SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
+                        SinglePlayerView singlePlayerView = new SinglePlayerView(this, singlePlayerController);
+                        this.setScreen(singlePlayerView);
+                    }
                     break;
                 case MULTIPLAYER:
                     MultiplayerController multiplayerController = MultiplayerController.getInstance();
@@ -43,23 +50,27 @@ public class ScreenController implements Disposable {
                 case MAINMENU:
                     MainMenuView mainMenuView = new MainMenuView(this);
                     this.setScreen(mainMenuView);
+                    previousScreen = null;
                     break;
                 case SETTINGS:
-                    SettingsView settingsView = new SettingsView(this);
+                    if (previousScreenType == ScreenModel.Screen.SINGLEPLAYER) {
+                        previousScreen = screen;
+                    }
+                    SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
                     break;
             }
         });
     }
 
-    public void setScreen(Screen screen) {
-        if (this.screen != null) {
-            this.screen.hide();
-            this.screen.dispose();
+    public void setScreen(Screen newScreen) {
+        if (screen != previousScreen) {
+            screen.hide();
+            screen.dispose();
         }
-        this.screen = screen;
-        if (this.screen != null) {
-            this.screen.show();
+        screen = newScreen;
+        if (screen != null && previousScreen != newScreen) {
+            screen.show();
         }
     }
 

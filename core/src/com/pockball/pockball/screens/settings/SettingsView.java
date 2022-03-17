@@ -21,13 +21,14 @@ public class SettingsView implements Screen {
     private Stage stage;
     private AssetsController assetsController;
     private ScreenController screenController;
+    private ScreenModel.Screen screenModel;
 
-
-    public SettingsView(ScreenController screenController) {
+    public SettingsView(ScreenController screenController, ScreenModel.Screen screenModel) {
         this.screenController = screenController;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
+        this.screenModel = screenModel;
     }
 
 
@@ -38,7 +39,6 @@ public class SettingsView implements Screen {
         stage.addActor(table);
 
         Label settingsTitle = new Label("Settings: ", assetsController.getSkin());
-        TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
 
@@ -47,10 +47,6 @@ public class SettingsView implements Screen {
         table.add(volumeTitle);
         table.row().padTop(10);
         table.add(volumeSlider);
-        table.row().padTop(50);
-        table.add(mainMenuButton).uniformX();
-
-        Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU);
 
         volumeSlider.addListener(new ChangeListener() {
             @Override
@@ -59,6 +55,29 @@ public class SettingsView implements Screen {
                 System.out.println(volumeSlider.getValue());
             }
         });
+
+        if (screenModel == ScreenModel.Screen.MAINMENU) {
+            TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
+            table.row().padTop(50);
+            table.add(mainMenuButton).uniformX();
+
+            Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
+        }
+        else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
+            TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+            table.row().padTop(50);
+            table.add(quitButton).uniformX();
+
+            TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
+            table.row().padTop(50);
+            table.add(resumeButton).uniformX();
+
+            Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
+            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
+
+        }
+
+
     }
 
     @Override
