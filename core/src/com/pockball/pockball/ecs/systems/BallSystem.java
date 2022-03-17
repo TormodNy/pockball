@@ -14,6 +14,8 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.State;
 
 public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -21,10 +23,14 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
+    private State state;
+
     private boolean justTouched = false;
 
     public BallSystem() {
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
+
+        state = Context.getInstance().getState();
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
@@ -46,7 +52,7 @@ public class BallSystem extends IteratingSystem {
         }
 
         // Only shoot white ball with almost no speed
-        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
+        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable && !state.getShowPowerups()) {
             if (Gdx.input.isTouched()) {
                 if (!justTouched) {
                     // If first touch, set direction
@@ -63,7 +69,6 @@ public class BallSystem extends IteratingSystem {
                 Vector2 direction = new Vector2(ball.dir);
                 Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
                 ball.power = inputInWorld.sub(origin).sub(direction);
-                System.out.println(direction + ", " + ball.power);
                 ball.power.clamp(0.1f, 3f);
             } else if (justTouched) {
                 // Shoot ball in direction with power

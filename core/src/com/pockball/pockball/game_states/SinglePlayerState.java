@@ -8,7 +8,7 @@ import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
 
-public class SinglePlayerState implements State {
+public class SinglePlayerState extends State {
 
     private final Entity playerEntity;
     private final PlayerComponent player;
@@ -36,6 +36,7 @@ public class SinglePlayerState implements State {
             default:
                 System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
+                Engine.getInstance().givePowerup();
         }
     }
 

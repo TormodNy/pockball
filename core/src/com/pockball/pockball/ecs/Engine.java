@@ -9,19 +9,29 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.pockball.pockball.PockBall;
+import com.pockball.pockball.ecs.components.BackdropComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
+import com.pockball.pockball.ecs.systems.BackdropSystem;
 import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.CueSystem;
 import com.pockball.pockball.ecs.systems.HoleListenerSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.systems.PlayerSystem;
+import com.pockball.pockball.ecs.systems.PowerupSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 import com.pockball.pockball.game_states.Context;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Engine extends PooledEngine {
     private static Engine engineInstance;
@@ -29,6 +39,10 @@ public class Engine extends PooledEngine {
     private final EntityFactory entityFactory;
 
     private World world;
+
+    private Array<Entity> balls = new Array<Entity>();
+
+    private List<Body> bodiesToRemove = new ArrayList<>();
 
     private final Vector2[][] ballLocations = {
         {
@@ -87,6 +101,11 @@ public class Engine extends PooledEngine {
 
         float timeStep = 1f / 60f;
         world.step(timeStep, 8, 3);
+
+        for (Body body : bodiesToRemove) {
+            world.destroyBody(body);
+        }
+        bodiesToRemove.clear();
     }
 
     public void initializeEngine(int gameMode) {
@@ -103,6 +122,8 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new CueSystem());
         engineInstance.addSystem(new PlaceEntitySystem());
         engineInstance.addSystem(new PlayerSystem());
+        engineInstance.addSystem(new PowerupSystem());
+        engineInstance.addSystem(new BackdropSystem());
 
         HoleListenerSystem holeListenerSystem = new HoleListenerSystem();
         engineInstance.addSystem(holeListenerSystem);
@@ -116,13 +137,18 @@ public class Engine extends PooledEngine {
 
         // Place balls on ta
         for (int i = 0; i <= 15; i++) {
-            Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
+            balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
             if (i == 0) {
-                engineInstance.addEntity(entityFactory.createCue(ball));
+                engineInstance.addEntity(entityFactory.createCue(balls.get(i)));
             }
-            engineInstance.addEntity(ball);
+            engineInstance.addEntity(balls.get(i));
         }
 
+        // Powerup backdrop
+        createBackdrop();
+
+        // Powerups
+        engineInstance.addEntity(entityFactory.createPowerup(0));
     }
 
     private void createWorld() {
@@ -233,5 +259,46 @@ public class Engine extends PooledEngine {
             Entity hole = entityFactory.createHole(holeLocations[i].x, holeLocations[i].y, i);
             engineInstance.addEntity(hole);
         }
+    }
+
+    private void createBackdrop () {
+        PositionComponent position = engineInstance.createComponent(PositionComponent.class);
+        SpriteComponent sprite = engineInstance.createComponent(SpriteComponent.class);
+        SizeComponent size = engineInstance.createComponent(SizeComponent.class);
+        DirectionComponent direction = engineInstance.createComponent(DirectionComponent.class);
+        BackdropComponent backdropComponent = engineInstance.createComponent(BackdropComponent.class);
+
+        sprite.sprite = new Sprite(new Texture("transparentBackdrop.png"));
+        sprite.visible = false;
+        sprite.layer = 3;
+        size.width = PockBall.WIDTH;
+        size.height = PockBall.HEIGHT;
+
+        Entity backdrop = createEntity();
+        backdrop.add(position);
+        backdrop.add(sprite);
+        backdrop.add(size);
+        backdrop.add(direction);
+        backdrop.add(backdropComponent);
+        addEntity(backdrop);
+    }
+
+    public void givePowerup () {
+        Random random = new Random();
+        addEntity(entityFactory.createPowerup(random.nextInt(1)));
+    }
+
+    public Entity getBallAt (int i) {
+        return balls.get(i);
+    }
+
+    public int getBallsLength () {
+        return balls.size;
+    }
+
+    public void removeBall (Entity ball) {
+        bodiesToRemove.add(ball.getComponent(PhysicsBodyComponent.class).body);
+        balls.removeValue(ball, true);
+        removeEntity(ball);
     }
 }

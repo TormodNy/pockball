@@ -9,7 +9,7 @@ import com.pockball.pockball.ecs.types.BallType;
 
 import javax.swing.Scrollable;
 
-public class MultiPlayerState implements State {
+public class MultiPlayerState extends State {
 
     private final Entity player1, player2;
     Entity[] players = new Entity[2];

@@ -45,6 +45,7 @@ public class CueFactory {
         sprite.sprite = new Sprite(new Texture("cue.png"));
         sprite.sprite.setOrigin(size.width + 1, size.height / 2);
         sprite.sprite.setPosition(position.position.x, position.position.y);
+        sprite.layer = 2;
 
         cue.ball = ball;
 
