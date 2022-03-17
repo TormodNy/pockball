@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
+import com.pockball.pockball.screens.settings.SettingsView;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
 
@@ -42,6 +43,10 @@ public class ScreenController implements Disposable {
                 case MAINMENU:
                     MainMenuView mainMenuView = new MainMenuView(this);
                     this.setScreen(mainMenuView);
+                    break;
+                case SETTINGS:
+                    SettingsView settingsView = new SettingsView(this);
+                    this.setScreen(settingsView);
                     break;
             }
         });

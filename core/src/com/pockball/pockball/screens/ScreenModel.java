@@ -5,6 +5,7 @@ public class ScreenModel {
     public enum Screen {
         SINGLEPLAYER,
         MULTIPLAYER,
-        MAINMENU
+        MAINMENU,
+        SETTINGS
     }
 }
