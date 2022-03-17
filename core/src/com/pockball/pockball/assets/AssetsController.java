@@ -9,6 +9,7 @@ public class AssetsController implements Disposable {
 
     private Skin skin;
 
+    // Uses the skin found here: https://github.com/czyzby/gdx-skins/tree/master/shade
     private AssetsController(){
         this.skin = new Skin(Gdx.files.internal("shade_skin/uiskin.json"));
     }
