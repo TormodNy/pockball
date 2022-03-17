@@ -22,6 +22,7 @@ public class CueSystem extends IteratingSystem {
     private final ComponentMapper<CueComponent> cueMapper;
     private final ComponentMapper<SizeComponent> sizeMapper;
     private final ComponentMapper<BallComponent> ballMapper;
+    private final ComponentMapper<PhysicsBodyComponent> physicsMapper;
 
     private boolean justTouched = false;
 
@@ -33,6 +34,7 @@ public class CueSystem extends IteratingSystem {
         cueMapper = ComponentMapper.getFor(CueComponent.class);
         sizeMapper = ComponentMapper.getFor(SizeComponent.class);
         ballMapper = ComponentMapper.getFor(BallComponent.class);
+        physicsMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
     }
 
     @Override
@@ -43,16 +45,15 @@ public class CueSystem extends IteratingSystem {
         SizeComponent size = sizeMapper.get(entity);
         BallComponent ball = ballMapper.get(cue.ball);
         PositionComponent ballPos = positionMapper.get(cue.ball);
+        PhysicsBodyComponent physics = physicsMapper.get(cue.ball);
 
-        if (Gdx.input.isTouched()) {
-            Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            Vector2 input2 = new Vector2(input.x, input.y);
-            Vector2 origin = new Vector2(ballPos.position.x, ballPos.position.y).add(ball.radius, ball.radius);
-            Vector2 dir = input2.sub(origin);
-            dir.clamp(0.1f, 3f);
-
-            direction.rotation = dir.angleDeg();
-            position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir);
+        // Position cue at ball when shooting
+        if (Gdx.input.isTouched() && physics.body.getLinearVelocity().len() <= 0.01f) {
+            direction.rotation = ball.dir.angleDeg();
+            Vector2 dir = new Vector2(ball.dir).nor();
+            position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));
+        } else {
+            position.position.set(100, 100);
         }
     }
 }

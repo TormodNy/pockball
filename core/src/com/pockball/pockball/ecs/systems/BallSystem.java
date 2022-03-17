@@ -19,7 +19,6 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
 
     private boolean justTouched = false;
-    private Vector2 dir;
 
     public BallSystem() {
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class).get());
@@ -35,18 +34,38 @@ public class BallSystem extends IteratingSystem {
         PhysicsBodyComponent physics = physicsBodyMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);
 
-        if (Gdx.input.isTouched() && ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.1f) {
-            justTouched = true;
+        // Stop balls when they are slow (Drag is not enough)
+        if (physics.body.getLinearVelocity().len() <= 0.15f) {
+            physics.body.setLinearVelocity(physics.body.getLinearVelocity().scl(0.8f));
+            physics.body.setAngularVelocity(physics.body.getAngularVelocity() * 0.8f);
+        }
 
-            Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            Vector2 input2 = new Vector2(input.x, input.y);
-            Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
-            dir = input2.sub(origin);
-            dir.clamp(0.1f, 3f);
-        } else if (justTouched && ball.type.equals(BallType.WHITE)) {
-            float force = 1000;
-            physics.body.applyForceToCenter(dir.scl(force), true);
-            justTouched = false;
+        // Only shoot white ball with almost no speed
+        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f) {
+            if (Gdx.input.isTouched()) {
+                if (!justTouched) {
+                    // If first touch, set direction
+                    Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                    Vector2 inputInWorld = new Vector2(input.x, input.y);
+                    Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
+                    ball.dir = inputInWorld.sub(origin);
+                }
+                justTouched = true;
+
+                // Set power by distance dragged from first touch
+                Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                Vector2 inputInWorld = new Vector2(input.x, input.y);
+                Vector2 direction = new Vector2(ball.dir);
+                Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
+                ball.power = inputInWorld.sub(origin).sub(direction);
+                System.out.println(direction + ", " + ball.power);
+                ball.power.clamp(0.1f, 3f);
+            } else if (justTouched) {
+                // Shoot ball in direction with power
+                float force = 1500;
+                physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
+                justTouched = false;
+            }
         }
     }
 }
