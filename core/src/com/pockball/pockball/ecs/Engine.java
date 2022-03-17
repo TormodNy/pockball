@@ -4,23 +4,21 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
+import com.pockball.pockball.ecs.systems.CueSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 
-import sun.security.provider.ConfigFile;
 
 public class Engine extends PooledEngine {
     private static Engine engineInstance;
@@ -83,10 +81,14 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new RenderSystem());
         engineInstance.addSystem(new PhysicsSystem());
         engineInstance.addSystem(new BallSystem());
+        engineInstance.addSystem(new CueSystem());
 
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
+            if (i == 0) {
+                engineInstance.addEntity(entityFactory.createCue(ball));
+            }
             engineInstance.addEntity(ball);
         }
     }
