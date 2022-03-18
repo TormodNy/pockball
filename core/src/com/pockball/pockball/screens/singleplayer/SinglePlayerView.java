@@ -29,12 +29,13 @@ public class SinglePlayerView implements Screen {
         Engine.getInstance().initializeEngine(0);
         this.screenController = screenController;
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
+
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -73,7 +74,7 @@ public class SinglePlayerView implements Screen {
 
     @Override
     public void hide() {
-
+        stage.getActors().clear();
     }
 
     @Override
