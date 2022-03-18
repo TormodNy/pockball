@@ -69,7 +69,7 @@ public class ScreenController implements Disposable {
             screen.dispose();
         }
         screen = newScreen;
-        if (screen != null && previousScreen != newScreen) {
+        if (screen != null) {
             screen.show();
         }
     }
