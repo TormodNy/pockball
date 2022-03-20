@@ -52,7 +52,6 @@ public class SettingsView implements Screen {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 // Adjust the value of volume in here
-                System.out.println(volumeSlider.getValue());
             }
         });
 

@@ -11,7 +11,6 @@ public class Util {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 screenController.changeScreen(screen, previousScreen);
-                System.out.println("Trykk");
             }
         });
     }
