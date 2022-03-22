@@ -109,4 +109,9 @@ public class MultiPlayerState implements State {
         players[1] = player2;
         return players;
     }
+
+    @Override
+    public int getNumberOfShots() {
+        return -1;
+    }
 }

@@ -114,7 +114,7 @@ public class Engine extends PooledEngine {
             engineInstance.addEntity(player);
         }
 
-        // Place balls on ta
+        // Place balls on table
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
             if (i == 0) {
@@ -122,7 +122,6 @@ public class Engine extends PooledEngine {
             }
             engineInstance.addEntity(ball);
         }
-
     }
 
     private void createWorld() {

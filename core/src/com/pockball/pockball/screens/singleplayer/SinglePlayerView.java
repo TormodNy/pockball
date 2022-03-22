@@ -1,5 +1,6 @@
 package com.pockball.pockball.screens.singleplayer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -7,25 +8,46 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 
 public class SinglePlayerView implements Screen {
+    private final AssetsController assetsController;
     private Stage stage;
     private SinglePlayerController singlePlayerController;
 
     public SinglePlayerView(SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
         Engine.getInstance().initializeEngine(0);
+
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+        this.assetsController = AssetsController.getInstance();
     }
 
     @Override
     public void show() {
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        int shots = singlePlayerController.getScore();
+        Label numberOfShots = new Label("Shots: " + shots, assetsController.getSkin());
+
+        table.add(numberOfShots);
+        table.top();
 
     }
 
     @Override
     public void render(float delta) {
         Engine.getInstance().update(delta);
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
     @Override
