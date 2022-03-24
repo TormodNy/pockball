@@ -14,6 +14,7 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
 
 public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -68,7 +69,11 @@ public class BallSystem extends IteratingSystem {
             } else if (justTouched) {
                 // Shoot ball in direction with power
                 float force = 1500;
-                physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
+                Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
+                // Change state
+                Context.getInstance().getState().shoot(directionWithForce);
+                // Apply force physics
+                physics.body.applyForceToCenter(directionWithForce, true);
                 justTouched = false;
             }
         }

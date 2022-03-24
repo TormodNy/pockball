@@ -47,7 +47,7 @@ public class SinglePlayerView implements Screen {
         table.padRight(5);
         table.add(pauseButton);
 
-        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLEPLAYER);
+        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLE_PLAYER);
     }
 
     @Override

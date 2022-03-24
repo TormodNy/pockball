@@ -33,7 +33,7 @@ public class ScreenController implements Disposable {
     public void changeScreen(final ScreenModel.Screen screenType, ScreenModel.Screen previousScreenType) {
         Gdx.app.postRunnable(() -> {
             switch(screenType) {
-                case SINGLEPLAYER:
+                case SINGLE_PLAYER:
                     if (previousScreenType == ScreenModel.Screen.SETTINGS) {
                         this.setScreen(previousScreen);
                         previousScreen = null;
@@ -60,7 +60,7 @@ public class ScreenController implements Disposable {
                     previousScreen = null;
                     break;
                 case SETTINGS:
-                    if (previousScreenType == ScreenModel.Screen.SINGLEPLAYER) {
+                    if (previousScreenType == ScreenModel.Screen.SINGLE_PLAYER) {
                         previousScreen = screen;
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);

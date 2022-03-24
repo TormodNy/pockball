@@ -62,7 +62,7 @@ public class SettingsView implements Screen {
 
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
-        else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
+        else if (screenModel == ScreenModel.Screen.SINGLE_PLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
             table.row().padTop(50);
             table.add(quitButton).uniformX();
@@ -72,7 +72,7 @@ public class SettingsView implements Screen {
             table.add(resumeButton).uniformX();
 
             Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
-            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
+            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLE_PLAYER, ScreenModel.Screen.SETTINGS);
 
         }
 

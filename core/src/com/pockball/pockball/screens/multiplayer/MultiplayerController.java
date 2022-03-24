@@ -11,12 +11,10 @@ public class MultiplayerController {
     private ScreenController screenController;
 
     private MultiplayerController() {
-        // Set multiplayer state
-        Context.getInstance().setState(new MultiPlayerState());
     }
 
+
     public void resetGame() {
-        Context.getInstance().setState(new MultiPlayerState());
     }
 
     public static MultiplayerController getInstance() {

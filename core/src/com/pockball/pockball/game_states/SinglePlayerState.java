@@ -2,11 +2,16 @@ package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
+import com.pockball.pockball.db_models.RoomModel;
+import com.pockball.pockball.db_models.ShotModel;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
+
+import java.util.List;
 
 public class SinglePlayerState implements State {
 
@@ -44,5 +49,20 @@ public class SinglePlayerState implements State {
         Entity[] players = new Entity[1];
         players[0] = playerEntity;
         return players;
+    }
+
+    @Override
+    public void shoot(Vector2 force) {
+
+    }
+
+    @Override
+    public void fireOpponentShotsChange(List<ShotModel> shotModelList) {
+
+    }
+
+    @Override
+    public void setHostTurn(boolean hostTurn) {
+
     }
 }

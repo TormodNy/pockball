@@ -1,5 +1,6 @@
 package com.pockball.pockball.desktop.firebase;
 
+import com.pockball.pockball.db_models.ShotModel;
 import com.pockball.pockball.firebase.FirebaseInterface;
 
 public class FirebaseController implements FirebaseInterface {
@@ -10,17 +11,42 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void listenToOpponentInGame(String target) {
+    public void listenToClientsInGame(String target) {
 
     }
 
     @Override
-    public void stopListenToOpponentInGame() {
+    public void stopListenToClientsInGame() {
 
     }
 
     @Override
-    public void listenToRoomChanges(String target) {
+    public void addNewShot(String gameId, ShotModel shotModel) {
+
+    }
+
+    @Override
+    public void appendToArrayInDb(String target, Object value) {
+
+    }
+
+    @Override
+    public void listenToShotChanges(String target) {
+
+    }
+
+    @Override
+    public void stopListenToShotChanges(String target) {
+
+    }
+
+    @Override
+    public void listenToHostTurn(String target) {
+
+    }
+
+    @Override
+    public void stopListenToHostTurn(String target) {
 
     }
 
