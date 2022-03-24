@@ -5,6 +5,10 @@ public interface FirebaseInterface {
     // https://libgdx.com/wiki/app/interfacing-with-platform-specific-code
 
     public void writeToDb(String target, Object value);
+    public void listenToOpponentInGame(String target);
+    public void stopListenToOpponentInGame();
+
+    // TODO: Not using
     public void listenToRoomChanges(String target);
     public void listenToAvailableRooms();
     public void stopListenToAvailableRooms();

@@ -1,15 +1,16 @@
-package com.pockball.pockball.screens.create_game;
+package com.pockball.pockball.screens.create_game_room;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.pockball.pockball.ecs.Engine;
 
-public class CreateGameView implements Screen {
+public class CreateGameRoomView implements Screen {
     private Stage stage;
-    private CreateGameController controller;
+    private CreateGameRoomController controller;
 
-    public CreateGameView(CreateGameController controller) {
+    public CreateGameRoomView(CreateGameRoomController controller) {
         this.controller = controller;
+        this.controller.testDb();
     }
 
     @Override

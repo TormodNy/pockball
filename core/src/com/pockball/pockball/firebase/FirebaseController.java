@@ -25,6 +25,16 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
+    public void listenToOpponentInGame(String target) {
+        firebaseInterface.listenToOpponentInGame(target + ".opponent");
+    }
+
+    @Override
+    public void stopListenToOpponentInGame() {
+        firebaseInterface.stopListenToOpponentInGame();
+    }
+
+    @Override
     public void listenToRoomChanges(String target) {
         firebaseInterface.listenToRoomChanges(target);
     }

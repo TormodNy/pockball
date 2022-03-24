@@ -45,3 +45,4 @@ public class JoinGameController {
         System.out.println("Joined game with roomID: " + roomId);
     }
 }
+

@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.pockball.pockball.screens.join_game_room.JoinGameController;
 import com.pockball.pockball.screens.join_game_room.JoinGameView;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
-import com.pockball.pockball.screens.create_game.CreateGameController;
-import com.pockball.pockball.screens.create_game.CreateGameView;
+import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
+import com.pockball.pockball.screens.create_game_room.CreateGameRoomView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
@@ -66,9 +66,9 @@ public class ScreenController implements Disposable {
                     SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
                 case CREATE_GAME:
-                    CreateGameController createGameController = CreateGameController.getInstance();
-                    CreateGameView createGameView = new CreateGameView(createGameController);
-                    this.setScreen(createGameView);
+                    CreateGameRoomController createGameRoomController = CreateGameRoomController.getInstance();
+                    CreateGameRoomView createGameRoomView = new CreateGameRoomView(createGameRoomController);
+                    this.setScreen(createGameRoomView);
                     break;
                 case CREATE_GAME:
                     CreateGameController createGameController = CreateGameController.getInstance();
