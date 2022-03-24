@@ -9,12 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
-import com.pockball.pockball.ecs.components.HoleComponent;
-import com.pockball.pockball.ecs.components.NumberOfShotsComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
-import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
 
@@ -23,7 +20,6 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
-    private final ComponentMapper<NumberOfShotsComponent> numberOfShotsComponentMapper;
 
     private boolean justTouched = false;
 
@@ -35,7 +31,6 @@ public class BallSystem extends IteratingSystem {
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
         ballMapper = ComponentMapper.getFor(BallComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
-        numberOfShotsComponentMapper = ComponentMapper.getFor(NumberOfShotsComponent.class);
     }
 
     @Override
@@ -44,7 +39,6 @@ public class BallSystem extends IteratingSystem {
         PhysicsBodyComponent physics = physicsBodyMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
-        NumberOfShotsComponent numberOfShots = numberOfShotsComponentMapper.get(entity);
 
         // Stop balls when they are slow (Drag is not enough)
         if (physics.body.getLinearVelocity().len() <= 0.15f) {
@@ -78,9 +72,8 @@ public class BallSystem extends IteratingSystem {
                 physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
                 justTouched = false;
 
-                //Denne linjen ødelegger
-                System.out.println(numberOfShots.numberOfShots);
-                //numberOfShots.numberOfShots++;
+                // Increments number of shots for singleplayer
+                Context.getInstance().getState().incNumberOfShots();
             }
         }
     }

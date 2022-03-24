@@ -29,7 +29,7 @@ public class SinglePlayerController {
 
     }
 
-    public int getScore() {
+    public int getNumberOfShots() {
         return Context.getInstance().getState().getNumberOfShots();
     }
 

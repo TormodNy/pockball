@@ -114,4 +114,7 @@ public class MultiPlayerState implements State {
     public int getNumberOfShots() {
         return -1;
     }
+
+    @Override
+    public void incNumberOfShots() {}
 }

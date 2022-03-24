@@ -2,7 +2,6 @@ package com.pockball.pockball.ecs.entities;
 
 import com.badlogic.ashley.core.Entity;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.NumberOfShotsComponent;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.components.TimeoutComponent;
@@ -21,7 +20,6 @@ public class PlayerFactory {
     public Entity createPlayer(String playerName) {
         ScoreComponent score = Engine.getInstance().createComponent(ScoreComponent.class);
         TimeoutComponent timeout = Engine.getInstance().createComponent(TimeoutComponent.class);
-        NumberOfShotsComponent numberOfShots = Engine.getInstance().createComponent(NumberOfShotsComponent.class);
         PlayerComponent playerComponent = Engine.getInstance().createComponent(PlayerComponent.class);
 
         playerComponent.playerName = playerName;
@@ -29,7 +27,6 @@ public class PlayerFactory {
         Entity player = Engine.getInstance().createEntity();
         player.add(score);
         player.add(timeout);
-        player.add(numberOfShots);
         player.add(playerComponent);
 
         return player;

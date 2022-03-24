@@ -1,9 +1,6 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Interpolation;
-import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.NumberOfShotsComponent;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
@@ -14,7 +11,7 @@ public class SinglePlayerState implements State {
     private final Entity playerEntity;
     private final PlayerComponent player;
     private final ScoreComponent score;
-    private final NumberOfShotsComponent numberOfShots;
+    private int numberOfShots = 0;
 
     public SinglePlayerState() {
         // Set up player
@@ -22,7 +19,6 @@ public class SinglePlayerState implements State {
 
         score = playerEntity.getComponent(ScoreComponent.class);
         player = playerEntity.getComponent(PlayerComponent.class);
-        numberOfShots = playerEntity.getComponent(NumberOfShotsComponent.class);
     }
 
     @Override
@@ -51,7 +47,11 @@ public class SinglePlayerState implements State {
 
     @Override
     public int getNumberOfShots() {
-        return numberOfShots.numberOfShots;
+        return numberOfShots;
+    }
+
+    public void incNumberOfShots() {
+        numberOfShots++;
     }
 }
 

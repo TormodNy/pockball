@@ -9,4 +9,6 @@ public interface State {
     public Entity[] getPlayers();
 
     public int getNumberOfShots();
+
+    void incNumberOfShots();
 }

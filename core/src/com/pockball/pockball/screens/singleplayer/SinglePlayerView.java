@@ -18,6 +18,7 @@ public class SinglePlayerView implements Screen {
     private final AssetsController assetsController;
     private Stage stage;
     private SinglePlayerController singlePlayerController;
+    private Label numberOfShots;
 
     public SinglePlayerView(SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
@@ -26,6 +27,9 @@ public class SinglePlayerView implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
+
+        numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
+
     }
 
     @Override
@@ -33,9 +37,6 @@ public class SinglePlayerView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
-        int shots = singlePlayerController.getScore();
-        Label numberOfShots = new Label("Shots: " + shots, assetsController.getSkin());
 
         table.add(numberOfShots);
         table.top();
@@ -45,6 +46,8 @@ public class SinglePlayerView implements Screen {
     @Override
     public void render(float delta) {
         Engine.getInstance().update(delta);
+
+        numberOfShots.setText("Shots: " + singlePlayerController.getNumberOfShots());
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
@@ -72,6 +75,6 @@ public class SinglePlayerView implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
