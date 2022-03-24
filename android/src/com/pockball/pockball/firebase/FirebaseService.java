@@ -155,13 +155,13 @@ public class FirebaseService implements FirebaseInterface {
     @Override
     public void listenToAvailableRooms() {
         // stores the reference in instance variable, to be able to unsubscribe from listener when needed
-        roomsRef = firebaseDatabase.getReference().child("test");
+        roomsRef = db.getReference().child("test");
 
         // stores the listener in instance variable, to be able to unsubscribe from listener when needed
         roomsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<RoomModel> rooms = new ArrayList<RoomModel>();
+                List<RoomModel> rooms = new ArrayList<>();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     RoomModel room = snap.getValue(RoomModel.class);
                     rooms.add(room);
@@ -175,6 +175,7 @@ public class FirebaseService implements FirebaseInterface {
                 System.out.println(error);
             }
         };
+
         roomsRef.addValueEventListener(roomsListener);
     }
 
@@ -185,7 +186,7 @@ public class FirebaseService implements FirebaseInterface {
 
 
     public void writeToDb(String key, String value) {
-        databaseReference.child("test").child(key).setValue(value);
+        ref.child("test").child(key).setValue(value);
     }
 }
 

@@ -79,7 +79,7 @@ public class JoinGameView implements Screen {
                 joinButton.addListener(new EventListener() {
                     @Override
                     public boolean handle(Event event) {
-                        controller.joinGame(room.roomId);
+                        controller.joinGame(room);
                         return true;
 
                     }

@@ -70,11 +70,6 @@ public class ScreenController implements Disposable {
                     CreateGameRoomView createGameRoomView = new CreateGameRoomView(createGameRoomController);
                     this.setScreen(createGameRoomView);
                     break;
-                case CREATE_GAME:
-                    CreateGameController createGameController = CreateGameController.getInstance();
-                    CreateGameView createGameView = new CreateGameView(createGameController);
-                    this.setScreen(createGameView);
-                    break;
             }
         });
     }

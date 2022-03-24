@@ -26,6 +26,7 @@ public class MultiPlayerState implements State {
 
     // TODO: Remove event listener
 
+
     public MultiPlayerState(RoomModel roomModel, boolean isHost) {
         this.roomModel = roomModel;
         this.isHost = isHost;
