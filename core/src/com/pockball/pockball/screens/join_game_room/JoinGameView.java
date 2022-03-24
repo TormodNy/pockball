@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -15,6 +17,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.db_models.RoomModel;
+import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.Util;
 
 import java.util.List;
 
@@ -71,13 +76,16 @@ public class JoinGameView implements Screen {
                 activeGameTable.add(joinButton);
                 activeGameTable.row().pad(10);
 
-                joinButton.addListener(new ChangeListener() {
+                joinButton.addListener(new EventListener() {
                     @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        // Join a game
+                    public boolean handle(Event event) {
                         controller.joinGame(room.roomId);
+                        return true;
+
                     }
                 });
+
+
             }
         }
 
