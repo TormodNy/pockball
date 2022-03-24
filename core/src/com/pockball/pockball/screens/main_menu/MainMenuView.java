@@ -15,6 +15,7 @@ import com.pockball.pockball.PockBall;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.Util;
 
 public class MainMenuView implements Screen {
 
@@ -52,18 +53,11 @@ public class MainMenuView implements Screen {
         table.row().pad(20, 0, 0, 0);
         table.add(settingsButton).uniformX();
 
-        addPathToButton(singleplayerButton, ScreenModel.Screen.SINGLEPLAYER);
-        addPathToButton(multiplayerButton, ScreenModel.Screen.MULTIPLAYER);
+        Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
     }
 
-    private void addPathToButton(TextButton button, ScreenModel.Screen screen) {
-        button.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenController.changeScreen(screen);
-            }
-        });
-    }
 
     @Override
     public void render(float delta) {

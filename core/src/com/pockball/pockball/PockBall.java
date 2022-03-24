@@ -22,7 +22,7 @@ public class PockBall extends Game {
 
 	@Override
 	public void create () {
-		this.screenController.changeScreen(ScreenModel.Screen.MAINMENU);
+		this.screenController.changeScreen(ScreenModel.Screen.MAINMENU, null);
 
 		camera = new OrthographicCamera(WIDTH, HEIGHT);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
