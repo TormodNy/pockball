@@ -11,7 +11,6 @@ import com.pockball.pockball.screens.ScreenController;
 public class SinglePlayerController {
     private static SinglePlayerController singlePlayerControllerInstance = null;
     private ScreenController screenController;
-    private int score = 0;
 
     private SinglePlayerController() {
         // Set single player state
@@ -33,5 +32,8 @@ public class SinglePlayerController {
         return Context.getInstance().getState().getNumberOfShots();
     }
 
+    public void reset() {
+        Context.getInstance().getState().reset();
+    }
 
 }

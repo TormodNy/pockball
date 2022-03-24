@@ -67,13 +67,16 @@ public class BallSystem extends IteratingSystem {
                 System.out.println(direction + ", " + ball.power);
                 ball.power.clamp(0.1f, 3f);
             } else if (justTouched) {
-                // Shoot ball in direction with power
-                float force = 1500;
-                physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
-                justTouched = false;
+                if (ball.power.len() > 0) {
 
-                // Increments number of shots for singleplayer
-                Context.getInstance().getState().incNumberOfShots();
+                    // Shoot ball in direction with power
+                    float force = 1500;
+                    physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
+                    justTouched = false;
+
+                    // Increments number of shots for singleplayer
+                    Context.getInstance().getState().incNumberOfShots();
+                }
             }
         }
     }

@@ -53,6 +53,11 @@ public class SinglePlayerState implements State {
     public void incNumberOfShots() {
         numberOfShots++;
     }
+
+    @Override
+    public void reset() {
+        numberOfShots = 0;
+    }
 }
 
 

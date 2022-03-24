@@ -38,6 +38,7 @@ public class ScreenController implements Disposable {
                     }
                     else {
                         SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
+                        singlePlayerController.reset();
                         SinglePlayerView singlePlayerView = new SinglePlayerView(this, singlePlayerController);
                         this.setScreen(singlePlayerView);
                     }

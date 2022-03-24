@@ -11,4 +11,6 @@ public interface State {
     public int getNumberOfShots();
 
     void incNumberOfShots();
+
+    void reset();
 }
