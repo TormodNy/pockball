@@ -44,20 +44,21 @@ public class SinglePlayerView implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        Table tableScore = new Table();
+        tableScore.setFillParent(true);
+        stage.addActor(tableScore);
+        tableScore.add(numberOfShots);
+        tableScore.top();
+        tableScore.padTop(5);
 
-        table.add(numberOfShots);
-        table.top();
-      
+        Table tablePause = new Table();
+        tablePause.setFillParent(true);
+        stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("PAUSE", assetsController.getSkin());
-
-        table.top().right();
-        table.padTop(5);
-        table.padRight(5);
-        table.add(pauseButton);
-
+        tablePause.top().right();
+        tablePause.padTop(5);
+        tablePause.padRight(5);
+        tablePause.add(pauseButton);
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLEPLAYER);
     }
 
