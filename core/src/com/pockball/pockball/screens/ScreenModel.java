@@ -7,6 +7,7 @@ public class ScreenModel {
         MULTIPLAYER,
         MAINMENU,
         SETTINGS,
-        JOINGAME
+        JOINGAME,
+        CREATE_GAME
     }
 }

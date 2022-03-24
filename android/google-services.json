@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "275471197306",
+    "firebase_url": "https://pockball-a5e58-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "pockball-a5e58",
+    "storage_bucket": "pockball-a5e58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275471197306:android:4abc08b110aa22d65307c3",
+        "android_client_info": {
+          "package_name": "com.pockball.pockball"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275471197306-cu72bbnp49d1daerpjteklah8h3ft5j3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbZjX7qqDU5ByLDWFZwI1ANBwB9s6EzmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275471197306-cu72bbnp49d1daerpjteklah8h3ft5j3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
