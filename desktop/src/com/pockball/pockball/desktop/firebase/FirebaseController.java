@@ -12,4 +12,14 @@ public class FirebaseController implements FirebaseInterface {
     public void listenToRoomChanges(String target) {
 
     }
+
+    @Override
+    public void listenToAvailableRooms() {
+
+    }
+
+    @Override
+    public void stopListenToAvailableRooms() {
+
+    }
 }

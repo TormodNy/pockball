@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "com.pockball.pockball"
-        minSdkVersion 14
+        minSdkVersion 29
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -96,6 +96,7 @@ dependencies {
     // Add the dependencies for the desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google:google:5'
 }
 
 eclipse.project.name = appName + "-android"

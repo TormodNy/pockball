@@ -49,7 +49,7 @@ public class ScreenController implements Disposable {
                     MultiplayerView multiplayerView = new MultiplayerView(multiplayerController);
                     this.setScreen(multiplayerView);
                     break;
-                case JOINGAME:
+                case JOIN_GAME:
                     JoinGameController joinGameController = JoinGameController.getInstance();
                     JoinGameView joinGameView = new JoinGameView(joinGameController);
                     this.setScreen(joinGameView);

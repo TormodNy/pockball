@@ -1,6 +1,6 @@
 package com.pockball.pockball.screens.create_game;
 
-import com.pockball.pockball.db_models.GameModel;
+import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.screens.ScreenController;
 
@@ -34,11 +34,11 @@ public class CreateGameController {
         players.add("player1");
         players.add("player2");
 
-        GameModel gameModel = new GameModel("gameId1", players);
-        firebaseController.writeToDb("newRoom", gameModel);
+        //GameModel gameModel = new GameModel("gameId1", players);
+        //firebaseController.writeToDb("newRoom", gameModel);
     }
 
-    public void fireChangeInRoom(GameModel gameModel) {
-        System.out.println("fireChangeInRoom() -> " + gameModel.gameId);
+    public void fireChangeInRoom(RoomModel roomModel) {
+        //System.out.println("fireChangeInRoom() -> " + gameModel.gameId);
     }
 }
