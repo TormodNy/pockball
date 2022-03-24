@@ -3,14 +3,14 @@ package com.pockball.pockball.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
+import com.pockball.pockball.screens.join_game_room.JoinGameController;
+import com.pockball.pockball.screens.join_game_room.JoinGameView;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
-
-import java.lang.invoke.MutableCallSite;
 
 public class ScreenController implements Disposable {
 
@@ -46,6 +46,11 @@ public class ScreenController implements Disposable {
                     MultiplayerController multiplayerController = MultiplayerController.getInstance();
                     MultiplayerView multiplayerView = new MultiplayerView(multiplayerController);
                     this.setScreen(multiplayerView);
+                    break;
+                case JOINGAME:
+                    JoinGameController joinGameController = JoinGameController.getInstance();
+                    JoinGameView joinGameView = new JoinGameView(joinGameController);
+                    this.setScreen(joinGameView);
                     break;
                 case MAINMENU:
                     MainMenuView mainMenuView = new MainMenuView(this);
