@@ -28,7 +28,7 @@ public class CreateGameRoomController {
     protected void testDb() {
         createRoom();
         firebaseController.listenToClientsInGame(roomModel.roomId);
-        joinRoom();
+       // joinRoom();
     }
 
     public void createRoom() {

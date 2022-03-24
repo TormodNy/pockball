@@ -1,16 +1,26 @@
 package com.pockball.pockball.game_states;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.db_models.ShotModel;
+import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.ecs.components.BallComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
+import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.firebase.FirebaseController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 public class MultiPlayerState implements State {
 
@@ -141,15 +151,45 @@ public class MultiPlayerState implements State {
     @Override
     public void shoot(Vector2 force) {
         ShotModel shot = new ShotModel(force);
-        firebaseController.appendToArrayInDb(
-                roomModel.roomId + "." + myKey + ".shots", shot
+        PlayerModel myPlayer = (isHost ? roomModel.client : roomModel.host);
+        if (myPlayer.shots == null) myPlayer.shots = new ArrayList<>();
+        myPlayer.shots.add(shot);
+
+        firebaseController.writeToDb(
+                roomModel.roomId + "." + myKey + ".shots",
+                (isHost ? roomModel.client : roomModel.host).shots
         );
     }
 
     @Override
     public void fireOpponentShotsChange(List<ShotModel> shotModelList) {
         System.out.println("fireOpponentShotsChange() -> " + shotModelList);
-        (isHost ? roomModel.client : roomModel.host).shots = shotModelList;
+        //(isHost ? roomModel.client : roomModel.host).shots = shotModelList;
+
+        Vector2 force = shotModelList.get(shotModelList.size() - 1).force;
+
+        // Get white ball entity
+        ImmutableArray<Entity> balls = Engine.getInstance().getEntitiesFor(
+                Family.all(BallComponent.class, PhysicsBodyComponent.class).get()
+        );
+
+        Entity whiteBall = null;
+
+        for (Entity ballEntity : balls) {
+            ComponentMapper<BallComponent> ballMapper = ComponentMapper.getFor(BallComponent.class);
+            BallComponent ballComponent = ballMapper.get(ballEntity);
+            if (ballComponent.type.equals(BallType.WHITE)) {
+                whiteBall = ballEntity;
+                break;
+            }
+        }
+
+        if (whiteBall == null) return;
+
+
+        BallSystem.getInstance().shootBallWithForce(whiteBall, force, false);
+
+
     }
 
     @Override

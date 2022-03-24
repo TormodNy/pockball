@@ -105,7 +105,7 @@ public class FirebaseService implements FirebaseInterface {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<ShotModel> shotModels = new ArrayList<>();
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
-                    ShotModel shotModel = snapshot.getValue(ShotModel.class);
+                    ShotModel shotModel = childSnap.getValue(ShotModel.class);
                     shotModels.add(shotModel);
                 }
                 Context.getInstance().getState().fireOpponentShotsChange(shotModels);
