@@ -38,6 +38,11 @@ public class SinglePlayerState implements State {
                     System.out.println("Player lost! Black ball into hole.");
                     break;
             }
+                else{
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+                    System.out.println("Player won");
+                    break;
+                }
 
 
             default:

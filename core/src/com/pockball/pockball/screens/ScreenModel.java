@@ -8,5 +8,6 @@ public class ScreenModel {
         MAINMENU,
         SETTINGS,
         GAMEOVER,
+        WINNER,
     }
 }
