@@ -6,6 +6,7 @@ public class ScreenModel {
         SINGLEPLAYER,
         MULTIPLAYER,
         MAINMENU,
-        SETTINGS
+        SETTINGS,
+        GAMEOVER,
     }
 }

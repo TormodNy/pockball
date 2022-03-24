@@ -5,6 +5,9 @@ import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.gameover.GameoverView;
 
 public class SinglePlayerState implements State {
 
@@ -25,12 +28,17 @@ public class SinglePlayerState implements State {
     public void ballIntoHole(BallType ballType) {
         switch (ballType) {
             case WHITE:
-                System.out.println("Next player! White ball into hole.");
+                System.out.println("Penalty point! White ball into hole.");
+                incNumberOfShots();
                 break;
 
             case BLACK:
-                System.out.println("Player lost! Black ball into hole.");
-                break;
+                if(score.balls < 15){
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
+                    System.out.println("Player lost! Black ball into hole.");
+                    break;
+            }
+
 
             default:
                 System.out.println(ballType.toString() + " ball into hole.");

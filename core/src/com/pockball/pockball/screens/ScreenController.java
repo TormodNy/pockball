@@ -3,6 +3,7 @@ package com.pockball.pockball.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
+import com.pockball.pockball.screens.gameover.GameoverView;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
@@ -59,6 +60,10 @@ public class ScreenController implements Disposable {
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
+                    break;
+                case GAMEOVER:
+                    GameoverView gameoverView = new GameoverView(this, ScreenModel.Screen.SINGLEPLAYER);
+                    this.setScreen(gameoverView);
                     break;
             }
         });
