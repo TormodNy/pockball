@@ -15,7 +15,6 @@ import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
 
 public class PlaceEntitySystem extends IteratingSystem {
-    private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
     private final ComponentMapper<BallComponent> ballMapper;
@@ -24,7 +23,6 @@ public class PlaceEntitySystem extends IteratingSystem {
     public PlaceEntitySystem() {
         super(Family.all(PlaceEntityComponent.class).get());
 
-        positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
         ballMapper = ComponentMapper.getFor(BallComponent.class);
@@ -33,7 +31,6 @@ public class PlaceEntitySystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        PositionComponent position = positionMapper.get(entity);
         PhysicsBodyComponent physicsBody = physicsBodyMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);

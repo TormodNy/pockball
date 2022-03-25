@@ -1,26 +1,20 @@
 package com.pockball.pockball.game_states;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
+import com.pockball.pockball.db_models.EventModel;
+import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.RoomModel;
-import com.pockball.pockball.db_models.ShotModel;
+import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.BallComponent;
-import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
-import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.firebase.FirebaseController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 public class MultiPlayerState implements State {
 
@@ -47,9 +41,13 @@ public class MultiPlayerState implements State {
 
         firebaseController = FirebaseController.getInstance();
 
+        if (!this.isHost) {
+            firebaseController.writeToDb(roomModel.roomId + ".client.playerId", "tormod");
+        }
+
         // Listen to opponent shots
         firebaseController.listenToShotChanges(roomModel.roomId +
-                "." + opponentKey + ".shots");
+                "." + opponentKey + ".events");
 
         // Create player entities
         myPlayer = EntityFactory.getInstance().createPlayer("player1");
@@ -150,28 +148,37 @@ public class MultiPlayerState implements State {
     }
 
     @Override
-    public void shoot(Vector2 force) {
-        ShotModel shot = new ShotModel(force);
+    public void addEvent(EventModel event) {
         PlayerModel myPlayer = (isHost ? roomModel.client : roomModel.host);
-        if (myPlayer.shots == null) myPlayer.shots = new ArrayList<>();
-        myPlayer.shots.add(shot);
+        if (myPlayer.events == null) myPlayer.events = new ArrayList<>();
+        myPlayer.events.add(event);
 
         firebaseController.writeToDb(
-                roomModel.roomId + "." + myKey + ".shots",
-                (isHost ? roomModel.client : roomModel.host).shots
+                roomModel.roomId + "." + myKey + ".events",
+                (isHost ? roomModel.client : roomModel.host).events
         );
     }
 
     @Override
-    public void fireOpponentShotsChange(List<ShotModel> shotModelList) {
-        System.out.println("fireOpponentShotsChange() -> " + shotModelList);
+    public void fireOpponentEventChange(List<EventModel> eventModelList) {
+        System.out.println("fireOpponentShotsChange() -> " + eventModelList);
         //(isHost ? roomModel.client : roomModel.host).shots = shotModelList;
 
-        if (shotModelList.size() == 0) return;
+        if (eventModelList.size() == 0) return;
 
-        Vector2 force = shotModelList.get(shotModelList.size() - 1).force;
+        EventModel event = eventModelList.get(eventModelList.size() - 1);
 
-        Engine.getInstance().shootBallWithForce(force, false);
+        switch (event.type) {
+            case "shot":
+                ShotEvent shot = (ShotEvent) event;
+                Vector2 force = new Vector2(shot.x, shot.y);
+                Engine.getInstance().shootBallWithForce(force, false);
+                break;
+            case "placeball":
+                PlaceBallEvent placeBall = (PlaceBallEvent) event;
+                Vector2 position = new Vector2(placeBall.x, placeBall.y);
+                Engine.getInstance().placeWhiteBall(position, false);
+        }
     }
 
     @Override

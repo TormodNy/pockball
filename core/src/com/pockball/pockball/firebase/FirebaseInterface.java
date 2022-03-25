@@ -1,14 +1,13 @@
 package com.pockball.pockball.firebase;
 
-import com.badlogic.gdx.math.Vector2;
-import com.pockball.pockball.db_models.ShotModel;
+import com.pockball.pockball.db_models.ShotEvent;
 
 public interface FirebaseInterface {
     // Interacting with platform specific code as suggested in LibGDX docs
     // https://libgdx.com/wiki/app/interfacing-with-platform-specific-code
 
     public void writeToDb(String target, Object value);
-    public void addNewShot(String gameId, ShotModel shotModel);
+    public void addNewShot(String gameId, ShotEvent shotEvent);
     public void appendToArrayInDb(String target, Object value);
 
     public void listenToClientsInGame(String target);

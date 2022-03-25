@@ -10,7 +10,7 @@ public class PlayerModel {
     public String playerId;
     public BallType ballType;
     public List<String> score;
-    public List<ShotModel> shots;
+    public List<EventModel> events;
 
 
     public PlayerModel() {
@@ -21,7 +21,7 @@ public class PlayerModel {
     public PlayerModel(String playerId) {
         this.playerId = playerId;
         this.score = new ArrayList<>();
-        this.shots = new ArrayList<>();
+        this.events = new ArrayList<>();
     }
 
     public void setBallType(BallType ballType) {
@@ -34,9 +34,9 @@ public class PlayerModel {
         score.add(ballId);
     }
 
-    public void addShot(ShotModel shot) {
-        if (shots == null) shots = new ArrayList<>();
-        shots.add(shot);
+    public void addShot(ShotEvent shot) {
+        if (events == null) events = new ArrayList<>();
+        events.add(shot);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PlayerModel {
                 "playerId='" + playerId + '\'' +
                 ", ballType=" + ballType +
                 ", score=" + score +
-                ", shots=" + shots +
+                ", events=" + events +
                 '}';
     }
 }

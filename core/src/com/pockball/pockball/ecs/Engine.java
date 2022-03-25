@@ -3,15 +3,22 @@ package com.pockball.pockball.ecs;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.pockball.pockball.PockBall;
+import com.pockball.pockball.db_models.PlaceBallEvent;
+import com.pockball.pockball.db_models.ShotEvent;
+import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
@@ -55,6 +62,9 @@ public class Engine extends PooledEngine {
     };
     private Entity whiteBallEntity;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
+    private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
+    private final ComponentMapper<BallComponent> ballMapper;
+    private final ComponentMapper<SpriteComponent> spriteMapper;
 
 
     private final Vector2[] holeLocations = {
@@ -75,6 +85,9 @@ public class Engine extends PooledEngine {
     private Engine() {
         entityFactory = EntityFactory.getInstance();
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
+        placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
+        ballMapper = ComponentMapper.getFor(BallComponent.class);
+        spriteMapper = ComponentMapper.getFor(SpriteComponent.class);
     }
 
     public static Engine getInstance() {
@@ -250,10 +263,22 @@ public class Engine extends PooledEngine {
             Vector2 force,
             boolean changeState
     ) {
-        if (changeState) Context.getInstance().getState().shoot(force);
+        if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);
 
         physics.body.applyForceToCenter(force, true);
+    }
+
+    public void placeWhiteBall(Vector2 position, boolean changeState) {
+        if (changeState) Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
+        PhysicsBodyComponent physicsBody = physicsBodyMapper.get(whiteBallEntity);
+        PlaceEntityComponent placeEntity = placeEntityMapper.get(whiteBallEntity);
+        BallComponent ball = ballMapper.get(whiteBallEntity);
+        SpriteComponent sprite = spriteMapper.get(whiteBallEntity);
+
+        placeEntity.placeable = false;
+        physicsBody.body.setTransform(position.x - ball.radius, position.y - ball.radius, 0);
+        sprite.sprite.setAlpha(1);
     }
 
     public Entity getWhiteBallEntity() {

@@ -1,11 +1,8 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.pockball.pockball.db_models.RoomModel;
-import com.pockball.pockball.db_models.ShotModel;
-import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
@@ -57,7 +54,7 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void fireOpponentShotsChange(List<ShotModel> shotModelList) {
+    public void fireOpponentEventChange(List<EventModel> eventModelList) {
 
     }
 

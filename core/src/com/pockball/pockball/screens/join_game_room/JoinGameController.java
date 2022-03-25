@@ -1,5 +1,6 @@
 package com.pockball.pockball.screens.join_game_room;
 
+import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
@@ -48,7 +49,6 @@ public class JoinGameController {
         System.out.println("Joined game with roomID: " + roomModel);
 
         // Join room in db
-        firebaseController.writeToDb(roomModel.roomId, roomModel);
         Context.getInstance().setState(new MultiPlayerState(roomModel, false));
         ScreenController.getInstance().changeScreen(
                 ScreenModel.Screen.MULTIPLAYER,

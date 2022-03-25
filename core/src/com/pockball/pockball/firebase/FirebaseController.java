@@ -1,6 +1,6 @@
 package com.pockball.pockball.firebase;
 
-import com.pockball.pockball.db_models.ShotModel;
+import com.pockball.pockball.db_models.ShotEvent;
 
 public class FirebaseController implements FirebaseInterface {
 
@@ -38,8 +38,8 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void addNewShot(String gameId, ShotModel shotModel) {
-        firebaseInterface.addNewShot(gameId, shotModel);
+    public void addNewShot(String gameId, ShotEvent shotEvent) {
+        firebaseInterface.addNewShot(gameId, shotEvent);
     }
 
     @Override

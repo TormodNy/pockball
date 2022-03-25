@@ -7,19 +7,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.screens.join_game_room.JoinGameController;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.pockball.pockball.db_models.PlayerModel;
-import com.pockball.pockball.db_models.PlayerModel;
-import com.pockball.pockball.db_models.ShotModel;
+import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FirebaseService implements FirebaseInterface {
     private DatabaseReference ref;
@@ -84,7 +81,7 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     @Override
-    public void addNewShot(String gameId, ShotModel shotModel) {
+    public void addNewShot(String gameId, ShotEvent shotEvent) {
     }
 
     @Override
@@ -103,12 +100,12 @@ public class FirebaseService implements FirebaseInterface {
         shotsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<ShotModel> shotModels = new ArrayList<>();
+                List<EventModel> events = new ArrayList<>();
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
-                    ShotModel shotModel = childSnap.getValue(ShotModel.class);
-                    shotModels.add(shotModel);
+                    EventModel event = childSnap.getValue(EventModel.class);
+                    events.add(event);
                 }
-                Context.getInstance().getState().fireOpponentShotsChange(shotModels);
+                Context.getInstance().getState().fireOpponentEventChange(events);
             }
 
             @Override
