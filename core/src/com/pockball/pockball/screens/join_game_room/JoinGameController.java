@@ -46,6 +46,9 @@ public class JoinGameController {
 
     public void joinGame (RoomModel roomModel) {
         System.out.println("Joined game with roomID: " + roomModel);
+
+        // Join room in db
+        firebaseController.writeToDb(roomModel.roomId, roomModel);
         Context.getInstance().setState(new MultiPlayerState(roomModel, false));
         ScreenController.getInstance().changeScreen(
                 ScreenModel.Screen.MULTIPLAYER,

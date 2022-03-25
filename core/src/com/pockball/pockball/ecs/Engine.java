@@ -1,5 +1,6 @@
 package com.pockball.pockball.ecs;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.pockball.pockball.ecs.components.DirectionComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
@@ -51,6 +53,9 @@ public class Engine extends PooledEngine {
         },
         // Add more positions for different game modes.
     };
+    private Entity whiteBallEntity;
+    private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
+
 
     private final Vector2[] holeLocations = {
             // Upper left
@@ -69,6 +74,7 @@ public class Engine extends PooledEngine {
 
     private Engine() {
         entityFactory = EntityFactory.getInstance();
+        physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
     }
 
     public static Engine getInstance() {
@@ -117,12 +123,17 @@ public class Engine extends PooledEngine {
         // Place balls on ta
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
+
+            // White ball
             if (i == 0) {
+                // Create cue
                 engineInstance.addEntity(entityFactory.createCue(ball));
+
+                // Save entity
+                whiteBallEntity = ball;
             }
             engineInstance.addEntity(ball);
         }
-
     }
 
     private void createWorld() {
@@ -233,5 +244,19 @@ public class Engine extends PooledEngine {
             Entity hole = entityFactory.createHole(holeLocations[i].x, holeLocations[i].y, i);
             engineInstance.addEntity(hole);
         }
+    }
+
+    public void shootBallWithForce(
+            Vector2 force,
+            boolean changeState
+    ) {
+        if (changeState) Context.getInstance().getState().shoot(force);
+        PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);
+
+        physics.body.applyForceToCenter(force, true);
+    }
+
+    public Entity getWhiteBallEntity() {
+        return whiteBallEntity;
     }
 }

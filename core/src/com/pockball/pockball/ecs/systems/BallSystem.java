@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
+import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
@@ -23,7 +24,6 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
     private boolean justTouched = false;
-    private static BallSystem ballSystemInstance = null;
 
     public BallSystem() {
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
@@ -32,16 +32,8 @@ public class BallSystem extends IteratingSystem {
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
         ballMapper = ComponentMapper.getFor(BallComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
-
-        ballSystemInstance = this;
     }
 
-    public static BallSystem getInstance() {
-        if (ballSystemInstance == null) {
-            ballSystemInstance = new BallSystem();
-        }
-        return ballSystemInstance;
-    }
 
     @Override
     public void processEntity(Entity entity, float deltaTime) {
@@ -81,20 +73,9 @@ public class BallSystem extends IteratingSystem {
                 float force = 1500;
                 Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
 
-                shootBallWithForce(entity, directionWithForce, true);
+                Engine.getInstance().shootBallWithForce(directionWithForce, true);
                 justTouched = false;
             }
         }
-    }
-
-    public void shootBallWithForce(
-            Entity ballEntity,
-            Vector2 force,
-            boolean changeState
-    ) {
-        if (changeState) Context.getInstance().getState().shoot(force);
-        PhysicsBodyComponent physics = physicsBodyMapper.get(ballEntity);
-
-        physics.body.applyForceToCenter(force, true);
     }
 }

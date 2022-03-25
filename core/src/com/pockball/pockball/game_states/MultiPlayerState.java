@@ -47,6 +47,7 @@ public class MultiPlayerState implements State {
 
         firebaseController = FirebaseController.getInstance();
 
+        // Listen to opponent shots
         firebaseController.listenToShotChanges(roomModel.roomId +
                 "." + opponentKey + ".shots");
 
@@ -166,30 +167,11 @@ public class MultiPlayerState implements State {
         System.out.println("fireOpponentShotsChange() -> " + shotModelList);
         //(isHost ? roomModel.client : roomModel.host).shots = shotModelList;
 
+        if (shotModelList.size() == 0) return;
+
         Vector2 force = shotModelList.get(shotModelList.size() - 1).force;
 
-        // Get white ball entity
-        ImmutableArray<Entity> balls = Engine.getInstance().getEntitiesFor(
-                Family.all(BallComponent.class, PhysicsBodyComponent.class).get()
-        );
-
-        Entity whiteBall = null;
-
-        for (Entity ballEntity : balls) {
-            ComponentMapper<BallComponent> ballMapper = ComponentMapper.getFor(BallComponent.class);
-            BallComponent ballComponent = ballMapper.get(ballEntity);
-            if (ballComponent.type.equals(BallType.WHITE)) {
-                whiteBall = ballEntity;
-                break;
-            }
-        }
-
-        if (whiteBall == null) return;
-
-
-        BallSystem.getInstance().shootBallWithForce(whiteBall, force, false);
-
-
+        Engine.getInstance().shootBallWithForce(force, false);
     }
 
     @Override
