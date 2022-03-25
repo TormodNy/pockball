@@ -33,16 +33,15 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if(score.balls < 15){
+                if (score.balls < 14) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player lost! Black ball into hole.");
-                    break;
-            }
-                else{
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
-                    System.out.println("Player won");
-                    break;
                 }
+                else {
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+                    System.out.println("Player won!");
+                }
+                break;
 
 
             default:
