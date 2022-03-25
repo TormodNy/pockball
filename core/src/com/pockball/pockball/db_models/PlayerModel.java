@@ -11,6 +11,7 @@ public class PlayerModel {
     public BallType ballType;
     public List<String> score;
     public List<EventModel> events;
+    // TODO: Ready
 
 
     public PlayerModel() {

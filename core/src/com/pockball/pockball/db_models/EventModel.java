@@ -1,5 +1,8 @@
 package com.pockball.pockball.db_models;
 
-public abstract class EventModel {
+/**
+ * Cannot be abstract due to deserializing
+ */
+public class EventModel {
     public String type;
 }

@@ -46,7 +46,7 @@ public class MultiPlayerState implements State {
         }
 
         // Listen to opponent shots
-        firebaseController.listenToShotChanges(roomModel.roomId +
+        firebaseController.listenToPlayerEvents(roomModel.roomId +
                 "." + opponentKey + ".events");
 
         // Create player entities

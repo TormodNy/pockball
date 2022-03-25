@@ -8,11 +8,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pockball.pockball.db_models.EventModel;
+import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.screens.join_game_room.JoinGameController;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.game_states.Context;
@@ -92,7 +94,7 @@ public class FirebaseService implements FirebaseInterface {
 
 
     @Override
-    public void listenToShotChanges(String target) {
+    public void listenToPlayerEvents(String target) {
         // stores the reference in instance variable, to be able to unsubscribe from listener when needed
         shotsRef = getRefFromNestedTarget(target);
 
@@ -103,6 +105,16 @@ public class FirebaseService implements FirebaseInterface {
                 List<EventModel> events = new ArrayList<>();
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
                     EventModel event = childSnap.getValue(EventModel.class);
+
+                    switch (event.type) {
+                        case "shot":
+                            event = childSnap.getValue(ShotEvent.class);
+                            break;
+                        case "placeball":
+                            event = childSnap.getValue(PlaceBallEvent.class);
+                            break;
+                    }
+
                     events.add(event);
                 }
                 Context.getInstance().getState().fireOpponentEventChange(events);

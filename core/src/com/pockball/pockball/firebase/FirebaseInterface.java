@@ -13,7 +13,7 @@ public interface FirebaseInterface {
     public void listenToClientsInGame(String target);
     public void stopListenToClientsInGame();
 
-    public void listenToShotChanges(String target);
+    public void listenToPlayerEvents(String target);
     public void stopListenToShotChanges(String target);
 
     public void listenToHostTurn(String target);

@@ -49,7 +49,7 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void shoot(Vector2 force) {
+    public void addEvent(EventModel event) {
 
     }
 

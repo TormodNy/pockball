@@ -31,7 +31,7 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void listenToShotChanges(String target) {
+    public void listenToPlayerEvents(String target) {
 
     }
 
