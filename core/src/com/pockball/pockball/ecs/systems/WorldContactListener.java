@@ -7,7 +7,9 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
@@ -20,43 +22,63 @@ import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
 
 
-public class HoleListenerSystem extends IteratingSystem implements ContactListener {
+public class WorldContactListener implements ContactListener {
 
-    private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
-    private final ComponentMapper<HoleComponent> holeMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
     private final ComponentMapper<SpriteComponent> spriteMapper;
 
-    public HoleListenerSystem() {
-        super(Family.all(HoleComponent.class).get());
+    private final SoundController soundController;
 
-        positionMapper = ComponentMapper.getFor(PositionComponent.class);
+    public WorldContactListener() {
+        soundController = SoundController.getInstance();
+
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
-        holeMapper = ComponentMapper.getFor(HoleComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
         spriteMapper = ComponentMapper.getFor(SpriteComponent.class);
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-
-    }
-
-    @Override
     public void beginContact(Contact contact) {
-        Entity ball;
-        if (contact.getFixtureB().isSensor()) { // fixture B er hullet
-            ball = (Entity) contact.getFixtureA().getBody().getUserData();
-            handleBallInHole(ball);
-        } else if (contact.getFixtureA().isSensor()) { // fixture A er hullet
-            ball = (Entity) contact.getFixtureB().getBody().getUserData();
-            handleBallInHole(ball);
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+
+        String typeA = (String) fixtureA.getUserData();
+        String typeB = (String) fixtureB.getUserData();
+
+        if ((typeA.equals("wall") && typeB.equals("ball"))
+                || (typeA.equals("ball") && typeB.equals("wall"))) {
+
+            if (typeA.equals("ball")) {
+                soundController.playSound("wallHit", fixtureA.getBody().getLinearVelocity().len() / 100);
+            } else {
+                soundController.playSound("wallHit", fixtureB.getBody().getLinearVelocity().len() / 100);
+            }
+
+        }
+
+        if (typeA.equals("ball") && typeB.equals("ball")) {
+            soundController.playSound("ballHit", fixtureA.getBody().getLinearVelocity().sub(fixtureB.getBody().getLinearVelocity()).len() / 100);
+        }
+
+        if ((typeA.equals("hole") && typeB.equals("ball"))
+                || (typeA.equals("ball") && typeB.equals("hole"))) {
+            soundController.playSound("holeHit", 0.25f);
+
+            Entity ball;
+            if (fixtureB.isSensor()) { // fixture B is the hole
+                ball = (Entity) fixtureA.getBody().getUserData();
+                handleBallInHole(ball);
+            } else if (fixtureA.isSensor()) { // fixture A is the hole
+                ball = (Entity) fixtureB.getBody().getUserData();
+                handleBallInHole(ball);
+            }
         }
     }
 
     private void handleBallInHole(Entity ball) {
         try {
+            System.out.println("Fuggedaboutit");
             BallType ballType = ball.getComponent(BallComponent.class).type;
 
             // Fire state change

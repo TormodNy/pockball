@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.BallComponent;
@@ -77,7 +78,8 @@ public class BallFactory {
         fixtureDef.density = 2f;
         fixtureDef.restitution = 0.825f;
         fixtureDef.friction = 0.3f;
-        physicsBody.body.createFixture(fixtureDef);
+        Fixture fixture = physicsBody.body.createFixture(fixtureDef);
+        fixture.setUserData("ball");
 
 
         newBall.add(position);
