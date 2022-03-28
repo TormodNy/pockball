@@ -2,6 +2,7 @@ package com.pockball.pockball.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.pockball.pockball.game_states.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,8 @@ public class SoundController {
     }
 
     public void playSound (String sound, float volume) {
-        soundLibrary.get(sound).play(volume);
+        float gameVolume = Context.getInstance().getState().getGameVolume();
+        System.out.println(gameVolume);
+        soundLibrary.get(sound).play(volume*gameVolume);
     }
 }

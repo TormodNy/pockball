@@ -6,6 +6,10 @@ import com.pockball.pockball.ecs.types.BallType;
 public interface State {
     public void ballIntoHole(BallType ball);
 
+    public void changeGameVolume(float gameVolume);
+
+    public float getGameVolume();
+
     public Entity[] getPlayers();
 
     public int getNumberOfShots();

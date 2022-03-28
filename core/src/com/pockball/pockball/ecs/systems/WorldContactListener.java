@@ -78,7 +78,6 @@ public class WorldContactListener implements ContactListener {
 
     private void handleBallInHole(Entity ball) {
         try {
-            System.out.println("Fuggedaboutit");
             BallType ballType = ball.getComponent(BallComponent.class).type;
 
             // Fire state change
