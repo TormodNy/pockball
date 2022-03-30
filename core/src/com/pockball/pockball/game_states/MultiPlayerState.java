@@ -15,6 +15,7 @@ public class MultiPlayerState implements State {
     Entity[] players = new Entity[2];
     private int currentPlayerIndex;
     private boolean firstBall;
+    private float gameVolume;
 
     public MultiPlayerState() {
         // Set up player 1 - TODO: most likely host player?
@@ -92,6 +93,16 @@ public class MultiPlayerState implements State {
     private int getNextIndex() {
         if (currentPlayerIndex == 0) return 1;
         return 0;
+    }
+
+    @Override
+    public void changeGameVolume(float gameVolume) {
+        this.gameVolume = gameVolume;
+    }
+
+    @Override
+    public float getGameVolume() {
+        return gameVolume;
     }
 
     private Entity getInactivePlayer() {

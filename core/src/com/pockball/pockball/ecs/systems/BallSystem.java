@@ -7,7 +7,12 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.pockball.pockball.PockBall;
+import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
@@ -21,11 +26,15 @@ public class BallSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
+    private final SoundController soundController;
+
     private boolean justTouched = false;
 
     public BallSystem() {
         // Må legge til NumberOfShotsComponent.class her, men da funker det heller ikke
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
+
+        soundController = SoundController.getInstance();
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
@@ -64,10 +73,9 @@ public class BallSystem extends IteratingSystem {
                 Vector2 direction = new Vector2(ball.dir);
                 Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
                 ball.power = inputInWorld.sub(origin).sub(direction);
-                System.out.println(direction + ", " + ball.power);
                 ball.power.clamp(0.1f, 3f);
             } else if (justTouched) {
-                if (ball.power.len() > 0) {
+                if (ball.power.len() <= 0) return;
 
                     // Shoot ball in direction with power
                     float force = 1500;
@@ -76,7 +84,10 @@ public class BallSystem extends IteratingSystem {
 
                     // Increments number of shots for singleplayer
                     Context.getInstance().getState().incNumberOfShots();
-                }
+                    
+                    // Play sound
+                    soundController.playSound("cueHit", ball.power.len() / 3);
+                
             }
         }
     }

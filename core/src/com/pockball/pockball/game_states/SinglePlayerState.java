@@ -15,11 +15,12 @@ public class SinglePlayerState implements State {
     private final PlayerComponent player;
     private final ScoreComponent score;
     private int numberOfShots = 0;
+    private float gameVolume;
 
     public SinglePlayerState() {
         // Set up player
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
-
+        gameVolume = 0;
         score = playerEntity.getComponent(ScoreComponent.class);
         player = playerEntity.getComponent(PlayerComponent.class);
     }
@@ -48,6 +49,16 @@ public class SinglePlayerState implements State {
                 System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
         }
+    }
+
+    @Override
+    public void changeGameVolume(float gameVolume) {
+        this.gameVolume = gameVolume;
+    }
+
+    @Override
+    public float getGameVolume() {
+        return gameVolume;
     }
 
     @Override
