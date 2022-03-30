@@ -3,12 +3,14 @@ package com.pockball.pockball.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
+import com.pockball.pockball.screens.gameover.GameoverView;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
+import com.pockball.pockball.screens.won.WinnerView;
 
 import java.lang.invoke.MutableCallSite;
 
@@ -38,6 +40,7 @@ public class ScreenController implements Disposable {
                     }
                     else {
                         SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
+                        singlePlayerController.reset();
                         SinglePlayerView singlePlayerView = new SinglePlayerView(this, singlePlayerController);
                         this.setScreen(singlePlayerView);
                     }
@@ -58,6 +61,14 @@ public class ScreenController implements Disposable {
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
+                    break;
+                case GAMEOVER:
+                    GameoverView gameoverView = new GameoverView(this, ScreenModel.Screen.SINGLEPLAYER);
+                    this.setScreen(gameoverView);
+                    break;
+                case WINNER:
+                    WinnerView winnerView = new WinnerView(this, ScreenModel.Screen.SINGLEPLAYER);
+                    this.setScreen(winnerView);
                     break;
             }
         });

@@ -21,6 +21,7 @@ public class PlayerFactory {
         ScoreComponent score = Engine.getInstance().createComponent(ScoreComponent.class);
         TimeoutComponent timeout = Engine.getInstance().createComponent(TimeoutComponent.class);
         PlayerComponent playerComponent = Engine.getInstance().createComponent(PlayerComponent.class);
+
         playerComponent.playerName = playerName;
 
         Entity player = Engine.getInstance().createEntity();

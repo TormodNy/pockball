@@ -3,11 +3,9 @@ package com.pockball.pockball.ecs.entities;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
@@ -16,7 +14,6 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.types.BallType;
 
 public class BallFactory {
@@ -39,10 +36,11 @@ public class BallFactory {
         SpriteComponent sprite = Engine.getInstance().createComponent(SpriteComponent.class);
         PlaceEntityComponent placeEntity = Engine.getInstance().createComponent(PlaceEntityComponent.class);
 
-
         position.position.set(x, y);
         size.width = ball.radius * 2;
         size.height = ball.radius * 2;
+
+        Entity newBall = Engine.getInstance().createEntity();
 
         if (ballID == 0) {
             ball.type = BallType.WHITE;
@@ -81,7 +79,7 @@ public class BallFactory {
         fixtureDef.friction = 0.3f;
         physicsBody.body.createFixture(fixtureDef);
 
-        Entity newBall = Engine.getInstance().createEntity();
+
         newBall.add(position);
         newBall.add(direction);
         newBall.add(size);

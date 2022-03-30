@@ -7,4 +7,10 @@ public interface State {
     public void ballIntoHole(BallType ball);
 
     public Entity[] getPlayers();
+
+    public int getNumberOfShots();
+
+    void incNumberOfShots();
+
+    void reset();
 }

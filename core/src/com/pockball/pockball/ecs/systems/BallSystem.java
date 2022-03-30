@@ -9,11 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
-import com.pockball.pockball.ecs.components.HoleComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
 
 public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -24,6 +24,7 @@ public class BallSystem extends IteratingSystem {
     private boolean justTouched = false;
 
     public BallSystem() {
+        // Må legge til NumberOfShotsComponent.class her, men da funker det heller ikke
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
 
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
@@ -66,10 +67,16 @@ public class BallSystem extends IteratingSystem {
                 System.out.println(direction + ", " + ball.power);
                 ball.power.clamp(0.1f, 3f);
             } else if (justTouched) {
-                // Shoot ball in direction with power
-                float force = 1500;
-                physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
-                justTouched = false;
+                if (ball.power.len() > 0) {
+
+                    // Shoot ball in direction with power
+                    float force = 1500;
+                    physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
+                    justTouched = false;
+
+                    // Increments number of shots for singleplayer
+                    Context.getInstance().getState().incNumberOfShots();
+                }
             }
         }
     }

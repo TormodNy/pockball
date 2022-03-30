@@ -6,6 +6,7 @@ import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
 
 
 public class SinglePlayerController {
@@ -25,6 +26,15 @@ public class SinglePlayerController {
     }
 
     public void checkGameOver() {
-
+        screenController.changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
     }
+
+    public int getNumberOfShots() {
+        return Context.getInstance().getState().getNumberOfShots();
+    }
+
+    public void reset() {
+        Context.getInstance().getState().reset();
+    }
+
 }

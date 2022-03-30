@@ -1,18 +1,20 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Interpolation;
-import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.gameover.GameoverView;
 
 public class SinglePlayerState implements State {
 
     private final Entity playerEntity;
     private final PlayerComponent player;
     private final ScoreComponent score;
+    private int numberOfShots = 0;
 
     public SinglePlayerState() {
         // Set up player
@@ -26,12 +28,21 @@ public class SinglePlayerState implements State {
     public void ballIntoHole(BallType ballType) {
         switch (ballType) {
             case WHITE:
-                System.out.println("Next player! White ball into hole.");
+                System.out.println("Penalty point! White ball into hole.");
+                incNumberOfShots();
                 break;
 
             case BLACK:
-                System.out.println("Player lost! Black ball into hole.");
+                if (score.balls < 14) {
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
+                    System.out.println("Player lost! Black ball into hole.");
+                }
+                else {
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+                    System.out.println("Player won!");
+                }
                 break;
+
 
             default:
                 System.out.println(ballType.toString() + " ball into hole.");
@@ -45,4 +56,20 @@ public class SinglePlayerState implements State {
         players[0] = playerEntity;
         return players;
     }
+
+    @Override
+    public int getNumberOfShots() {
+        return numberOfShots;
+    }
+
+    public void incNumberOfShots() {
+        numberOfShots++;
+    }
+
+    @Override
+    public void reset() {
+        numberOfShots = 0;
+    }
 }
+
+
