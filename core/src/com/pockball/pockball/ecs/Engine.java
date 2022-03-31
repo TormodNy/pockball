@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Engine extends PooledEngine {
+public class Engine extends com.badlogic.ashley.core.Engine {
     private static Engine engineInstance;
 
     private final EntityFactory entityFactory;
@@ -127,7 +127,6 @@ public class Engine extends PooledEngine {
     public void initializeEngine(int gameMode) {
         // Remove all entities
         engineInstance.removeAllEntities();
-        engineInstance.clearPools();
         balls.clear();
 
         createWorld();
