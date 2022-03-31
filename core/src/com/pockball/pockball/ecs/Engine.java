@@ -3,28 +3,23 @@ package com.pockball.pockball.ecs;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.ShotEvent;
+import com.pockball.pockball.ecs.components.BackdropComponent;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
-import com.badlogic.gdx.utils.Array;
-import com.pockball.pockball.PockBall;
-import com.pockball.pockball.ecs.components.BackdropComponent;
-import com.pockball.pockball.ecs.components.DirectionComponent;
-import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
@@ -32,12 +27,12 @@ import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BackdropSystem;
 import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.CueSystem;
-import com.pockball.pockball.ecs.systems.WorldContactListener;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.systems.PlayerSystem;
 import com.pockball.pockball.ecs.systems.PowerupSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
+import com.pockball.pockball.ecs.systems.WorldContactListener;
 import com.pockball.pockball.game_states.Context;
 
 import java.util.ArrayList;
@@ -154,6 +149,14 @@ public class Engine extends PooledEngine {
             engineInstance.addEntity(player);
         }
 
+        // Powerup backdrop
+        createBackdrop();
+
+        // Powerups
+        for (int i = 0; i < 0; i++) {
+            engineInstance.addEntity(entityFactory.createPowerup(0));
+
+        }
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
             balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
@@ -164,11 +167,6 @@ public class Engine extends PooledEngine {
             engineInstance.addEntity(balls.get(i));
         }
 
-        // Powerup backdrop
-        createBackdrop();
-
-        // Powerups
-        engineInstance.addEntity(entityFactory.createPowerup(0));
     }
 
     private void createWorld() {
