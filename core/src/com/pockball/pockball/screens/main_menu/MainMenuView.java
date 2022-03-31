@@ -45,12 +45,15 @@ public class MainMenuView implements Screen {
         TextButton singleplayerButton = new TextButton("SINGLEPLAYER", assetsController.getSkin());
         TextButton multiplayerButton = new TextButton("MULTIPLAYER", assetsController.getSkin());
         TextButton joinGameButton = new TextButton("JOIN GAME", assetsController.getSkin());
+        TextButton createGameButton = new TextButton("CREATE GAME", assetsController.getSkin());
         TextButton settingsButton = new TextButton("SETTINGS", assetsController.getSkin());
 
         table.row().padTop(50);
         table.add(singleplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(multiplayerButton).uniformX();
+        table.row().pad(20, 0, 0, 0);
+        table.add(createGameButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(joinGameButton).uniformX();
         table.row().pad(20, 0, 0, 0);
@@ -60,6 +63,7 @@ public class MainMenuView implements Screen {
         Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, joinGameButton, ScreenModel.Screen.JOIN_GAME, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, createGameButton, ScreenModel.Screen.CREATE_GAME, ScreenModel.Screen.MAINMENU);
     }
 
 

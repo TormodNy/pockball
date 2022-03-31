@@ -11,7 +11,7 @@ public class ShotEvent extends EventModel {
     }
 
     public ShotEvent(Vector2 force) {
-        this.type = "shot";
+        this.type = Type.SHOT;
         this.x = force.x;
         this.y = force.y;
     }

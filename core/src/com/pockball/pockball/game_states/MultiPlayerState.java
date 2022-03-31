@@ -169,12 +169,12 @@ public class MultiPlayerState implements State {
         EventModel event = eventModelList.get(eventModelList.size() - 1);
 
         switch (event.type) {
-            case "shot":
+            case SHOT:
                 ShotEvent shot = (ShotEvent) event;
                 Vector2 force = new Vector2(shot.x, shot.y);
                 Engine.getInstance().shootBallWithForce(force, false);
                 break;
-            case "placeball":
+            case PLACE_BALL:
                 PlaceBallEvent placeBall = (PlaceBallEvent) event;
                 Vector2 position = new Vector2(placeBall.x, placeBall.y);
                 Engine.getInstance().placeWhiteBall(position, false);

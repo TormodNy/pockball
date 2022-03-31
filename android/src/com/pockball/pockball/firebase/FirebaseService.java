@@ -107,10 +107,10 @@ public class FirebaseService implements FirebaseInterface {
                     EventModel event = childSnap.getValue(EventModel.class);
 
                     switch (event.type) {
-                        case "shot":
+                        case SHOT:
                             event = childSnap.getValue(ShotEvent.class);
                             break;
-                        case "placeball":
+                        case PLACE_BALL:
                             event = childSnap.getValue(PlaceBallEvent.class);
                             break;
                     }

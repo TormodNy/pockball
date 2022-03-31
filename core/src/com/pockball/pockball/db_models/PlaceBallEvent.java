@@ -11,7 +11,7 @@ public class PlaceBallEvent extends EventModel {
     }
 
     public PlaceBallEvent(Vector2 position) {
-        this.type = "placeball";
+        this.type = Type.PLACE_BALL;
         this.x = position.x;
         this.y = position.y;
     }
