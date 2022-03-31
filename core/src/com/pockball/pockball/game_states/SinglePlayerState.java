@@ -84,6 +84,11 @@ public class SinglePlayerState implements State {
     }
 
     @Override
+    public void fireOpponentIsIdle() {
+
+    }
+
+    @Override
     public void setHostTurn(boolean hostTurn) {
     }
 
