@@ -24,10 +24,12 @@ public class SinglePlayerView implements Screen {
     private SinglePlayerController singlePlayerController;
     private Label numberOfShots;
     private ScreenController screenController;
+    float fontScaler;
 
 
     public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
+        fontScaler = Gdx.graphics.getHeight()*(3f/1000f);
         Engine.getInstance().initializeEngine(0);
 
         stage = new Stage(new ScreenViewport());
@@ -35,7 +37,7 @@ public class SinglePlayerView implements Screen {
         this.assetsController = AssetsController.getInstance();
 
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
-
+        numberOfShots.setFontScale(fontScaler);
         this.screenController = screenController;
 
     }
@@ -55,6 +57,7 @@ public class SinglePlayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("PAUSE", assetsController.getSkin());
+        pauseButton.getLabel().setFontScale(fontScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);

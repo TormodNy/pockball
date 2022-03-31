@@ -19,9 +19,12 @@ public class WinnerView implements Screen {
     private AssetsController assetsController;
     private ScreenController screenController;
     private ScreenModel.Screen screenModel;
+    float fontScaler;
 
     public WinnerView(ScreenController screenController, ScreenModel.Screen screenModel) {
         this.screenController = screenController;
+        fontScaler = Gdx.graphics.getHeight()*(3f/1000f);
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
@@ -35,15 +38,16 @@ public class WinnerView implements Screen {
         stage.addActor(table);
 
         Label gameoverTitle = new Label("YOU WON! ", assetsController.getSkin());
-
+        gameoverTitle.setFontScale(fontScaler);
         table.add(gameoverTitle);
         table.row().padTop(50);
 
         Label winnerScore = new Label("YOUR SCORE: " + SinglePlayerController.getInstance().getNumberOfShots(), assetsController.getSkin());
-
+        winnerScore.setFontScale(fontScaler);
         table.add(winnerScore);
 
         TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+        quitButton.getLabel().setFontScale(fontScaler);
         table.row().padTop(50);
         table.add(quitButton).uniformX();
 
