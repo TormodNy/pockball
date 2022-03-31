@@ -29,7 +29,7 @@ public class FirebaseController implements FirebaseInterface {
 
     @Override
     public void listenToClientsInGame(String target) {
-        firebaseInterface.listenToClientsInGame(target + ".client");
+        firebaseInterface.listenToClientsInGame(target);
     }
 
     @Override

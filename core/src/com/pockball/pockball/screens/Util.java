@@ -13,8 +13,8 @@ public class Util {
                 screenController.changeScreen(screen, previousScreen);
                 // TODO: This is a temporary bugfix, that prevents quitting a SP-game,
                 //  then reentering to not show pool board.
-                screenController.changeScreen(previousScreen, screen);
-                screenController.changeScreen(screen, previousScreen);
+                // screenController.changeScreen(previousScreen, screen);
+                // screenController.changeScreen(screen, previousScreen);
             }
         });
     }

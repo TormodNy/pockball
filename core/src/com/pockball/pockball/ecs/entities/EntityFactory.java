@@ -29,6 +29,7 @@ public class EntityFactory {
     }
 
     public Entity createCue(Entity ball) {
+        System.out.println("ENT FACTORY - createCue");
         return cueFactory.createCue(ball);
     }
 

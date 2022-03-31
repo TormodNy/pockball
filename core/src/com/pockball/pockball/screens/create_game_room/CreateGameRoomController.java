@@ -26,9 +26,9 @@ public class CreateGameRoomController {
     }
 
     protected void testDb() {
+        System.out.println("TEST DB");
         createRoom();
         firebaseController.listenToClientsInGame(roomModel.roomId);
-       // joinRoom();
     }
 
     public void createRoom() {
@@ -46,14 +46,14 @@ public class CreateGameRoomController {
     public void notifyNewClient(PlayerModel client) {
         if (client == null) return;
 
-        System.out.println("notifyNewOpponent() -> " + client);
         firebaseController.stopListenToClientsInGame();
+        System.out.println("notifyNewClient " + client);
         roomModel.client = client;
         startGame();
     }
 
     public void startGame() {
-        System.out.println("startGame() -> " + roomModel.roomId);
+        System.out.println("startGame " + roomModel.roomId);
         Context.getInstance().setState(new MultiPlayerState(roomModel, true));
         ScreenController.getInstance().changeScreen(ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.CREATE_GAME);
     }

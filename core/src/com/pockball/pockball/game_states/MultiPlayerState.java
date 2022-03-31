@@ -173,16 +173,17 @@ public class MultiPlayerState implements State {
     @Override
     public void fireOpponentEventChange(List<EventModel> eventModelList) {
         System.out.println("fireOpponentShotsChange() -> " + eventModelList);
-        //(isHost ? roomModel.client : roomModel.host).shots = shotModelList;
 
         if (eventModelList.size() == 0) return;
 
         EventModel event = eventModelList.get(eventModelList.size() - 1);
 
+
         switch (event.type) {
             case SHOT:
                 ShotEvent shot = (ShotEvent) event;
                 Vector2 force = new Vector2(shot.x, shot.y);
+        System.out.println("force" + force);
                 Engine.getInstance().shootBallWithForce(force, false);
                 break;
             case PLACE_BALL:

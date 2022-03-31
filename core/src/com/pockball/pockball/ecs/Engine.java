@@ -80,7 +80,7 @@ public class Engine extends PooledEngine {
 
     private final Vector2[] holeLocations = {
             // Upper left
-            new Vector2(0.5f,12.5f),
+            new Vector2(0.5f, 12.5f),
             // Upper middle
             new Vector2(12.1f, 12.8f),
             // Upper right
@@ -162,6 +162,7 @@ public class Engine extends PooledEngine {
             balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
             if (i == 0) {
                 whiteBallEntity = balls.get(i);
+                System.out.println("INITIALIZE");
                 engineInstance.addEntity(entityFactory.createCue(whiteBallEntity));
             }
             engineInstance.addEntity(balls.get(i));
@@ -221,49 +222,49 @@ public class Engine extends PooledEngine {
         Vector2[] vs = new Vector2[40];
         // Bottom left corner
         vs[0] = new Vector2(84, 50).scl(scl);
-        vs[1] = new Vector2(66,30).scl(scl);
-        vs[2] = new Vector2(66,0).scl(scl);
-        vs[3] = new Vector2(0,0);
+        vs[1] = new Vector2(66, 30).scl(scl);
+        vs[2] = new Vector2(66, 0).scl(scl);
+        vs[3] = new Vector2(0, 0);
         vs[4] = new Vector2(0, 64).scl(scl);
         vs[5] = new Vector2(30, 64).scl(scl);
         vs[6] = new Vector2(50, 84).scl(scl);
         // Top left corner
-        vs[7] = new Vector2(50,466).scl(scl);
-        vs[8] = new Vector2(30,486).scl(scl);
-        vs[9] = new Vector2(0,486).scl(scl);
-        vs[10] = new Vector2(0,550).scl(scl);
+        vs[7] = new Vector2(50, 466).scl(scl);
+        vs[8] = new Vector2(30, 486).scl(scl);
+        vs[9] = new Vector2(0, 486).scl(scl);
+        vs[10] = new Vector2(0, 550).scl(scl);
         vs[11] = new Vector2(66, 550).scl(scl);
         vs[12] = new Vector2(66, 520).scl(scl);
         vs[13] = new Vector2(84, 500).scl(scl);
         // Top mid
         vs[14] = new Vector2(470, 500).scl(scl);
-        vs[15] = new Vector2(476,520).scl(scl);
-        vs[16] = new Vector2(476,550).scl(scl);
+        vs[15] = new Vector2(476, 520).scl(scl);
+        vs[16] = new Vector2(476, 550).scl(scl);
         vs[17] = new Vector2(524, 550).scl(scl);
         vs[18] = new Vector2(524, 520).scl(scl);
         vs[19] = new Vector2(530, 500).scl(scl);
         // Top right corner
         vs[20] = new Vector2(916, 500).scl(scl);
         vs[21] = new Vector2(936, 520).scl(scl);
-        vs[22] = new Vector2(936,550).scl(scl);
-        vs[23] = new Vector2(1000,550).scl(scl);
-        vs[24] = new Vector2(1000,486).scl(scl);
-        vs[25] = new Vector2(970,486).scl(scl);
-        vs[26] = new Vector2(950,466).scl(scl);
+        vs[22] = new Vector2(936, 550).scl(scl);
+        vs[23] = new Vector2(1000, 550).scl(scl);
+        vs[24] = new Vector2(1000, 486).scl(scl);
+        vs[25] = new Vector2(970, 486).scl(scl);
+        vs[26] = new Vector2(950, 466).scl(scl);
         // Bottom right corner
         vs[27] = new Vector2(950, 84).scl(scl);
-        vs[28] = new Vector2(970,64).scl(scl);
+        vs[28] = new Vector2(970, 64).scl(scl);
         vs[29] = new Vector2(1000, 64).scl(scl);
-        vs[30] = new Vector2(1000,0).scl(scl);
-        vs[31] = new Vector2(936,0).scl(scl);
+        vs[30] = new Vector2(1000, 0).scl(scl);
+        vs[31] = new Vector2(936, 0).scl(scl);
         vs[32] = new Vector2(936, 30).scl(scl);
         vs[33] = new Vector2(916, 50).scl(scl);
         // Top mid
         vs[34] = new Vector2(530, 50).scl(scl);
         vs[35] = new Vector2(524, 30).scl(scl);
         vs[36] = new Vector2(524, 0).scl(scl);
-        vs[37] = new Vector2(476,0).scl(scl);
-        vs[38] = new Vector2(476,30).scl(scl);
+        vs[37] = new Vector2(476, 0).scl(scl);
+        vs[38] = new Vector2(476, 30).scl(scl);
         vs[39] = new Vector2(470, 50).scl(scl);
 
         ChainShape chain = new ChainShape();
@@ -286,7 +287,10 @@ public class Engine extends PooledEngine {
             boolean changeState
     ) {
         if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
-        PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);
+
+        PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
+
+        System.out.println("WHITE BALL - shootBall " + whiteBallEntity + " " + physics);
 
         physics.body.applyForceToCenter(force, true);
     }
@@ -307,7 +311,7 @@ public class Engine extends PooledEngine {
         return whiteBallEntity;
     }
 
-    private void createBackdrop () {
+    private void createBackdrop() {
         PositionComponent position = engineInstance.createComponent(PositionComponent.class);
         SpriteComponent sprite = engineInstance.createComponent(SpriteComponent.class);
         SizeComponent size = engineInstance.createComponent(SizeComponent.class);
@@ -329,20 +333,20 @@ public class Engine extends PooledEngine {
         addEntity(backdrop);
     }
 
-    public void givePowerup () {
+    public void givePowerup() {
         Random random = new Random();
         addEntity(entityFactory.createPowerup(random.nextInt(1)));
     }
 
-    public Entity getBallAt (int i) {
+    public Entity getBallAt(int i) {
         return balls.get(i);
     }
 
-    public int getBallsLength () {
+    public int getBallsLength() {
         return balls.size;
     }
 
-    public void removeBall (Entity ball) {
+    public void removeBall(Entity ball) {
         bodiesToRemove.add(ball.getComponent(PhysicsBodyComponent.class).body);
         balls.removeValue(ball, true);
         removeEntity(ball);
