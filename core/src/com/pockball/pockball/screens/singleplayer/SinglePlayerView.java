@@ -60,7 +60,6 @@ public class SinglePlayerView implements Screen {
         this.assetsController = AssetsController.getInstance();
 
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
-        numberOfShots.setFontScale(fontScaler);
         this.screenController = screenController;
     }
 
@@ -78,8 +77,7 @@ public class SinglePlayerView implements Screen {
         Table tablePause = new Table();
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
-        TextButton pauseButton = new TextButton("PAUSE", assetsController.getSkin());
-        pauseButton.getLabel().setFontScale(fontScaler);
+        TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
