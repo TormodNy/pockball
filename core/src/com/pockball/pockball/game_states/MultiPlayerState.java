@@ -213,6 +213,7 @@ public class MultiPlayerState implements State {
     @Override
     public void setIdle(boolean ready) {
         this.meIdle = ready;
+        firebaseController.writeToDb("test." + roomModel.roomId + "." + myKey + ".idle", this.meIdle);
     }
 
     @Override

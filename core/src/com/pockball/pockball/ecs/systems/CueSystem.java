@@ -29,8 +29,6 @@ public class CueSystem extends IteratingSystem {
     private final ComponentMapper<PhysicsBodyComponent> physicsMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
 
-    private boolean justTouched = false;
-
     public CueSystem() {
         super(Family.all(CueComponent.class, PositionComponent.class, DirectionComponent.class).get());
 
