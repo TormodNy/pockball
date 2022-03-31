@@ -51,6 +51,13 @@ public class MainMenuView implements Screen {
         TextButton createGameButton = new TextButton("Create game", assetsController.getSkin());
         TextButton settingsButton = new TextButton("Settings", assetsController.getSkin());
 
+        singleplayerButton.getLabel().setFontScale(fontScaler);
+        multiplayerButton.getLabel().setFontScale(fontScaler);
+        joinGameButton.getLabel().setFontScale(fontScaler);
+        createGameButton.getLabel().setFontScale(fontScaler);
+        settingsButton.getLabel().setFontScale(fontScaler);
+
+
         table.row().padTop(50);
         table.add(singleplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
