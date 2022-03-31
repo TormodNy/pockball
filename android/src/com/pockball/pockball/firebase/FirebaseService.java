@@ -104,9 +104,18 @@ public class FirebaseService implements FirebaseInterface {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<EventModel> events = new ArrayList<>();
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
-                    EventModel event = childSnap.getValue(EventModel.class);
+                    EventModel.Type eventType = null;
+                    for (DataSnapshot keySnap : childSnap.getChildren()) {
+                        if(keySnap.getKey().equals("type")){
+                            eventType = keySnap.getValue(EventModel.Type.class);
+                        }
+                    }
+                    if(eventType == null) return;
 
-                    switch (event.type) {
+                    System.out.println(eventType);
+
+                    EventModel event = null;
+                    switch (eventType) {
                         case SHOT:
                             event = childSnap.getValue(ShotEvent.class);
                             break;
@@ -115,6 +124,7 @@ public class FirebaseService implements FirebaseInterface {
                             break;
                     }
 
+                    if (event == null) return;
                     events.add(event);
                 }
                 Context.getInstance().getState().fireOpponentEventChange(events);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -18,41 +19,55 @@ import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.Util;
 
 public class SinglePlayerView implements Screen {
+    private final AssetsController assetsController;
     private Stage stage;
     private SinglePlayerController singlePlayerController;
-    private AssetsController assetsController;
+    private Label numberOfShots;
     private ScreenController screenController;
 
 
     public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
         Engine.getInstance().initializeEngine(0);
-        this.screenController = screenController;
+
         stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
+
+        numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
+
+        this.screenController = screenController;
+
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        Table tableScore = new Table();
+        tableScore.setFillParent(true);
+        stage.addActor(tableScore);
+        tableScore.add(numberOfShots);
+        tableScore.top();
+        tableScore.padTop(5);
 
+        Table tablePause = new Table();
+        tablePause.setFillParent(true);
+        stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("PAUSE", assetsController.getSkin());
-
-        table.top().right();
-        table.padTop(5);
-        table.padRight(5);
-        table.add(pauseButton);
-
-        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLE_PLAYER);
+        tablePause.top().right();
+        tablePause.padTop(5);
+        tablePause.padRight(5);
+        tablePause.add(pauseButton);
+        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLEPLAYER);
     }
 
     @Override
     public void render(float delta) {
         Engine.getInstance().update(delta);
+
+        numberOfShots.setText("Shots: " + singlePlayerController.getNumberOfShots());
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }

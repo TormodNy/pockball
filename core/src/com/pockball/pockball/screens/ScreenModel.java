@@ -7,7 +7,9 @@ public class ScreenModel {
         MAINMENU,
         SETTINGS,
         JOIN_GAME,
-        SINGLE_PLAYER,
-        CREATE_GAME
+        SINGLEPLAYER,
+        CREATE_GAME,
+        GAMEOVER,
+        WINNER,
     }
 }

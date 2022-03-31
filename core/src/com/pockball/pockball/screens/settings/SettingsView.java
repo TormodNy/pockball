@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.assets.AssetsController;
+import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.Util;
@@ -41,6 +42,7 @@ public class SettingsView implements Screen {
         Label settingsTitle = new Label("Settings: ", assetsController.getSkin());
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
+        volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
 
         table.add(settingsTitle);
         table.row().padTop(50);
@@ -51,7 +53,7 @@ public class SettingsView implements Screen {
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                // Adjust the value of volume in here
+                Context.getInstance().getState().changeGameVolume(volumeSlider.getValue()/100);
             }
         });
 
@@ -62,7 +64,7 @@ public class SettingsView implements Screen {
 
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
-        else if (screenModel == ScreenModel.Screen.SINGLE_PLAYER) {
+        else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
             table.row().padTop(50);
             table.add(quitButton).uniformX();
@@ -72,7 +74,7 @@ public class SettingsView implements Screen {
             table.add(resumeButton).uniformX();
 
             Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
-            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLE_PLAYER, ScreenModel.Screen.SETTINGS);
+            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
 
         }
 

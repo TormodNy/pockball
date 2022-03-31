@@ -20,6 +20,7 @@ public class MultiPlayerState implements State {
 
     private final Entity myPlayer, opponentPlayer;
     private boolean firstBall;
+    private float gameVolume;
 
     private RoomModel roomModel;
     private boolean isHost;
@@ -130,6 +131,16 @@ public class MultiPlayerState implements State {
         return "opponent";
     }
 
+    @Override
+    public void changeGameVolume(float gameVolume) {
+        this.gameVolume = gameVolume;
+    }
+
+    @Override
+    public float getGameVolume() {
+        return gameVolume;
+    }
+
     private Entity getInactivePlayer() {
         if (!roomModel.hostTurn) return myPlayer;
         return opponentPlayer;
@@ -186,4 +197,14 @@ public class MultiPlayerState implements State {
         System.out.println("setHostTurn() -> " + hostTurn);
         roomModel.hostTurn = hostTurn;
     }
+    
+    public int getNumberOfShots() {
+        return -1;
+    }
+
+    @Override
+    public void incNumberOfShots() {}
+
+    @Override
+    public void reset() {}
 }

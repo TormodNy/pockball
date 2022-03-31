@@ -5,11 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.assets.AssetsController;
@@ -59,7 +57,7 @@ public class MainMenuView implements Screen {
         table.row().pad(20, 0, 0, 0);
         table.add(settingsButton).uniformX();
 
-        Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLE_PLAYER, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, joinGameButton, ScreenModel.Screen.JOIN_GAME, ScreenModel.Screen.MAINMENU);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.db_models.PlaceBallEvent;
@@ -25,7 +26,7 @@ import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.CueSystem;
-import com.pockball.pockball.ecs.systems.HoleListenerSystem;
+import com.pockball.pockball.ecs.systems.WorldContactListener;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
 import com.pockball.pockball.ecs.systems.PlayerSystem;
@@ -123,17 +124,13 @@ public class Engine extends PooledEngine {
         engineInstance.addSystem(new PlaceEntitySystem());
         engineInstance.addSystem(new PlayerSystem());
 
-        HoleListenerSystem holeListenerSystem = new HoleListenerSystem();
-        engineInstance.addSystem(holeListenerSystem);
-        world.setContactListener(holeListenerSystem);
-
         // Add players from state context
         Entity[] players = Context.getInstance().getState().getPlayers();
         for (Entity player : players) {
             engineInstance.addEntity(player);
         }
 
-        // Place balls on ta
+        // Place balls on table
         for (int i = 0; i <= 15; i++) {
             Entity ball = entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i);
 
@@ -153,6 +150,7 @@ public class Engine extends PooledEngine {
         // Create world
         Vector2 gravity = new Vector2(0, 0);
         world = new World(gravity, false);
+        world.setContactListener(new WorldContactListener());
     }
 
     private void createTable() {
@@ -249,7 +247,8 @@ public class Engine extends PooledEngine {
         chain.createLoop(vs);
 
         Body walls = world.createBody(wallsDef);
-        walls.createFixture(chain, 0);
+        Fixture fixture = walls.createFixture(chain, 0);
+        fixture.setUserData("wall");
     }
 
     private void createHoles() {
