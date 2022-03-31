@@ -8,7 +8,7 @@ import com.pockball.pockball.ecs.types.BallType;
 import java.util.List;
 
 public interface State {
-    public void ballIntoHole(BallType ball);
+    public void ballIntoHole(BallType ball, int holeID);
 
     public void changeGameVolume(float gameVolume);
 

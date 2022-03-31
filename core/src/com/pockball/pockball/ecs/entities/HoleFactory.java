@@ -64,6 +64,8 @@ public class HoleFactory {
         newHole.add(direction);
         newHole.add(size);
 
+        physicsBody.body.setUserData(holeID);
+
         return newHole;
     }
 

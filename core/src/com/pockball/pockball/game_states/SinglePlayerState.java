@@ -21,6 +21,7 @@ public class SinglePlayerState implements State {
     private final ScoreComponent score;
     private int numberOfShots = 0;
     private float gameVolume;
+    private int lastHole;
 
     public SinglePlayerState() {
         // Set up player
@@ -31,7 +32,7 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void ballIntoHole(BallType ballType) {
+    public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
                 System.out.println("Penalty point! White ball into hole.");
@@ -39,7 +40,7 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if (score.balls < 14) {
+                if (score.balls < 14 || lastHole != holeID) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player lost! Black ball into hole.");
                 } else {
@@ -53,6 +54,29 @@ public class SinglePlayerState implements State {
                 System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
                 Engine.getInstance().givePowerup();
+
+                if (score.balls == 14) {
+                    switch (holeID) {
+                        case 0:
+                            lastHole = 5;
+                            break;
+                        case 1:
+                            lastHole = 4;
+                            break;
+                        case 2:
+                            lastHole = 3;
+                            break;
+                        case 3:
+                            lastHole = 2;
+                            break;
+                        case 4:
+                            lastHole = 1;
+                            break;
+                        case 5:
+                            lastHole = 0;
+                            break;
+                    }
+                }
         }
     }
 

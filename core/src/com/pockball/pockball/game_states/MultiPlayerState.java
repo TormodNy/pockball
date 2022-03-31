@@ -62,7 +62,7 @@ public class MultiPlayerState implements State {
     }
 
     @Override
-    public void ballIntoHole(BallType ballType) {
+    public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
                 System.out.println("Next player! " +
