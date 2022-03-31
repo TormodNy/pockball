@@ -28,6 +28,7 @@ public class MultiPlayerState implements State {
     private String myKey, opponentKey;
     private boolean myTurn;
     private boolean meIdle;
+    private BallType myBallType, opponentBallType;
 
 
     private boolean opponentIdle;
@@ -50,9 +51,10 @@ public class MultiPlayerState implements State {
             firebaseController.writeToDb(roomModel.roomId + ".client.playerId", "tormod");
         }
 
-        // Listen to opponent shots
+        // Listeners
         firebaseController.listenToPlayerEvents(roomModel.roomId + "." + opponentKey + ".events");
         firebaseController.listenToOpponentIdleState(roomModel.roomId + "." + opponentKey + ".idle");
+        firebaseController.listenToBallType(roomModel.roomId);
 
         // Create player entities
         myPlayer = EntityFactory.getInstance().createPlayer("player1");
@@ -66,15 +68,13 @@ public class MultiPlayerState implements State {
                 System.out.println("Next player! " +
                         getActivePlayer().getComponent(PlayerComponent.class).playerName +
                         " shot WHITE ball into hole.");
-                System.out.println(
-                        getActivePlayer()
-                                .getComponent(PlayerComponent.class)
-                                .playerName + "'s turn.");
-
-                changePlayer();
+                setNextPlayerTurn();
                 break;
 
             case BLACK:
+                // TODO: Wrong logic
+                setNextPlayerTurn();
+
                 System.out.println(getActivePlayer().getComponent(PlayerComponent.class).playerName +
                         " lost! Shot BLACK ball into hole.");
                 break;
@@ -82,17 +82,20 @@ public class MultiPlayerState implements State {
             default:
                 // Set ball type on players if it is first ball to fall down
                 if (firstBall) {
+                    // Only set once
+                    firstBall = false;
+
+                    // Write ballType to db
+                    setMyBallType(ballType);
+
                     getActivePlayerModel().ballType = ballType;
                     getInactivePlayerModel().ballType =
                             ballType == BallType.STRIPED ? BallType.SOLID : BallType.STRIPED;
 
-                    // Push to server
-                    // firebaseController.writeToDb(roomModel.roomId, roomModel);
 
-                    // Only set once
-                    firstBall = false;
                 }
 
+                    setNextPlayerTurn();
                 if (getActivePlayerModel().ballType == null) break;
 
                 // TODO: Should increment value in db instead
@@ -104,7 +107,7 @@ public class MultiPlayerState implements State {
 
                 // TODO: Should the other player get points if one shoots down wrong ball?
                 else {
-                    changePlayer();
+                    setNextPlayerTurn();
                     System.out.println("Change");
                 }
 
@@ -150,7 +153,7 @@ public class MultiPlayerState implements State {
         return opponentPlayer;
     }
 
-    private void changePlayer() {
+    private void setNextPlayerTurn() {
         firebaseController.writeToDb(roomModel.roomId + ".hostTurn", !roomModel.hostTurn);
     }
 
@@ -205,6 +208,18 @@ public class MultiPlayerState implements State {
     }
 
     @Override
+    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
+        if (isHost) {
+            myBallType = hostBallType;
+            this.opponentBallType = opponentBallType;
+        } else {
+            this.opponentBallType = hostBallType;
+            myBallType = hostBallType;
+        }
+        firebaseController.stopListenToBallType();
+    }
+
+    @Override
     public void setHostTurn(boolean hostTurn) {
         System.out.println("setHostTurn() -> " + hostTurn);
         roomModel.hostTurn = hostTurn;
@@ -213,12 +228,20 @@ public class MultiPlayerState implements State {
     @Override
     public void setIdle(boolean ready) {
         this.meIdle = ready;
-        firebaseController.writeToDb("test." + roomModel.roomId + "." + myKey + ".idle", this.meIdle);
+        firebaseController.writeToDb(roomModel.roomId + "." + myKey + ".idle", this.meIdle);
     }
 
     @Override
     public boolean canPerformAction() {
         return meIdle && opponentIdle && myTurn;
+    }
+
+    public void setMyBallType(BallType ballType) {
+        myBallType = ballType;
+        opponentBallType = myBallType == BallType.STRIPED ? BallType.SOLID : BallType.STRIPED;
+        firebaseController.stopListenToBallType();
+        firebaseController.writeToDb(roomModel.roomId + ".ballTypes." + myKey, myBallType);
+        firebaseController.writeToDb(roomModel.roomId + ".ballTypes." + opponentKey, opponentBallType);
     }
 
     public boolean isOpponentIdle() {

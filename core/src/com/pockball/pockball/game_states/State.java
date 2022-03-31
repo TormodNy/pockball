@@ -22,6 +22,8 @@ public interface State {
 
     public void fireOpponentIsIdle();
 
+    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType);
+
     public void setHostTurn(boolean hostTurn);
 
     public void setIdle(boolean ready);

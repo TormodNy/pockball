@@ -89,6 +89,11 @@ public class SinglePlayerState implements State {
     }
 
     @Override
+    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
+
+    }
+
+    @Override
     public void setHostTurn(boolean hostTurn) {
     }
 

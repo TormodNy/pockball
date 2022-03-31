@@ -86,4 +86,14 @@ public class FirebaseController implements FirebaseInterface {
     public void stopListenToAvailableRooms() {
         firebaseInterface.stopListenToAvailableRooms();
     }
+
+    @Override
+    public void listenToBallType(String roomId) {
+        firebaseInterface.listenToBallType(roomId);
+    }
+
+    @Override
+    public void stopListenToBallType() {
+        firebaseInterface.stopListenToBallType();
+    }
 }

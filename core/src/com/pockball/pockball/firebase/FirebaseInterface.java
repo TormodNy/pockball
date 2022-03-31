@@ -24,4 +24,7 @@ public interface FirebaseInterface {
 
     public void listenToAvailableRooms();
     public void stopListenToAvailableRooms();
+
+    public void listenToBallType(String roomId);
+    public void stopListenToBallType();
 }

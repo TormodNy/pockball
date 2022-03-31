@@ -26,8 +26,8 @@ public class FirebaseService implements FirebaseInterface {
     private FirebaseController firebaseController;
     private static final String TAG = "ReadAndWriteSnippets";
 
-    private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener;
-    private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef;
+    private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
+    private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
 
     private ValueEventListener roomsListener;
     private DatabaseReference roomsRef;
@@ -229,9 +229,30 @@ public class FirebaseService implements FirebaseInterface {
         roomsRef.removeEventListener(roomsListener);
     }
 
+    @Override
+    public void listenToBallType(String roomId) {
+        ballTypeRef = db.getReference().child("test").child(roomId).child("ballType");
 
-    public void writeToDb(String key, String value) {
-        ref.child("test").child(key).setValue(value);
+        ballTypeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PlayerModel opponent = snapshot.getValue(PlayerModel.class);
+                System.out.println("listenToClientsInGame " + opponent);
+                CreateGameRoomController.getInstance().notifyNewClient(opponent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.err.println(error);
+            }
+        };
+
+        ballTypeRef.addValueEventListener(ballTypeListener);
+    }
+
+    @Override
+    public void stopListenToBallType() {
+        ballTypeRef.removeEventListener(ballTypeListener);
     }
 }
 

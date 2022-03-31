@@ -53,7 +53,12 @@ public class CueSystem extends IteratingSystem {
         PlaceEntityComponent placeEntity = placeEntityMapper.get(cue.ball);
 
         // Position cue at ball when shooting
-        if (Gdx.input.isTouched() && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable && !GameController.currentController.getShowPowerups()) {
+        boolean canShoot = Gdx.input.isTouched() &&
+                !placeEntity.placeable &&
+                !GameController.currentController.getShowPowerups() &&
+                Context.getInstance().getState().canPerformAction();
+
+        if (canShoot) {
             direction.rotation = ball.dir.angleDeg();
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));
