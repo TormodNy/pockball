@@ -61,7 +61,7 @@ public class BallSystem extends IteratingSystem {
 
         // Only shoot white ball with almost no speed
         if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable && !GameController.currentController.getShowPowerups()) {
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.isTouched() && Gdx.input.getY() >= 40) {
                 if (!justTouched) {
                     // If first touch, set direction
                     Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));

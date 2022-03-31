@@ -56,7 +56,8 @@ public class CueSystem extends IteratingSystem {
         boolean canShoot = Gdx.input.isTouched() &&
                 !placeEntity.placeable &&
                 !GameController.currentController.getShowPowerups() &&
-                Context.getInstance().getState().canPerformAction();
+                Context.getInstance().getState().canPerformAction() &&
+                Gdx.input.getY() >= 40;
 
         if (canShoot) {
             direction.rotation = ball.dir.angleDeg();
