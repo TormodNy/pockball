@@ -351,4 +351,8 @@ public class Engine extends PooledEngine {
         balls.removeValue(ball, true);
         removeEntity(ball);
     }
+
+    public boolean isBall(Entity entity) {
+        return balls.contains(entity, true);
+    }
 }

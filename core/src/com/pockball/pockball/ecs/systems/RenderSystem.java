@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.DirectionComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
@@ -55,6 +56,8 @@ public class RenderSystem extends IteratingSystem {
         spriteBatch.setProjectionMatrix(PockBall.camera.combined);
 
         spriteBatch.begin();
+
+        boolean stopped = true;
 
         for (Array<Entity> entityArray : renderQueue) {
             for (Entity entity : entityArray) {

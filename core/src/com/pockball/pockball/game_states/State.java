@@ -20,7 +20,13 @@ public interface State {
 
     public void fireOpponentEventChange(List<EventModel> eventModelList);
 
+    public void fireOpponentIsIdle();
+
     public void setHostTurn(boolean hostTurn);
+
+    public void setIdle(boolean ready);
+
+    public boolean canPerformAction();
 
     public int getNumberOfShots();
 

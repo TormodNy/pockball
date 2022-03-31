@@ -27,6 +27,10 @@ public class MultiPlayerState implements State {
     private FirebaseController firebaseController;
     private String myKey, opponentKey;
     private boolean myTurn;
+    private boolean meIdle;
+
+
+    private boolean opponentIdle;
 
 
     // TODO: Remove event listener
@@ -47,8 +51,8 @@ public class MultiPlayerState implements State {
         }
 
         // Listen to opponent shots
-        firebaseController.listenToPlayerEvents(roomModel.roomId +
-                "." + opponentKey + ".events");
+        firebaseController.listenToPlayerEvents(roomModel.roomId + "." + opponentKey + ".events");
+        firebaseController.listenToOpponentIdleState(roomModel.roomId + "." + opponentKey + ".idle");
 
         // Create player entities
         myPlayer = EntityFactory.getInstance().createPlayer("player1");
@@ -178,12 +182,13 @@ public class MultiPlayerState implements State {
 
         EventModel event = eventModelList.get(eventModelList.size() - 1);
 
+        opponentIdle = false;
 
         switch (event.type) {
             case SHOT:
                 ShotEvent shot = (ShotEvent) event;
                 Vector2 force = new Vector2(shot.x, shot.y);
-        System.out.println("force" + force);
+                System.out.println("force" + force);
                 Engine.getInstance().shootBallWithForce(force, false);
                 break;
             case PLACE_BALL:
@@ -194,18 +199,44 @@ public class MultiPlayerState implements State {
     }
 
     @Override
+    public void fireOpponentIsIdle() {
+        this.opponentIdle = true;
+        System.out.println("Opponent is idle. Can perform: " + canPerformAction());
+    }
+
+    @Override
     public void setHostTurn(boolean hostTurn) {
         System.out.println("setHostTurn() -> " + hostTurn);
         roomModel.hostTurn = hostTurn;
     }
-    
+
+    @Override
+    public void setIdle(boolean ready) {
+        this.meIdle = ready;
+    }
+
+    @Override
+    public boolean canPerformAction() {
+        return meIdle && opponentIdle && myTurn;
+    }
+
+    public boolean isOpponentIdle() {
+        return opponentIdle;
+    }
+
+    public void setOpponentIdle(boolean opponentIdle) {
+        this.opponentIdle = opponentIdle;
+    }
+
     public int getNumberOfShots() {
         return -1;
     }
 
     @Override
-    public void incNumberOfShots() {}
+    public void incNumberOfShots() {
+    }
 
     @Override
-    public void reset() {}
+    public void reset() {
+    }
 }

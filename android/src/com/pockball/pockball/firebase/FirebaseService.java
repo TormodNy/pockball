@@ -26,8 +26,8 @@ public class FirebaseService implements FirebaseInterface {
     private FirebaseController firebaseController;
     private static final String TAG = "ReadAndWriteSnippets";
 
-    private ValueEventListener shotsListener, opponentListener, hostTurnListener;
-    private DatabaseReference shotsRef, opponentRef, hostTurnReference;
+    private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener;
+    private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef;
 
     private ValueEventListener roomsListener;
     private DatabaseReference roomsRef;
@@ -107,11 +107,11 @@ public class FirebaseService implements FirebaseInterface {
                 for (DataSnapshot childSnap : snapshot.getChildren()) {
                     EventModel.Type eventType = null;
                     for (DataSnapshot keySnap : childSnap.getChildren()) {
-                        if(keySnap.getKey().equals("type")){
+                        if (keySnap.getKey().equals("type")) {
                             eventType = keySnap.getValue(EventModel.Type.class);
                         }
                     }
-                    if(eventType == null) return;
+                    if (eventType == null) return;
 
                     System.out.println(eventType);
 
@@ -146,7 +146,7 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void listenToHostTurn(String gameId) {
-        hostTurnReference = db
+        hostTurnRef = db
                 .getReference("test")
                 .child(gameId)
                 .child("hostTurn");
@@ -164,12 +164,37 @@ public class FirebaseService implements FirebaseInterface {
             }
         };
 
-        hostTurnReference.addValueEventListener(hostTurnListener);
+        hostTurnRef.addValueEventListener(hostTurnListener);
     }
 
     @Override
     public void stopListenToHostTurn(String target) {
-        hostTurnReference.removeEventListener(hostTurnListener);
+        hostTurnRef.removeEventListener(hostTurnListener);
+    }
+
+    @Override
+    public void listenToOpponentIdleState(String target) {
+        idleStateRef = getRefFromNestedTarget(target);
+
+        idleStateListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean opponentIdle = snapshot.getValue(Boolean.class);
+                if (opponentIdle != null && opponentIdle) Context.getInstance().getState().fireOpponentIsIdle();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.err.println(error);
+            }
+        };
+
+        idleStateRef.addValueEventListener(idleStateListener);
+    }
+
+    @Override
+    public void stopListenToOpponentIdleState() {
+        idleStateRef.removeEventListener(idleStateListener);
     }
 
     @Override

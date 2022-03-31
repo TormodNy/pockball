@@ -42,8 +42,7 @@ public class SinglePlayerState implements State {
                 if (score.balls < 14) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player lost! Black ball into hole.");
-                }
-                else {
+                } else {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player won!");
                 }
@@ -85,7 +84,19 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void setHostTurn(boolean hostTurn) {}
+    public void setHostTurn(boolean hostTurn) {
+    }
+
+    @Override
+    public void setIdle(boolean ready) {
+        // TODO: Implement
+    }
+
+    @Override
+    public boolean canPerformAction() {
+        // TODO: Implement
+        return true;
+    }
 
     public int getNumberOfShots() {
         return numberOfShots;

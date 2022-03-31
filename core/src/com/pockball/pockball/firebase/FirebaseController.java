@@ -68,6 +68,16 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
+    public void listenToOpponentIdleState(String target) {
+        firebaseInterface.listenToOpponentIdleState(target);
+    }
+
+    @Override
+    public void stopListenToOpponentIdleState() {
+        firebaseInterface.stopListenToOpponentIdleState();
+    }
+
+    @Override
     public void listenToAvailableRooms() {
         firebaseInterface.listenToAvailableRooms();
     }

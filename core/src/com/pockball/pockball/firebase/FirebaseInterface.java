@@ -19,7 +19,9 @@ public interface FirebaseInterface {
     public void listenToHostTurn(String target);
     public void stopListenToHostTurn(String target);
 
-    // TODO: Not using
+    public void listenToOpponentIdleState(String target);
+    public void stopListenToOpponentIdleState();
+
     public void listenToAvailableRooms();
     public void stopListenToAvailableRooms();
 }
