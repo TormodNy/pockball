@@ -8,6 +8,8 @@ import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 public class MultiplayerView implements Screen {
     private Stage stage;
     private MultiplayerController controller;
+    float fontScaler;
+
 
     public MultiplayerView(MultiplayerController controller) {
         this.controller = controller;

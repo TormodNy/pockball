@@ -21,6 +21,9 @@ public class MainMenuView implements Screen {
     private Stage stage;
     private AssetsController assetsController;
     private ScreenController screenController;
+    float logoScaler;
+    float fontScaler;
+
 
     private Texture logo;
 
@@ -31,6 +34,8 @@ public class MainMenuView implements Screen {
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
 
+        logoScaler = Gdx.graphics.getHeight()*(1f/1000f);
+        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
         this.logo = new Texture("pockballLogo.png");
     }
 
@@ -45,6 +50,13 @@ public class MainMenuView implements Screen {
         TextButton joinGameButton = new TextButton("JOIN GAME", assetsController.getSkin());
         TextButton createGameButton = new TextButton("CREATE GAME", assetsController.getSkin());
         TextButton settingsButton = new TextButton("SETTINGS", assetsController.getSkin());
+
+        singleplayerButton.getLabel().setFontScale(fontScaler);
+        multiplayerButton.getLabel().setFontScale(fontScaler);
+        joinGameButton.getLabel().setFontScale(fontScaler);
+        createGameButton.getLabel().setFontScale(fontScaler);
+        settingsButton.getLabel().setFontScale(fontScaler);
+
 
         table.row().padTop(50);
         table.add(singleplayerButton).uniformX();
@@ -72,7 +84,11 @@ public class MainMenuView implements Screen {
         Gdx.gl.glClearColor(11f / RGBDivider, 137f / RGBDivider, 1f / RGBDivider, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        sb.draw(logo, (PockBall.WIDTH*32/2f) - (logo.getWidth()/4f), (PockBall.HEIGHT*32f * (2f/3f)), logo.getWidth()/2f, logo.getHeight()/2f);
+        sb.draw(logo,
+                (Gdx.graphics.getWidth()/2f) - (logo.getWidth()*logoScaler/2f),
+                (Gdx.graphics.getHeight()* (2f/3f)),
+                logo.getWidth()*logoScaler,
+                logo.getHeight()*logoScaler);
         sb.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

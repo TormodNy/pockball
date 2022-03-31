@@ -40,20 +40,19 @@ import com.pockball.pockball.game_states.State;
 
 public class SinglePlayerView implements Screen {
 
-    
-        private Label numberOfShots;
-        private ScreenController screenController;
-
     private SpriteBatch sb;
     private Stage stage;
     private SinglePlayerController singlePlayerController;
     private AssetsController assetsController;
 
     private Sprite backdrop;
-
+    private Label numberOfShots;
+    private ScreenController screenController;
+    float fontScaler;
 
     public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
+        fontScaler = Gdx.graphics.getHeight() * (3f / 1000f);
         Engine.getInstance().initializeEngine(0);
 
         stage = new Stage(new ScreenViewport());
@@ -61,7 +60,7 @@ public class SinglePlayerView implements Screen {
         this.assetsController = AssetsController.getInstance();
 
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
-
+        numberOfShots.setFontScale(fontScaler);
         this.screenController = screenController;
     }
 
@@ -80,11 +79,13 @@ public class SinglePlayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("PAUSE", assetsController.getSkin());
+        pauseButton.getLabel().setFontScale(fontScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
         tablePause.add(pauseButton);
-        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLEPLAYER);
+        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
+                ScreenModel.Screen.SINGLEPLAYER);
 
         // TODO: Rename
         Table table = new Table();
@@ -99,8 +100,8 @@ public class SinglePlayerView implements Screen {
         powerupsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            // Show powerups
-            singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+                // Show powerups
+                singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
             }
         });
     }
@@ -112,7 +113,7 @@ public class SinglePlayerView implements Screen {
         numberOfShots.setText("Shots: " + singlePlayerController.getNumberOfShots());
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        //stage.act(Math.min(delta, 1 / 30f));
+        // stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
     }
 

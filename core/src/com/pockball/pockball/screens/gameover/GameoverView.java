@@ -18,9 +18,12 @@ public class GameoverView implements Screen {
     private AssetsController assetsController;
     private ScreenController screenController;
     private ScreenModel.Screen screenModel;
+    float fontScaler;
+
 
     public GameoverView(ScreenController screenController, ScreenModel.Screen screenModel) {
         this.screenController = screenController;
+        fontScaler = Gdx.graphics.getHeight()*(3f/1000f);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
@@ -34,10 +37,12 @@ public class GameoverView implements Screen {
         stage.addActor(table);
 
         Label gameoverTitle = new Label("GAME OVER! ", assetsController.getSkin());
-
+        gameoverTitle.setFontScale(fontScaler);
         table.add(gameoverTitle);
 
         TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+        quitButton.getLabel().setFontScale(fontScaler);
+
         table.row().padTop(50);
         table.add(quitButton).uniformX();
 
