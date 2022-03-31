@@ -8,12 +8,14 @@ public class EntityFactory {
     private CueFactory cueFactory;
     private HoleFactory holeFactory;
     private PlayerFactory playerFactory;
+    private PowerupFactory powerupFactory;
 
     private EntityFactory() {
         ballFactory = BallFactory.getInstance();
         holeFactory = HoleFactory.getInstance();
         cueFactory = CueFactory.getInstance();
         playerFactory = PlayerFactory.getInstance();
+        powerupFactory = PowerupFactory.getInstance();
     }
 
     public static EntityFactory getInstance() {
@@ -36,5 +38,9 @@ public class EntityFactory {
 
     public Entity createPlayer(String playerName) {
         return playerFactory.createPlayer(playerName);
+    }
+
+    public Entity createPowerup(int powerupID) {
+        return powerupFactory.createPowerup(powerupID);
     }
 }

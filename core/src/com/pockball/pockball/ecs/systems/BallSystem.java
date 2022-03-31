@@ -20,6 +20,8 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.screens.GameController;
 
 public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -58,7 +60,7 @@ public class BallSystem extends IteratingSystem {
         }
 
         // Only shoot white ball with almost no speed
-        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
+        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable && !GameController.currentController.getShowPowerups()) {
             if (Gdx.input.isTouched()) {
                 if (!justTouched) {
                     // If first touch, set direction

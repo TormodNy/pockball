@@ -3,6 +3,7 @@ package com.pockball.pockball.game_states;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.pockball.pockball.db_models.EventModel;
+import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
@@ -52,6 +53,7 @@ public class SinglePlayerState implements State {
             default:
                 System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
+                Engine.getInstance().givePowerup();
         }
     }
 

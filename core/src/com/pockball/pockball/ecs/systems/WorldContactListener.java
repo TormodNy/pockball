@@ -98,7 +98,7 @@ public class WorldContactListener implements ContactListener {
                     break;
 
                 default:
-                    Engine.getInstance().removeEntity(ball);
+                    Engine.getInstance().removeBall(ball);
             }
         } catch (Exception e) {
             throw e;

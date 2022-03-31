@@ -5,12 +5,13 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.SinglePlayerState;
+import com.pockball.pockball.screens.GameController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
 
-public class SinglePlayerController {
-    private static SinglePlayerController singlePlayerControllerInstance = null;
+public class SinglePlayerController extends GameController {
+    public static SinglePlayerController singlePlayerControllerInstance;
     private ScreenController screenController;
 
     private SinglePlayerController() {
@@ -22,6 +23,8 @@ public class SinglePlayerController {
         if (singlePlayerControllerInstance == null) {
             singlePlayerControllerInstance = new SinglePlayerController();
         }
+
+        currentController = singlePlayerControllerInstance;
         return singlePlayerControllerInstance;
     }
 

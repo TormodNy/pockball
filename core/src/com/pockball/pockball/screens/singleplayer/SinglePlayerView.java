@@ -2,11 +2,9 @@ package com.pockball.pockball.screens.singleplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,13 +15,18 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.Util;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class SinglePlayerView implements Screen {
-    private final AssetsController assetsController;
-    private Stage stage;
-    private SinglePlayerController singlePlayerController;
+
     private Label numberOfShots;
     private ScreenController screenController;
+    private SpriteBatch sb;
+    private Stage stage;
+    private SinglePlayerController singlePlayerController;
+    private AssetsController assetsController;
+
+    private Sprite backdrop;
 
 
     public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
@@ -37,7 +40,6 @@ public class SinglePlayerView implements Screen {
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
 
         this.screenController = screenController;
-
     }
 
     @Override
@@ -60,6 +62,23 @@ public class SinglePlayerView implements Screen {
         tablePause.padRight(5);
         tablePause.add(pauseButton);
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.SINGLEPLAYER);
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
+        table.add(powerupsButton);
+        table.top().left();
+        table.pad(4);
+
+        powerupsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            // Show powerups
+            singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+            }
+        });
     }
 
     @Override
@@ -69,6 +88,7 @@ public class SinglePlayerView implements Screen {
         numberOfShots.setText("Shots: " + singlePlayerController.getNumberOfShots());
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        //stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
     }
 
