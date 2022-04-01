@@ -64,7 +64,6 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PlayerModel opponent = snapshot.getValue(PlayerModel.class);
-                System.out.println("listenToClientsInGame " + opponent);
                 CreateGameRoomController.getInstance().notifyNewClient(opponent);
             }
 
@@ -79,7 +78,6 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void stopListenToClientsInGame() {
-        System.out.println("stopListenToClientsInGame");
         opponentRef.removeEventListener(opponentListener);
     }
 
