@@ -1,6 +1,9 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
+import com.pockball.pockball.db_models.EventModel;
+import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
@@ -9,6 +12,8 @@ import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.gameover.GameoverView;
 
+import java.util.List;
+
 public class SinglePlayerState implements State {
 
     private final Entity playerEntity;
@@ -16,6 +21,7 @@ public class SinglePlayerState implements State {
     private final ScoreComponent score;
     private int numberOfShots = 0;
     private float gameVolume;
+    private int lastHole;
 
     public SinglePlayerState() {
         // Set up player
@@ -26,7 +32,7 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void ballIntoHole(BallType ballType) {
+    public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
                 System.out.println("Penalty point! White ball into hole.");
@@ -34,11 +40,10 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if (score.balls < 14) {
+                if (score.balls < 14 || lastHole != holeID) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player lost! Black ball into hole.");
-                }
-                else {
+                } else {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
                     System.out.println("Player won!");
                 }
@@ -48,6 +53,30 @@ public class SinglePlayerState implements State {
             default:
                 System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
+                Engine.getInstance().givePowerup();
+
+                if (score.balls == 14) {
+                    switch (holeID) {
+                        case 0:
+                            lastHole = 5;
+                            break;
+                        case 1:
+                            lastHole = 4;
+                            break;
+                        case 2:
+                            lastHole = 3;
+                            break;
+                        case 3:
+                            lastHole = 2;
+                            break;
+                        case 4:
+                            lastHole = 1;
+                            break;
+                        case 5:
+                            lastHole = 0;
+                            break;
+                    }
+                }
         }
     }
 
@@ -69,6 +98,45 @@ public class SinglePlayerState implements State {
     }
 
     @Override
+    public void addEvent(EventModel event) {
+
+    }
+
+    @Override
+    public void fireOpponentEventChange(List<EventModel> eventModelList) {
+
+    }
+
+    @Override
+    public void fireOpponentIsIdle() {
+
+    }
+
+    @Override
+    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
+
+    }
+
+    @Override
+    public void setHostTurn(boolean hostTurn) {
+    }
+
+    @Override
+    public void setIdle(boolean idle) {
+        // TODO: Implement
+    }
+
+    @Override
+    public boolean getIdle() {
+        return false;
+    }
+
+    @Override
+    public boolean canPerformAction() {
+        // TODO: Implement
+        return true;
+    }
+
     public int getNumberOfShots() {
         return numberOfShots;
     }
@@ -80,6 +148,11 @@ public class SinglePlayerState implements State {
     @Override
     public void reset() {
         numberOfShots = 0;
+    }
+
+    @Override
+    public boolean getIsMyTurn() {
+        return true;
     }
 }
 

@@ -16,6 +16,9 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.screens.GameController;
 
 public class CueSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -25,9 +28,6 @@ public class CueSystem extends IteratingSystem {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsMapper;
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
-
-
-    private boolean justTouched = false;
 
     public CueSystem() {
         super(Family.all(CueComponent.class, PositionComponent.class, DirectionComponent.class).get());
@@ -53,7 +53,14 @@ public class CueSystem extends IteratingSystem {
         PlaceEntityComponent placeEntity = placeEntityMapper.get(cue.ball);
 
         // Position cue at ball when shooting
-        if (Gdx.input.isTouched() && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
+        boolean canShoot = Gdx.input.isTouched() &&
+                !placeEntity.placeable &&
+                !GameController.currentController.getShowPowerups() &&
+                Context.getInstance().getState().canPerformAction() &&
+                Gdx.input.getY() >= 40;
+
+        if (canShoot) {
+            System.out.println("CAN SHOOT - " + Context.getInstance().getState().canPerformAction());
             direction.rotation = ball.dir.angleDeg();
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));

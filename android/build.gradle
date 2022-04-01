@@ -1,3 +1,5 @@
+
+
 android {
     buildToolsVersion "32.0.0"
     compileSdkVersion 32
@@ -16,9 +18,10 @@ android {
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
+
     defaultConfig {
         applicationId "com.pockball.pockball"
-        minSdkVersion 14
+        minSdkVersion 29
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -89,4 +92,12 @@ task run(type: Exec) {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.pockball.pockball/com.pockball.pockball.AndroidLauncher'
 }
 
+dependencies {
+    // Add the dependencies for the desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google:google:5'
+}
+
 eclipse.project.name = appName + "-android"
+

@@ -31,7 +31,6 @@ public class SoundController {
 
     public void playSound (String sound, float volume) {
         float gameVolume = Context.getInstance().getState().getGameVolume();
-        System.out.println(gameVolume);
         soundLibrary.get(sound).play(volume*gameVolume);
     }
 }

@@ -3,6 +3,7 @@ package com.pockball.pockball.screens.settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,6 +24,8 @@ public class SettingsView implements Screen {
     private AssetsController assetsController;
     private ScreenController screenController;
     private ScreenModel.Screen screenModel;
+    private BitmapFont font;
+    float fontScaler;
 
     public SettingsView(ScreenController screenController, ScreenModel.Screen screenModel) {
         this.screenController = screenController;
@@ -30,6 +33,7 @@ public class SettingsView implements Screen {
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
         this.screenModel = screenModel;
+        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
     }
 
 
@@ -43,6 +47,13 @@ public class SettingsView implements Screen {
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
         volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
+        volumeSlider.getStyle().knob.setMinHeight(fontScaler*15);
+        volumeSlider.getStyle().knob.setMinWidth(fontScaler*15);
+
+        settingsTitle.setFontScale(fontScaler);
+        volumeTitle.setFontScale(fontScaler);
+
+
 
         table.add(settingsTitle);
         table.row().padTop(50);
@@ -59,6 +70,7 @@ public class SettingsView implements Screen {
 
         if (screenModel == ScreenModel.Screen.MAINMENU) {
             TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
+            mainMenuButton.getLabel().setFontScale(fontScaler);
             table.row().padTop(50);
             table.add(mainMenuButton).uniformX();
 
@@ -66,10 +78,12 @@ public class SettingsView implements Screen {
         }
         else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+            quitButton.getLabel().setFontScale(fontScaler);
             table.row().padTop(50);
             table.add(quitButton).uniformX();
 
             TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
+            resumeButton.getLabel().setFontScale(fontScaler);
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
 

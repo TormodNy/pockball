@@ -9,13 +9,17 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.DirectionComponent;
+import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RenderSystem extends IteratingSystem {
     private SpriteBatch spriteBatch;
-    private Array<Entity> renderQueue;
+    private List<Array<Entity>> renderQueue;
 
     private final ComponentMapper<SpriteComponent> spriteMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -31,12 +35,17 @@ public class RenderSystem extends IteratingSystem {
         directionMapper = ComponentMapper.getFor(DirectionComponent.class);
 
         spriteBatch = new SpriteBatch();
-        renderQueue = new Array<Entity>();
+        renderQueue = new ArrayList<Array<Entity>>();
+
+        for (int i = 0; i < 10; i++) {
+            renderQueue.add(new Array<Entity>());
+        }
     }
 
     @Override
     public void processEntity(Entity entity, float deltaTime) {
-        renderQueue.add(entity);
+        SpriteComponent sprite = spriteMapper.get(entity);
+        renderQueue.get(sprite.layer).add(entity);
     }
 
     @Override
@@ -48,20 +57,26 @@ public class RenderSystem extends IteratingSystem {
 
         spriteBatch.begin();
 
-        for (Entity entity : renderQueue) {
-            SpriteComponent spriteComponent = spriteMapper.get(entity);
-            PositionComponent positionComponent = positionMapper.get(entity);
-            SizeComponent sizeComponent = sizeMapper.get(entity);
-            DirectionComponent directionComponent = directionMapper.get(entity);
+        boolean stopped = true;
 
-            spriteComponent.sprite.setRotation(directionComponent.rotation);
-            spriteComponent.sprite.setPosition(positionComponent.position.x, positionComponent.position.y);
-            spriteComponent.sprite.setSize(sizeComponent.width, sizeComponent.height);
+        for (Array<Entity> entityArray : renderQueue) {
+            for (Entity entity : entityArray) {
+                SpriteComponent spriteComponent = spriteMapper.get(entity);
+                PositionComponent positionComponent = positionMapper.get(entity);
+                SizeComponent sizeComponent = sizeMapper.get(entity);
+                DirectionComponent directionComponent = directionMapper.get(entity);
 
-            spriteComponent.sprite.draw(spriteBatch);
+                if (spriteComponent.visible) {
+                    spriteComponent.sprite.setRotation(directionComponent.rotation);
+                    spriteComponent.sprite.setPosition(positionComponent.position.x, positionComponent.position.y);
+                    spriteComponent.sprite.setSize(sizeComponent.width, sizeComponent.height);
+
+                    spriteComponent.sprite.draw(spriteBatch);
+                }
+            }
+            entityArray.clear();
         }
 
         spriteBatch.end();
-        renderQueue.clear();
     }
 }

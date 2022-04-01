@@ -5,11 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.assets.AssetsController;
@@ -23,6 +21,9 @@ public class MainMenuView implements Screen {
     private Stage stage;
     private AssetsController assetsController;
     private ScreenController screenController;
+    float logoScaler;
+    float fontScaler;
+
 
     private Texture logo;
 
@@ -33,6 +34,8 @@ public class MainMenuView implements Screen {
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
 
+        logoScaler = Gdx.graphics.getHeight()*(1f/1000f);
+        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
         this.logo = new Texture("pockballLogo.png");
     }
 
@@ -42,20 +45,35 @@ public class MainMenuView implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton singleplayerButton = new TextButton("SINGLEPLAYER", assetsController.getSkin());
-        TextButton multiplayerButton = new TextButton("MULTIPLAYER", assetsController.getSkin());
-        TextButton settingsButton = new TextButton("SETTINGS", assetsController.getSkin());
+        TextButton singleplayerButton = new TextButton("Singleplayer", assetsController.getSkin());
+        TextButton multiplayerButton = new TextButton("Multiplayer", assetsController.getSkin());
+        TextButton joinGameButton = new TextButton("Join game", assetsController.getSkin());
+        TextButton createGameButton = new TextButton("Create game", assetsController.getSkin());
+        TextButton settingsButton = new TextButton("Settings", assetsController.getSkin());
+
+        singleplayerButton.getLabel().setFontScale(fontScaler);
+        multiplayerButton.getLabel().setFontScale(fontScaler);
+        joinGameButton.getLabel().setFontScale(fontScaler);
+        createGameButton.getLabel().setFontScale(fontScaler);
+        settingsButton.getLabel().setFontScale(fontScaler);
+
 
         table.row().padTop(50);
         table.add(singleplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(multiplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
+        table.add(createGameButton).uniformX();
+        table.row().pad(20, 0, 0, 0);
+        table.add(joinGameButton).uniformX();
+        table.row().pad(20, 0, 0, 0);
         table.add(settingsButton).uniformX();
 
         Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, joinGameButton, ScreenModel.Screen.JOIN_GAME, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, createGameButton, ScreenModel.Screen.CREATE_GAME, ScreenModel.Screen.MAINMENU);
     }
 
 
@@ -66,7 +84,11 @@ public class MainMenuView implements Screen {
         Gdx.gl.glClearColor(11f / RGBDivider, 137f / RGBDivider, 1f / RGBDivider, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        sb.draw(logo, (PockBall.WIDTH*32/2f) - (logo.getWidth()/4f), (PockBall.HEIGHT*32f * (2f/3f)), logo.getWidth()/2f, logo.getHeight()/2f);
+        sb.draw(logo,
+                (Gdx.graphics.getWidth()/2f) - (logo.getWidth()*logoScaler/2f),
+                (Gdx.graphics.getHeight()* (2f/3f)),
+                logo.getWidth()*logoScaler,
+                logo.getHeight()*logoScaler);
         sb.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

@@ -1,32 +1,42 @@
 package com.pockball.pockball.screens.multiplayer;
 
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.MultiPlayerState;
-import com.pockball.pockball.game_states.SinglePlayerState;
+import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.screens.GameController;
 import com.pockball.pockball.screens.ScreenController;
 
 
-public class MultiplayerController {
-    private static MultiplayerController singlePlayerControllerInstance = null;
+public class MultiplayerController extends GameController {
+    private static MultiplayerController multiplayerControllerInstance = null;
     private ScreenController screenController;
 
     private MultiplayerController() {
-        // Set multiplayer state
-        Context.getInstance().setState(new MultiPlayerState());
     }
 
+
     public void resetGame() {
-        Context.getInstance().setState(new MultiPlayerState());
     }
 
     public static MultiplayerController getInstance() {
-        if (singlePlayerControllerInstance == null) {
-            singlePlayerControllerInstance = new MultiplayerController();
+        if (multiplayerControllerInstance == null) {
+            multiplayerControllerInstance = new MultiplayerController();
         }
-        return singlePlayerControllerInstance;
+
+        currentController = multiplayerControllerInstance;
+        return multiplayerControllerInstance;
     }
 
     public void checkGameOver() {
 
+    }
+
+    @Override
+    public String getCurrentStateString() {
+        State state = Context.getInstance().getState();
+        if (state.canPerformAction()) return "Your turn. Make a shot!";
+        else if (!state.getIsMyTurn()) return "Opponents turn";
+        else if (!state.getIdle()) return "Waiting for balls to stop.";
+
+        return "Unhandled state";
     }
 }

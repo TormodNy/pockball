@@ -68,20 +68,20 @@ public class WorldContactListener implements ContactListener {
             Entity ball;
             if (fixtureB.isSensor()) { // fixture B is the hole
                 ball = (Entity) fixtureA.getBody().getUserData();
-                handleBallInHole(ball);
+                handleBallInHole(ball, (int) fixtureB.getBody().getUserData());
             } else if (fixtureA.isSensor()) { // fixture A is the hole
                 ball = (Entity) fixtureB.getBody().getUserData();
-                handleBallInHole(ball);
+                handleBallInHole(ball, (int) fixtureA.getBody().getUserData());
             }
         }
     }
 
-    private void handleBallInHole(Entity ball) {
+    private void handleBallInHole(Entity ball, int holeID) {
         try {
             BallType ballType = ball.getComponent(BallComponent.class).type;
 
             // Fire state change
-            Context.getInstance().getState().ballIntoHole(ballType);
+            Context.getInstance().getState().ballIntoHole(ballType, holeID);
 
             switch (ballType) {
                 case WHITE:
@@ -98,7 +98,7 @@ public class WorldContactListener implements ContactListener {
                     break;
 
                 default:
-                    Engine.getInstance().removeEntity(ball);
+                    Engine.getInstance().removeBall(ball);
             }
         } catch (Exception e) {
             throw e;

@@ -8,7 +8,7 @@ public class Context {
 
     public Context() {
         // Standard value
-        state = null;
+        state = new SinglePlayerState();
     }
 
     public static Context getInstance() {

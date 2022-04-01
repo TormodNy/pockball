@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.pockball.pockball.PockBall;
+import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
@@ -19,6 +20,8 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.screens.GameController;
 
 public class BallSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -42,6 +45,7 @@ public class BallSystem extends IteratingSystem {
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
     }
 
+
     @Override
     public void processEntity(Entity entity, float deltaTime) {
         PositionComponent position = positionMapper.get(entity);
@@ -56,8 +60,13 @@ public class BallSystem extends IteratingSystem {
         }
 
         // Only shoot white ball with almost no speed
-        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable) {
-            if (Gdx.input.isTouched()) {
+        boolean canShoot = ball.type.equals(BallType.WHITE)
+                && Context.getInstance().getState().canPerformAction()
+                && physics.body.getLinearVelocity().len() <= 0.01f
+                && !placeEntity.placeable
+                && !GameController.currentController.getShowPowerups();
+        if (canShoot) {
+            if (Gdx.input.isTouched() && Gdx.input.getY() >= 40) {
                 if (!justTouched) {
                     // If first touch, set direction
                     Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -77,17 +86,18 @@ public class BallSystem extends IteratingSystem {
             } else if (justTouched) {
                 if (ball.power.len() <= 0) return;
 
-                    // Shoot ball in direction with power
-                    float force = 1500;
-                    physics.body.applyForceToCenter(ball.dir.nor().scl(force * ball.power.len()), true);
-                    justTouched = false;
+                // Shoot ball in direction with power
+                float force = 1500;
+                Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
+                Engine.getInstance().shootBallWithForce(directionWithForce, true);
 
-                    // Increments number of shots for singleplayer
-                    Context.getInstance().getState().incNumberOfShots();
-                    
-                    // Play sound
-                    soundController.playSound("cueHit", ball.power.len() / 3);
+                // Increments number of shots for singleplayer
+                Context.getInstance().getState().incNumberOfShots();
                 
+                // Play sound
+                soundController.playSound("cueHit", ball.power.len() / 3);
+
+                justTouched = false;
             }
         }
     }

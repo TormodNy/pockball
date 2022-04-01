@@ -3,16 +3,18 @@ package com.pockball.pockball.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
+import com.pockball.pockball.screens.join_game_room.JoinGameController;
+import com.pockball.pockball.screens.join_game_room.JoinGameView;
 import com.pockball.pockball.screens.gameover.GameoverView;
 import com.pockball.pockball.screens.main_menu.MainMenuView;
+import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
+import com.pockball.pockball.screens.create_game_room.CreateGameRoomView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
 import com.pockball.pockball.screens.won.WinnerView;
-
-import java.lang.invoke.MutableCallSite;
 
 public class ScreenController implements Disposable {
 
@@ -47,8 +49,13 @@ public class ScreenController implements Disposable {
                     break;
                 case MULTIPLAYER:
                     MultiplayerController multiplayerController = MultiplayerController.getInstance();
-                    MultiplayerView multiplayerView = new MultiplayerView(multiplayerController);
+                    MultiplayerView multiplayerView = new MultiplayerView(this, multiplayerController);
                     this.setScreen(multiplayerView);
+                    break;
+                case JOIN_GAME:
+                    JoinGameController joinGameController = JoinGameController.getInstance();
+                    JoinGameView joinGameView = new JoinGameView(joinGameController);
+                    this.setScreen(joinGameView);
                     break;
                 case MAINMENU:
                     MainMenuView mainMenuView = new MainMenuView(this);
@@ -61,6 +68,11 @@ public class ScreenController implements Disposable {
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);
                     this.setScreen(settingsView);
+                    break;
+                case CREATE_GAME:
+                    CreateGameRoomController createGameRoomController = CreateGameRoomController.getInstance();
+                    CreateGameRoomView createGameRoomView = new CreateGameRoomView(createGameRoomController);
+                    this.setScreen(createGameRoomView);
                     break;
                 case GAMEOVER:
                     GameoverView gameoverView = new GameoverView(this, ScreenModel.Screen.SINGLEPLAYER);
