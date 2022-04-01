@@ -8,6 +8,8 @@ import com.pockball.pockball.game_states.MultiPlayerState;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
+import java.util.Random;
+
 public class CreateGameRoomController {
     private static CreateGameRoomController createGameRoomControllerInstance = null;
     private ScreenController screenController;
@@ -25,22 +27,22 @@ public class CreateGameRoomController {
         return createGameRoomControllerInstance;
     }
 
-    protected void testDb() {
-        System.out.println("TEST DB");
-        createRoom();
-        firebaseController.listenToClientsInGame(roomModel.roomId);
-    }
-
-    public void createRoom() {
+    public String createRoom() {
         PlayerModel host = new PlayerModel("player1");
 
-        roomModel = new RoomModel("magnus", host);
+        Random random = new Random();
+        String roomId = "" + (random.nextInt(9000) + 1000);
+
+        roomModel = new RoomModel(roomId, host);
         firebaseController.writeToDb(roomModel.roomId, roomModel);
+        firebaseController.listenToClientsInGame(roomModel.roomId);
+
+        return roomId;
     }
 
-    public void joinRoom() {
-        PlayerModel opponent = new PlayerModel("client1");
-        firebaseController.writeToDb(roomModel.roomId + ".client", opponent);
+    public void removeRoom() {
+        firebaseController.removeFromDb(roomModel.roomId);
+        firebaseController.stopListenToClientsInGame();
     }
 
     public void notifyNewClient(PlayerModel client) {

@@ -46,13 +46,11 @@ public class MainMenuView implements Screen {
         stage.addActor(table);
 
         TextButton singleplayerButton = new TextButton("Singleplayer", assetsController.getSkin());
-        TextButton multiplayerButton = new TextButton("Multiplayer", assetsController.getSkin());
         TextButton joinGameButton = new TextButton("Join game", assetsController.getSkin());
         TextButton createGameButton = new TextButton("Create game", assetsController.getSkin());
         TextButton settingsButton = new TextButton("Settings", assetsController.getSkin());
 
         singleplayerButton.getLabel().setFontScale(fontScaler);
-        multiplayerButton.getLabel().setFontScale(fontScaler);
         joinGameButton.getLabel().setFontScale(fontScaler);
         createGameButton.getLabel().setFontScale(fontScaler);
         settingsButton.getLabel().setFontScale(fontScaler);
@@ -61,8 +59,6 @@ public class MainMenuView implements Screen {
         table.row().padTop(50);
         table.add(singleplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
-        table.add(multiplayerButton).uniformX();
-        table.row().pad(20, 0, 0, 0);
         table.add(createGameButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(joinGameButton).uniformX();
@@ -70,7 +66,6 @@ public class MainMenuView implements Screen {
         table.add(settingsButton).uniformX();
 
         Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
-        Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, joinGameButton, ScreenModel.Screen.JOIN_GAME, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, createGameButton, ScreenModel.Screen.CREATE_GAME, ScreenModel.Screen.MAINMENU);

@@ -1,5 +1,6 @@
 package com.pockball.pockball.firebase;
 
+import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.db_models.ShotEvent;
 
 public interface FirebaseInterface {
@@ -7,6 +8,8 @@ public interface FirebaseInterface {
     // https://libgdx.com/wiki/app/interfacing-with-platform-specific-code
 
     public void writeToDb(String target, Object value);
+    public void removeFromDb(String target);
+
     public void addNewShot(String gameId, ShotEvent shotEvent);
     public void appendToArrayInDb(String target, Object value);
 
@@ -22,8 +25,7 @@ public interface FirebaseInterface {
     public void listenToOpponentIdleState(String target);
     public void stopListenToOpponentIdleState();
 
-    public void listenToAvailableRooms();
-    public void stopListenToAvailableRooms();
+    public void getRoom(String roomId);
 
     public void listenToBallType(String roomId);
     public void stopListenToBallType();
