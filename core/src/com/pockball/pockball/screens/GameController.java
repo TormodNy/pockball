@@ -12,4 +12,6 @@ public abstract class GameController {
     public void setShowPowerups(boolean visible) {
         showPowerups = visible;
     }
+
+    public abstract String getCurrentStateString();
 }

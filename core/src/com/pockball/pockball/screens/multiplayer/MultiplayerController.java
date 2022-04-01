@@ -1,8 +1,7 @@
 package com.pockball.pockball.screens.multiplayer;
 
-import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.MultiPlayerState;
+import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 import com.pockball.pockball.screens.ScreenController;
 
@@ -29,5 +28,15 @@ public class MultiplayerController extends GameController {
 
     public void checkGameOver() {
 
+    }
+
+    @Override
+    public String getCurrentStateString() {
+        State state = Context.getInstance().getState();
+        if (state.canPerformAction()) return "Your turn. Make a shot!";
+        else if (!state.getIsMyTurn()) return "Opponents turn";
+        else if (!state.getIdle()) return "Waiting for balls to stop.";
+
+        return "Unhandled state";
     }
 }

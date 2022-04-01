@@ -40,4 +40,8 @@ public class SinglePlayerController extends GameController {
         Context.getInstance().getState().reset();
     }
 
+    @Override
+    public String getCurrentStateString() {
+        return "Single player";
+    }
 }

@@ -41,7 +41,7 @@ public class PhysicsSystem extends IteratingSystem {
         if (Engine.getInstance().isBall(entity)) {
             long now = System.currentTimeMillis();
 
-            if (physics.body.getLinearVelocity().len() > 0.5f) {
+            if (physics.body.getLinearVelocity().len() > 0.1f) {
                 timeLastMovement = now;
             }
 

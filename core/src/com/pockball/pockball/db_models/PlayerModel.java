@@ -11,7 +11,7 @@ public class PlayerModel {
     public BallType ballType;
     public List<String> score;
     public List<EventModel> events;
-    public boolean ready = false;
+    public boolean idle = false;
 
 
     public PlayerModel() {

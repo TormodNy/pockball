@@ -34,7 +34,7 @@ public class CreateGameRoomController {
     public void createRoom() {
         PlayerModel host = new PlayerModel("player1");
 
-        roomModel = new RoomModel("game2", host);
+        roomModel = new RoomModel("magnus", host);
         firebaseController.writeToDb(roomModel.roomId, roomModel);
     }
 

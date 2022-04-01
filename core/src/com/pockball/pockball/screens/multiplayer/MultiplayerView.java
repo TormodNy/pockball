@@ -14,6 +14,7 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.Util;
+import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
 public class MultiplayerView implements Screen {
@@ -40,6 +41,7 @@ public class MultiplayerView implements Screen {
 
         waitingForOtherPlayerLabel = new Label("Waiting for other player...", assetsController.getSkin());
         waitingForOtherPlayerLabel.setFontScale(fontScaler);
+        Context.getInstance().getState().setIdle(true);
     }
 
     @Override
@@ -84,7 +86,9 @@ public class MultiplayerView implements Screen {
             }
         });
 
-    };
+    }
+
+    ;
 
     // Call this method to toggle the text
     private void toggleWaitingForOtherPlayer() {
@@ -95,13 +99,18 @@ public class MultiplayerView implements Screen {
     public void render(float delta) {
         Engine.getInstance().update(delta);
 
+        // TODO: Performance optimization
+        // TODO: If stateChanged
         if (showWaitingForOtherPlayer) {
-            waitingForOtherPlayerLabel.setText("Waiting for other player...");
+            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
+        } else {
+            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
         }
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         // stage.act(Math.min(delta, 1 / 30f));
-        stage.draw();;
+        stage.draw();
+        ;
     }
 
     @Override

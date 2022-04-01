@@ -60,7 +60,12 @@ public class BallSystem extends IteratingSystem {
         }
 
         // Only shoot white ball with almost no speed
-        if (ball.type.equals(BallType.WHITE) && physics.body.getLinearVelocity().len() <= 0.01f && !placeEntity.placeable && !GameController.currentController.getShowPowerups()) {
+        boolean canShoot = ball.type.equals(BallType.WHITE)
+                && Context.getInstance().getState().canPerformAction()
+                && physics.body.getLinearVelocity().len() <= 0.01f
+                && !placeEntity.placeable
+                && !GameController.currentController.getShowPowerups();
+        if (canShoot) {
             if (Gdx.input.isTouched() && Gdx.input.getY() >= 40) {
                 if (!justTouched) {
                     // If first touch, set direction

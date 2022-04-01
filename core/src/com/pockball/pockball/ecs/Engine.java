@@ -154,7 +154,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         // Powerups
         for (int i = 0; i < 0; i++) {
             engineInstance.addEntity(entityFactory.createPowerup(0));
-
         }
         // Place balls on table
         for (int i = 0; i <= 15; i++) {

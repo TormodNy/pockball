@@ -26,7 +26,9 @@ public interface State {
 
     public void setHostTurn(boolean hostTurn);
 
-    public void setIdle(boolean ready);
+    public void setIdle(boolean idle);
+
+    public boolean getIdle();
 
     public boolean canPerformAction();
 
@@ -35,4 +37,6 @@ public interface State {
     void incNumberOfShots();
 
     void reset();
+
+    public boolean getIsMyTurn();
 }

@@ -122,8 +122,13 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void setIdle(boolean ready) {
+    public void setIdle(boolean idle) {
         // TODO: Implement
+    }
+
+    @Override
+    public boolean getIdle() {
+        return false;
     }
 
     @Override
@@ -143,6 +148,11 @@ public class SinglePlayerState implements State {
     @Override
     public void reset() {
         numberOfShots = 0;
+    }
+
+    @Override
+    public boolean getIsMyTurn() {
+        return true;
     }
 }
 
