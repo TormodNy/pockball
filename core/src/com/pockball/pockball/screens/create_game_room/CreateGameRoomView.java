@@ -25,6 +25,8 @@ public class CreateGameRoomView implements Screen {
     private Screen previousScreen;
     private ScreenController screenController;
 
+    private Label title;
+
     public CreateGameRoomView(CreateGameRoomController controller) {
         this.controller = controller;
         this.screenController = ScreenController.getInstance();
@@ -37,14 +39,14 @@ public class CreateGameRoomView implements Screen {
 
     @Override
     public void show() {
+        controller.createRoom();
+
         // Create game
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
-        String roomId = controller.createRoom();
-
-        Label title = new Label("Room code: " + roomId,  assetsController.getSkin());
+        title = new Label("Setting up room",  assetsController.getSkin());
         title.setFontScale(2);
         title.setColor(Color.WHITE);
         table.add(title);
@@ -70,6 +72,10 @@ public class CreateGameRoomView implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (!controller.getConfirmedRoomId().isEmpty()) {
+            title.setText("Room code: " + controller.getConfirmedRoomId());
+        }
 
         stage.draw();
     }

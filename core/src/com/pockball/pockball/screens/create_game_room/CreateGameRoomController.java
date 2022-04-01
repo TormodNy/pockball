@@ -14,9 +14,13 @@ public class CreateGameRoomController {
     private static CreateGameRoomController createGameRoomControllerInstance = null;
     private ScreenController screenController;
     private FirebaseController firebaseController;
+
     private RoomModel roomModel;
+    private String randomRoomId;
+    private String confirmedRoomId = "";
 
     private CreateGameRoomController() {
+        screenController = ScreenController.getInstance();
         firebaseController = FirebaseController.getInstance();
     }
 
@@ -27,17 +31,28 @@ public class CreateGameRoomController {
         return createGameRoomControllerInstance;
     }
 
-    public String createRoom() {
-        PlayerModel host = new PlayerModel("player1");
-
+    public void createRoom() {
         Random random = new Random();
-        String roomId = "" + (random.nextInt(9000) + 1000);
+        randomRoomId = "" + (random.nextInt(9000) + 1000);
 
-        roomModel = new RoomModel(roomId, host);
-        firebaseController.writeToDb(roomModel.roomId, roomModel);
-        firebaseController.listenToClientsInGame(roomModel.roomId);
+        firebaseController.checkRoomId(randomRoomId);
+    }
 
-        return roomId;
+    public void idIsFree (boolean isFree) {
+        if (isFree) {
+            PlayerModel host = new PlayerModel("player1");
+
+            confirmedRoomId = randomRoomId;
+            roomModel = new RoomModel(confirmedRoomId, host);
+            firebaseController.writeToDb(roomModel.roomId, roomModel);
+            firebaseController.listenToClientsInGame(roomModel.roomId);
+        } else {
+            createRoom();
+        }
+    }
+
+    public String getConfirmedRoomId () {
+        return confirmedRoomId;
     }
 
     public void removeRoom() {
@@ -57,6 +72,6 @@ public class CreateGameRoomController {
     public void startGame() {
         System.out.println("startGame " + roomModel.roomId);
         Context.getInstance().setState(new MultiPlayerState(roomModel, true));
-        ScreenController.getInstance().changeScreen(ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.CREATE_GAME);
+        screenController.changeScreen(ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.CREATE_GAME);
     }
 }

@@ -216,6 +216,16 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     @Override
+    public void checkRoomId(String roomId) {
+        db.getReference().child("test").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                CreateGameRoomController.getInstance().idIsFree(task.getResult().getValue(RoomModel.class) == null);
+            }
+        });
+    }
+
+    @Override
     public void listenToBallType(String roomId) {
         ballTypeRef = db.getReference().child("test").child(roomId).child("ballType");
 

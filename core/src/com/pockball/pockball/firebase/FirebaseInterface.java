@@ -26,6 +26,7 @@ public interface FirebaseInterface {
     public void stopListenToOpponentIdleState();
 
     public void getRoom(String roomId);
+    public void checkRoomId(String roomId);
 
     public void listenToBallType(String roomId);
     public void stopListenToBallType();
