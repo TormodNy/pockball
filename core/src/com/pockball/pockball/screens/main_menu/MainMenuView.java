@@ -50,12 +50,15 @@ public class MainMenuView implements Screen {
         TextButton joinGameButton = new TextButton("Join game", assetsController.getSkin());
         TextButton createGameButton = new TextButton("Create game", assetsController.getSkin());
         TextButton settingsButton = new TextButton("Settings", assetsController.getSkin());
+        TextButton tutorialButton = new TextButton("Tutorial", assetsController.getSkin());
+
 
         singleplayerButton.getLabel().setFontScale(fontScaler);
         multiplayerButton.getLabel().setFontScale(fontScaler);
         joinGameButton.getLabel().setFontScale(fontScaler);
         createGameButton.getLabel().setFontScale(fontScaler);
         settingsButton.getLabel().setFontScale(fontScaler);
+        tutorialButton.getLabel().setFontScale(fontScaler);
 
 
         table.row().padTop(50);
@@ -68,12 +71,15 @@ public class MainMenuView implements Screen {
         table.add(joinGameButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(settingsButton).uniformX();
+        table.row().pad(20, 0, 0, 0);
+        table.add(tutorialButton).uniformX();
 
         Util.addPathToButton(screenController, singleplayerButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, multiplayerButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, settingsButton, ScreenModel.Screen.SETTINGS, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, joinGameButton, ScreenModel.Screen.JOIN_GAME, ScreenModel.Screen.MAINMENU);
         Util.addPathToButton(screenController, createGameButton, ScreenModel.Screen.CREATE_GAME, ScreenModel.Screen.MAINMENU);
+        Util.addPathToButton(screenController, tutorialButton, ScreenModel.Screen.TUTORIAL, ScreenModel.Screen.MAINMENU);
     }
 
 
