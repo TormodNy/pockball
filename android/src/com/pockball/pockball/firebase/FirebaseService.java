@@ -2,6 +2,8 @@ package com.pockball.pockball.firebase;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +31,6 @@ public class FirebaseService implements FirebaseInterface {
     private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
     private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
 
-    private ValueEventListener roomsListener;
-    private DatabaseReference roomsRef;
-
     public FirebaseService() {
         db = FirebaseDatabase.getInstance("https://pockball-a5e58-default-rtdb.europe-west1.firebasedatabase.app");
         ref = db.getReference();
@@ -39,6 +38,7 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     private DatabaseReference getRefFromNestedTarget(String nestedTarget) {
+        System.out.println("nestedTarget: " + nestedTarget);
         String[] targets = nestedTarget.split("\\.");
 
         ref = db.getReference().child("test");
@@ -54,6 +54,13 @@ public class FirebaseService implements FirebaseInterface {
     public void writeToDb(String target, Object value) {
         ref = getRefFromNestedTarget(target);
         ref.setValue(value);
+    }
+
+    @Override
+    public void removeFromDb(String target) {
+        System.out.println("Removing: " + target);
+        ref = getRefFromNestedTarget(target);
+        ref.removeValue();
     }
 
     @Override
@@ -198,35 +205,24 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     @Override
-    public void listenToAvailableRooms() {
-        // stores the reference in instance variable, to be able to unsubscribe from listener when needed
-        roomsRef = db.getReference().child("test");
-
-        // stores the listener in instance variable, to be able to unsubscribe from listener when needed
-        roomsListener = new ValueEventListener() {
+    public void getRoom(String roomId) {
+        // Returns the room with given roomId
+        db.getReference().child("test").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<RoomModel> rooms = new ArrayList<>();
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    RoomModel room = snap.getValue(RoomModel.class);
-                    rooms.add(room);
-                }
-
-                JoinGameController.getInstance().setAvailableRooms(rooms);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                JoinGameController.getInstance().joinGame(task.getResult().getValue(RoomModel.class));
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error);
-            }
-        };
-
-        roomsRef.addValueEventListener(roomsListener);
+        });
     }
 
     @Override
-    public void stopListenToAvailableRooms() {
-        roomsRef.removeEventListener(roomsListener);
+    public void checkRoomId(String roomId) {
+        db.getReference().child("test").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                CreateGameRoomController.getInstance().idIsFree(task.getResult().getValue(RoomModel.class) == null);
+            }
+        });
     }
 
     @Override

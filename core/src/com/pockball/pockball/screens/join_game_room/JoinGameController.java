@@ -1,6 +1,5 @@
 package com.pockball.pockball.screens.join_game_room;
 
-import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
@@ -21,6 +20,7 @@ public class JoinGameController {
     }
 
     private List<RoomModel> availableRooms;
+    private String errorMessage = "";
 
     public static JoinGameController getInstance() {
         if (joinGameControllerInstance == null) {
@@ -37,16 +37,21 @@ public class JoinGameController {
         return availableRooms;
     }
 
-    public void listenForRooms () {
-        firebaseController.listenToAvailableRooms();
+    public void getRoom(String roomId) {
+        firebaseController.getRoom(roomId);
     }
 
-    public void stopListenForRooms () {
-        firebaseController.stopListenToAvailableRooms();
+    public String getErrorMessage () {
+        return errorMessage;
     }
 
     public void joinGame (RoomModel roomModel) {
         System.out.println("Joined game with roomID: " + roomModel);
+
+        if (roomModel == null || roomModel.client != null) {
+            errorMessage = "Invalid room";
+            return;
+        }
 
         // Join room in db
         Context.getInstance().setState(new MultiPlayerState(roomModel, false));
@@ -54,7 +59,6 @@ public class JoinGameController {
                 ScreenModel.Screen.MULTIPLAYER,
                 ScreenModel.Screen.JOIN_GAME
         );
-
     }
 }
 
