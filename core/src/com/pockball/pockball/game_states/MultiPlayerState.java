@@ -21,6 +21,7 @@ public class MultiPlayerState implements State {
     private final Entity myPlayerEntity, opponentPlayerEntity;
     private boolean ballTypeSet = false;
     private float gameVolume;
+    private boolean hasAimed = false;
 
     private RoomModel roomModel;
     private FirebaseController firebaseController;
@@ -257,6 +258,7 @@ public class MultiPlayerState implements State {
         firebaseController.stopListenToOpponentIdleState();
         firebaseController.stopListenToBallType();
         firebaseController.stopListenToHostTurn();
+        hasAimed = false;
     }
 
     public void updateMyTurn() {
@@ -266,5 +268,15 @@ public class MultiPlayerState implements State {
     @Override
     public boolean getIsMyTurn() {
         return myTurn;
+    }
+
+    @Override
+    public void setHasAimed(boolean aimed) {
+        hasAimed = aimed;
+    }
+
+    @Override
+    public boolean hasAimed() {
+        return hasAimed;
     }
 }

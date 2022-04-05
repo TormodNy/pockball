@@ -39,4 +39,8 @@ public interface State {
     void reset();
 
     public boolean getIsMyTurn();
+
+    public void setHasAimed(boolean aimed);
+
+    public boolean hasAimed();
 }

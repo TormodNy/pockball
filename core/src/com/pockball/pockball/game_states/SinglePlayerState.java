@@ -21,6 +21,7 @@ public class SinglePlayerState implements State {
     private int numberOfShots = 0;
     private float gameVolume;
     private int lastHole;
+    private boolean hasAimed = false;
 
     public SinglePlayerState() {
         // Set up player
@@ -145,11 +146,22 @@ public class SinglePlayerState implements State {
     @Override
     public void reset() {
         numberOfShots = 0;
+        hasAimed = false;
     }
 
     @Override
     public boolean getIsMyTurn() {
         return true;
+    }
+
+    @Override
+    public void setHasAimed(boolean aimed) {
+        hasAimed = aimed;
+    }
+
+    @Override
+    public boolean hasAimed() {
+        return hasAimed;
     }
 }
 

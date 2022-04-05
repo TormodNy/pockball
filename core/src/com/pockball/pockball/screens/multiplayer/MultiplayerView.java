@@ -81,7 +81,9 @@ public class MultiplayerView extends ScreenView {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // Show powerups
-                controller.setShowPowerups(!controller.getShowPowerups());
+                if (!Context.getInstance().getState().hasAimed()) {
+                    controller.setShowPowerups(!controller.getShowPowerups());
+                }
             }
         });
 

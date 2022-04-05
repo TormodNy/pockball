@@ -57,13 +57,15 @@ public class CueSystem extends IteratingSystem {
                 !placeEntity.placeable &&
                 !GameController.currentController.getShowPowerups() &&
                 Context.getInstance().getState().canPerformAction() &&
-                Gdx.input.getY() >= 40;
+                Gdx.input.getY() >= 40 &&
+                ball.dir.len() != 0 &&
+                physics.body.getLinearVelocity().len() <= 0.01f;
 
         if (canShoot) {
             direction.rotation = ball.dir.angleDeg();
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));
-        } else {
+        } else if (!Context.getInstance().getState().hasAimed()) {
             position.position.set(100, 100);
         }
     }

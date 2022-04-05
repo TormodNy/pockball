@@ -97,7 +97,9 @@ public class SinglePlayerView extends ScreenView {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // Show powerups
-                singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+                if (!Context.getInstance().getState().hasAimed()) {
+                    singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+                }
             }
         });
     }
