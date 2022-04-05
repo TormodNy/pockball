@@ -102,6 +102,10 @@ public class MultiPlayerState implements State {
         return myTurn ? myBallType : opponentBallType;
     }
 
+    public BallType getMyBallType () {
+        return myBallType;
+    }
+
     private PlayerModel getActivePlayerModel() {
         return isHost ? (myTurn ? roomModel.host : roomModel.client) : (myTurn ? roomModel.client : roomModel.host);
     }
@@ -198,6 +202,10 @@ public class MultiPlayerState implements State {
         System.out.println("fireHostTurn(" +hostTurn +")");
         roomModel.hostTurn = hostTurn;
         updateMyTurn();
+    }
+
+    public void setHostTurn(boolean hostTurn) {
+        roomModel.hostTurn = hostTurn;
     }
 
     @Override

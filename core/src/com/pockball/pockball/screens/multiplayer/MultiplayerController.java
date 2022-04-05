@@ -8,13 +8,8 @@ import com.pockball.pockball.screens.ScreenController;
 
 public class MultiplayerController extends GameController {
     private static MultiplayerController multiplayerControllerInstance = null;
-    private ScreenController screenController;
 
     private MultiplayerController() {
-    }
-
-
-    public void resetGame() {
     }
 
     public static MultiplayerController getInstance() {
@@ -24,10 +19,6 @@ public class MultiplayerController extends GameController {
 
         currentController = multiplayerControllerInstance;
         return multiplayerControllerInstance;
-    }
-
-    public void checkGameOver() {
-
     }
 
     @Override

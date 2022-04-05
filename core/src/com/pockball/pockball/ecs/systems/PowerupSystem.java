@@ -53,10 +53,6 @@ public class PowerupSystem extends IteratingSystem {
 
         int index = puInHand.indexOf(entity);
         if (index == -1) {
-            for (Entity e : puInHand) {
-                System.out.println(e.getComponent(SpriteComponent.class).layer);
-            }
-            System.out.println(puInHand.size());
             if (puInHand.size() > 2) {
                 Engine.getInstance().removeEntity(entity);
             } else {

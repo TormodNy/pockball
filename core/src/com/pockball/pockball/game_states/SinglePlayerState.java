@@ -35,7 +35,6 @@ public class SinglePlayerState implements State {
     public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
-                System.out.println("Penalty point! White ball into hole.");
                 incNumberOfShots();
                 break;
 

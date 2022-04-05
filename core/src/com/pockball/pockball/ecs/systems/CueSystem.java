@@ -60,7 +60,6 @@ public class CueSystem extends IteratingSystem {
                 Gdx.input.getY() >= 40;
 
         if (canShoot) {
-            System.out.println("CAN SHOOT - " + Context.getInstance().getState().canPerformAction());
             direction.rotation = ball.dir.angleDeg();
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));

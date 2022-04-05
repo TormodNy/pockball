@@ -1,5 +1,6 @@
 package com.pockball.pockball.firebase;
 
+import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.db_models.ShotEvent;
 
 public class FirebaseController implements FirebaseInterface {
@@ -25,6 +26,11 @@ public class FirebaseController implements FirebaseInterface {
     @Override
     public void writeToDb(String target, Object value) {
         firebaseInterface.writeToDb(target, value);
+    }
+
+    @Override
+    public void removeFromDb(String target) {
+        firebaseInterface.removeFromDb(target);
     }
 
     @Override
@@ -78,13 +84,13 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void listenToAvailableRooms() {
-        firebaseInterface.listenToAvailableRooms();
+    public void getRoom(String roomId) {
+        firebaseInterface.getRoom(roomId);
     }
 
     @Override
-    public void stopListenToAvailableRooms() {
-        firebaseInterface.stopListenToAvailableRooms();
+    public void checkRoomId(String roomId) {
+        firebaseInterface.checkRoomId(roomId);
     }
 
     @Override
