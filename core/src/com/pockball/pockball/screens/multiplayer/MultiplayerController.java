@@ -33,9 +33,9 @@ public class MultiplayerController extends GameController {
     @Override
     public String getCurrentStateString() {
         State state = Context.getInstance().getState();
+        if (!state.getIdle()) return "Waiting for balls to stop.";
         if (state.canPerformAction()) return "Your turn. Make a shot!";
-        else if (!state.getIsMyTurn()) return "Opponents turn";
-        else if (!state.getIdle()) return "Waiting for balls to stop.";
+        if (!state.getIsMyTurn()) return "Opponents turn";
 
         return "Unhandled state";
     }

@@ -51,7 +51,6 @@ public class SinglePlayerState implements State {
 
 
             default:
-                System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
                 Engine.getInstance().givePowerup();
 
@@ -118,7 +117,7 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void setHostTurn(boolean hostTurn) {
+    public void fireHostTurn(boolean hostTurn) {
     }
 
     @Override

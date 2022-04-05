@@ -26,8 +26,8 @@ public class FirebaseService implements FirebaseInterface {
     private FirebaseController firebaseController;
     private static final String TAG = "ReadAndWriteSnippets";
 
-    private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
-    private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
+    private ValueEventListener eventsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
+    private DatabaseReference eventsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
 
     private ValueEventListener roomsListener;
     private DatabaseReference roomsRef;
@@ -95,10 +95,10 @@ public class FirebaseService implements FirebaseInterface {
     @Override
     public void listenToPlayerEvents(String target) {
         // stores the reference in instance variable, to be able to unsubscribe from listener when needed
-        shotsRef = getRefFromNestedTarget(target);
+        eventsRef = getRefFromNestedTarget(target);
 
         // stores the listener in instance variable, to be able to unsubscribe from listener when needed
-        shotsListener = new ValueEventListener() {
+        eventsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<EventModel> events = new ArrayList<>();
@@ -134,12 +134,12 @@ public class FirebaseService implements FirebaseInterface {
                 System.out.println(error);
             }
         };
-        shotsRef.addValueEventListener(shotsListener);
+        eventsRef.addValueEventListener(eventsListener);
     }
 
     @Override
-    public void stopListenToShotChanges(String target) {
-        shotsRef.removeEventListener(shotsListener);
+    public void stopListenToEventsChanges() {
+        eventsRef.removeEventListener(eventsListener);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean hostTurn = snapshot.getValue(Boolean.class);
-                Context.getInstance().getState().setHostTurn(hostTurn);
+                Context.getInstance().getState().fireHostTurn(hostTurn);
             }
 
             @Override
@@ -166,7 +166,7 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     @Override
-    public void stopListenToHostTurn(String target) {
+    public void stopListenToHostTurn() {
         hostTurnRef.removeEventListener(hostTurnListener);
     }
 

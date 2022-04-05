@@ -7,6 +7,6 @@ import com.pockball.pockball.ecs.types.BallType;
 public class BallComponent implements Component {
     public BallType type = BallType.SOLID;
     public final float radius = 0.4f;
-    public Vector2 dir;
-    public Vector2 power;
+    public Vector2 dir = new Vector2(0, 0);
+    public Vector2 power = new Vector2(0, 0);
 }

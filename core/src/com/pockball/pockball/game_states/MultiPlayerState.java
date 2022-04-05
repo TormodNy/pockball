@@ -27,16 +27,14 @@ public class MultiPlayerState implements State {
 
     // Is this player host
     private PlayerModel myPlayer, opponentPlayer;
-    private boolean isHost;
-    private boolean myTurn;
-    private boolean meIdle;
-    private boolean opponentIdle;
+    private boolean isHost, myTurn, whiteBallFellDownThisRound, meIdle, opponentIdle;
     private BallType myBallType, opponentBallType;
 
 
     public MultiPlayerState(RoomModel roomModel, boolean isHost) {
         this.roomModel = roomModel;
         this.isHost = isHost;
+        this.whiteBallFellDownThisRound = false;
 
         this.myTurn = this.isHost && roomModel.hostTurn;
 
@@ -68,6 +66,7 @@ public class MultiPlayerState implements State {
         firebaseController.listenToPlayerEvents(roomModel.roomId + "." + opponentKey + ".events");
         firebaseController.listenToOpponentIdleState(roomModel.roomId + "." + opponentKey + ".idle");
         firebaseController.listenToBallType(roomModel.roomId);
+        firebaseController.listenToHostTurn(roomModel.roomId);
 
         // Create player entities
         myPlayerEntity = EntityFactory.getInstance().createPlayer("player1");
@@ -78,14 +77,14 @@ public class MultiPlayerState implements State {
     public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
-                setNextPlayerTurn();
+                whiteBallFellDownThisRound = true;
                 break;
             case BLACK:
                 // TODO: Implement logic
                 break;
             default:
                 // Set ball type
-                if (ballTypeSet) {
+                if (!ballTypeSet) {
                     ballTypeSet = true;
                     setMyBallType(ballType);
                 }
@@ -94,7 +93,7 @@ public class MultiPlayerState implements State {
 
                 if (getCurrentPlayerBallType().equals(ballType)) {
                     getActivePlayerModel().score.add(ballType.toString());
-                    setNextPlayerTurn(true);
+                    if (myTurn && !whiteBallFellDownThisRound) setNextPlayerTurn(true);
                 }
         }
     }
@@ -118,12 +117,13 @@ public class MultiPlayerState implements State {
     }
 
     private void setNextPlayerTurn(boolean myTurn) {
+        whiteBallFellDownThisRound = false;
         roomModel.hostTurn = isHost == myTurn;
         firebaseController.writeToDb(roomModel.roomId + ".hostTurn", roomModel.hostTurn);
     }
 
     private void setNextPlayerTurn() {
-        setNextPlayerTurn(!roomModel.hostTurn);
+        setNextPlayerTurn(!myTurn);
     }
 
     @Override
@@ -145,13 +145,14 @@ public class MultiPlayerState implements State {
                 (isHost ? roomModel.client : roomModel.host).events
         );
 
-        setNextPlayerTurn();
+        System.out.println("addEvent");
+
+        // Switch player if it is a shot event
+        if (event.type == EventModel.Type.SHOT) setNextPlayerTurn();
     }
 
     @Override
     public void fireOpponentEventChange(List<EventModel> eventModelList) {
-        System.out.println("fireOpponentShotsChange() -> " + eventModelList);
-
         if (eventModelList.size() == 0) return;
 
         EventModel event = eventModelList.get(eventModelList.size() - 1);
@@ -162,7 +163,6 @@ public class MultiPlayerState implements State {
             case SHOT:
                 ShotEvent shot = (ShotEvent) event;
                 Vector2 force = new Vector2(shot.x, shot.y);
-                System.out.println("force" + force);
                 Engine.getInstance().shootBallWithForce(force, false);
                 break;
             case PLACE_BALL:
@@ -175,13 +175,12 @@ public class MultiPlayerState implements State {
     @Override
     public void fireOpponentIsIdle() {
         this.opponentIdle = true;
+        System.out.println("fireOpponentIsIdle()");
         updateMyTurn();
-        System.out.println("Opponent is idle. Can perform: " + canPerformAction());
     }
 
     @Override
     public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
-        System.out.println("fireBallTypeSet() -> ");
         if (isHost) {
             myBallType = hostBallType;
             this.opponentBallType = opponentBallType;
@@ -189,13 +188,14 @@ public class MultiPlayerState implements State {
             this.opponentBallType = hostBallType;
             myBallType = hostBallType;
         }
-        ballTypeSet = false;
+        ballTypeSet = true;
         firebaseController.stopListenToBallType();
+        System.out.println("fireBallTypeSet() -> myBallType = " + myBallType);
     }
 
     @Override
-    public void setHostTurn(boolean hostTurn) {
-        System.out.println("setHostTurn(" +hostTurn +")");
+    public void fireHostTurn(boolean hostTurn) {
+        System.out.println("fireHostTurn(" +hostTurn +")");
         roomModel.hostTurn = hostTurn;
         updateMyTurn();
     }
@@ -203,19 +203,17 @@ public class MultiPlayerState implements State {
     @Override
     public void setIdle(boolean idle) {
         this.meIdle = idle;
-        updateMyTurn();
         firebaseController.writeToDb(roomModel.roomId + "." + myKey + ".idle", this.meIdle);
+        updateMyTurn();
     }
 
     @Override
     public boolean getIdle() {
-        System.out.println("getIdle() -> " + meIdle + " " + opponentIdle);
         return meIdle && opponentIdle;
     }
 
     @Override
     public boolean canPerformAction() {
-        System.out.println("canPerformAction() -> " + myTurn + " " + getIdle());
         return myTurn && getIdle();
     }
 
@@ -237,11 +235,15 @@ public class MultiPlayerState implements State {
 
     @Override
     public void reset() {
+        firebaseController.stopListenToEventsChanges();
+        firebaseController.stopListenToOpponentIdleState();
+        firebaseController.stopListenToBallType();
+        firebaseController.stopListenToHostTurn();
     }
 
     public void updateMyTurn() {
         myTurn = isHost == roomModel.hostTurn;
-        System.out.println("updateMyTurn("+myTurn+")");
+        System.out.println("updateMyTurn() -> myTurn = "+myTurn);
     }
 
     @Override
