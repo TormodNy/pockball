@@ -25,7 +25,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: font-button,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 },
 		disabledFontColor: { a: 1, b: 0.8, g: 0.8, r: 0.8 },
@@ -33,14 +33,14 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: button-down
 	},
 	round: {
-		font: font-title,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 },
 		up: round-button,
 		down: round-button-down
 	},
 	toggle: {
-		font: font-button,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 },
 		up: toggle-button-off,
@@ -48,7 +48,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		checked: toggle-button
 	},
 	radio: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 },
 		up: radio-button-off,
@@ -77,24 +77,24 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window,
-		titleFont: font-title,
+		titleFont: "default-font",
 		titleFontColor: { a: 1, b: 1, g: 1, r: 1 }
 	},
 	dialog: {
 		background: window,
-		titleFont: font-title,
+		titleFont: "default-font",
 		titleFontColor: { a: 1, b: 1, g: 1, r: 1 },
 		stageBackground: list
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1 },
 		background: textfield,
 		cursor: cursor,
 		selection: text-selection,
-		messageFont: font-label
+		messageFont: "default-font"
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
@@ -115,41 +115,41 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	optional: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, b: 0.8, g: 0.8, r: 0.8 }
 	},
 	default: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 }
 	},
 	error: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, r: 1 }
 	},
 	title-plain: {
-		font: font-title,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 }
 	},
 	subtitle: {
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1 },
 		background: label
 	},
 	title: {
-		font: font-title,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		background: panel2
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: font-label,
+		font: "default-font",
 		fontColorSelected: { a: 1, b: 1, g: 0.2, r: 1 },
 		fontColorUnselected: { a: 1, b: 1, g: 1, r: 1 },
 		selection: list-selection
 	},
 	dimmed: {
-		font: font-label,
+		font: "default-font",
 		fontColorSelected: { a: 1, b: 1, g: 0.2, r: 1 },
 		fontColorUnselected: { a: 1, b: 1, g: 1, r: 1 },
 		selection: list-selection,
@@ -160,14 +160,14 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
 		checkboxOn: check-on,
 		checkboxOff: check-off,
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 }
 	},
 	switch: {
 		checkboxOn: switch,
 		checkboxOff: switch-off,
-		font: font-label,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		downFontColor: { a: 1, b: 1, g: 0.2, r: 1 }
 	}
@@ -181,7 +181,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: font-button,
+		font: "default-font",
 		fontColor: { a: 1, b: 1, g: 1, r: 1 },
 		background: select-box,
 		scrollStyle: default,

@@ -19,13 +19,14 @@ import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
 public class CreateGameRoomView implements Screen {
-    private Stage stage;
-    private CreateGameRoomController controller;
-    private AssetsController assetsController;
-    private Screen previousScreen;
-    private ScreenController screenController;
+    private final CreateGameRoomController controller;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
 
+    private final Stage stage;
     private Label title;
+
+    private final float assetScaler;
 
     public CreateGameRoomView(CreateGameRoomController controller) {
         this.controller = controller;
@@ -35,6 +36,7 @@ public class CreateGameRoomView implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         this.assetsController = AssetsController.getInstance();
+        this.assetScaler = assetsController.getAssetScaler();
     }
 
     @Override
@@ -47,16 +49,18 @@ public class CreateGameRoomView implements Screen {
         stage.addActor(table);
 
         title = new Label("Setting up room",  assetsController.getSkin());
-        title.setFontScale(2);
+        title.setFontScale(assetScaler * 2);
         title.setColor(Color.WHITE);
         table.add(title);
         table.row().padBottom(20);
 
         Label waitingLabel = new Label("Waiting for someone to join...", assetsController.getSkin());
+        waitingLabel.setFontScale(assetScaler);
         table.add(waitingLabel);
         table.row().padBottom(10);
 
         TextButton backButton = new TextButton("Back", assetsController.getSkin());
+        backButton.getLabel().setFontScale(assetScaler);
         table.add(backButton);
         backButton.addListener(new EventListener() {
             @Override

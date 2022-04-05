@@ -14,14 +14,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.db_models.RoomModel;
+import com.pockball.pockball.screens.ScreenController;
+import com.pockball.pockball.screens.ScreenModel;
 
 public class JoinGameView implements Screen {
-    private Stage stage;
-    private JoinGameController controller;
+    private final JoinGameController controller;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
 
-    private AssetsController assetsController;
-
+    private final Stage stage;
     private Label errorLabel;
+
+    private final float assetScaler;
 
     public JoinGameView(JoinGameController controller) {
         this.controller = controller;
@@ -29,22 +33,39 @@ public class JoinGameView implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        this.screenController = ScreenController.getInstance();
         this.assetsController = AssetsController.getInstance();
+        this.assetScaler = assetsController.getAssetScaler();
     }
 
     @Override
     public void show() {
+        // Join game table
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
+        // Back button
+        TextButton backButton = new TextButton("Back", assetsController.getSkin());
+        backButton.getLabel().setFontScale(assetScaler);
+        stage.addActor(backButton);
+
+        backButton.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                screenController.changeScreen(ScreenModel.Screen.MAINMENU, ScreenModel.Screen.JOIN_GAME);
+                return true;
+            }
+        });
+
         Label title = new Label("Join game",  assetsController.getSkin());
-        title.setFontScale(2);
+        title.setFontScale(assetScaler * 2);
         table.add(title);
         table.row();
         table.setColor(Color.BLUE);
 
         Label textFieldLabel = new Label("Enter room code:",  assetsController.getSkin());
+        textFieldLabel.setFontScale(assetScaler);
         table.add(textFieldLabel);
         table.row();
 
@@ -53,11 +74,13 @@ public class JoinGameView implements Screen {
         table.row();
 
         errorLabel = new Label("",  assetsController.getSkin());
+        errorLabel.setFontScale(assetScaler);
         errorLabel.setColor(Color.RED);
         table.add(errorLabel);
         table.row();
 
         TextButton joinGameButton = new TextButton("Join game", assetsController.getSkin());
+        joinGameButton.getLabel().setFontScale(assetScaler);
         table.add(joinGameButton);
 
         joinGameButton.addListener(new EventListener() {

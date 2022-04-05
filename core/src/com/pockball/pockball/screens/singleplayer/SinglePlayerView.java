@@ -40,27 +40,25 @@ import com.pockball.pockball.game_states.State;
 
 public class SinglePlayerView implements Screen {
 
-    private SpriteBatch sb;
-    private Stage stage;
-    private SinglePlayerController singlePlayerController;
-    private AssetsController assetsController;
+    private final Stage stage;
+    private final SinglePlayerController singlePlayerController;
+    private final AssetsController assetsController;
 
-    private Sprite backdrop;
-    private Label numberOfShots;
-    private ScreenController screenController;
-    float fontScaler;
+    private final Label numberOfShots;
+    private final ScreenController screenController;
+    private final float assetScaler;
 
     public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
         this.singlePlayerController = singlePlayerController;
-        fontScaler = Gdx.graphics.getHeight() * (3f / 1000f);
         Engine.getInstance().initializeEngine(0);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
+        assetScaler = 0.65f * assetsController.getAssetScaler();
 
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
-        numberOfShots.setFontScale(fontScaler);
+        numberOfShots.setFontScale(assetScaler);
         this.screenController = screenController;
     }
 
@@ -79,7 +77,7 @@ public class SinglePlayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
-        pauseButton.getLabel().setFontScale(fontScaler);
+        pauseButton.getLabel().setFontScale(assetScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
@@ -93,7 +91,7 @@ public class SinglePlayerView implements Screen {
         stage.addActor(table);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(fontScaler);
+        powerupsButton.getLabel().setFontScale(assetScaler);
         table.add(powerupsButton);
         table.top().left();
         table.pad(4);

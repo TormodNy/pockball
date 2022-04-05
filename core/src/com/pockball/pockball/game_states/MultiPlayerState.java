@@ -137,8 +137,6 @@ public class MultiPlayerState implements State {
 
     @Override
     public void fireOpponentEventChange(List<EventModel> eventModelList) {
-        System.out.println("fireOpponentShotsChange() -> " + eventModelList);
-
         if (eventModelList.size() == 0) return;
 
         EventModel event = eventModelList.get(eventModelList.size() - 1);
@@ -149,7 +147,6 @@ public class MultiPlayerState implements State {
             case SHOT:
                 ShotEvent shot = (ShotEvent) event;
                 Vector2 force = new Vector2(shot.x, shot.y);
-                System.out.println("force" + force);
                 Engine.getInstance().shootBallWithForce(force, false);
                 break;
             case PLACE_BALL:
@@ -163,12 +160,10 @@ public class MultiPlayerState implements State {
     public void fireOpponentIsIdle() {
         this.opponentIdle = true;
         updateMyTurn();
-        System.out.println("Opponent is idle. Can perform: " + canPerformAction());
     }
 
     @Override
     public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
-        System.out.println("fireBallTypeSet() -> ");
         if (isHost) {
             myBallType = hostBallType;
             this.opponentBallType = opponentBallType;
@@ -182,9 +177,7 @@ public class MultiPlayerState implements State {
 
     @Override
     public void setHostTurn(boolean hostTurn) {
-        System.out.println("setHostTurn() -> " + hostTurn);
         roomModel.hostTurn = hostTurn;
-
     }
 
     @Override

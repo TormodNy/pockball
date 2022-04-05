@@ -18,29 +18,29 @@ import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
 public class MultiplayerView implements Screen {
-    private Stage stage;
-    private MultiplayerController controller;
-    private AssetsController assetsController;
-    float fontScaler;
-    private ScreenController screenController;
+    private final MultiplayerController controller;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
 
-    private Label waitingForOtherPlayerLabel;
+    private final float assetScaler;
+
+    private final Stage stage;
+    private final Label waitingForOtherPlayerLabel;
     private boolean showWaitingForOtherPlayer = true;
-
 
     public MultiplayerView(ScreenController screenController, MultiplayerController controller) {
         this.controller = controller;
         Engine.getInstance().initializeEngine(0);
-        fontScaler = Gdx.graphics.getHeight() * (3f / 1000f);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
 
         this.screenController = screenController;
+        this.assetsController = AssetsController.getInstance();
+        assetScaler = assetsController.getAssetScaler() * 0.65f;
 
         waitingForOtherPlayerLabel = new Label("Waiting for other player...", assetsController.getSkin());
-        waitingForOtherPlayerLabel.setFontScale(fontScaler);
+        waitingForOtherPlayerLabel.setFontScale(assetScaler);
         Context.getInstance().getState().setIdle(true);
     }
 
@@ -59,7 +59,7 @@ public class MultiplayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
-        pauseButton.getLabel().setFontScale(fontScaler);
+        pauseButton.getLabel().setFontScale(assetScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
@@ -73,7 +73,7 @@ public class MultiplayerView implements Screen {
         stage.addActor(table);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(fontScaler);
+        powerupsButton.getLabel().setFontScale(assetScaler);
         table.add(powerupsButton);
         table.top().left();
         table.pad(4);

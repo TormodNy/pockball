@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.PockBall;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
@@ -17,15 +21,14 @@ import com.pockball.pockball.screens.Util;
 
 public class MainMenuView implements Screen {
 
-    private SpriteBatch sb;
-    private Stage stage;
-    private AssetsController assetsController;
-    private ScreenController screenController;
-    float logoScaler;
-    float fontScaler;
+    private final SpriteBatch sb;
+    private final Stage stage;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
+    private final float assetScaler;
 
+    private final Texture logo;
 
-    private Texture logo;
 
     public MainMenuView(ScreenController screenController) {
         this.screenController = screenController;
@@ -34,8 +37,7 @@ public class MainMenuView implements Screen {
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
 
-        logoScaler = Gdx.graphics.getHeight()*(1f/1000f);
-        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
+        assetScaler = assetsController.getAssetScaler();
         this.logo = new Texture("pockballLogo.png");
     }
 
@@ -50,13 +52,12 @@ public class MainMenuView implements Screen {
         TextButton createGameButton = new TextButton("Create game", assetsController.getSkin());
         TextButton settingsButton = new TextButton("Settings", assetsController.getSkin());
 
-        singleplayerButton.getLabel().setFontScale(fontScaler);
-        joinGameButton.getLabel().setFontScale(fontScaler);
-        createGameButton.getLabel().setFontScale(fontScaler);
-        settingsButton.getLabel().setFontScale(fontScaler);
+        singleplayerButton.getLabel().setFontScale(assetScaler);
+        joinGameButton.getLabel().setFontScale(assetScaler);
+        createGameButton.getLabel().setFontScale(assetScaler);
+        settingsButton.getLabel().setFontScale(assetScaler);
 
-
-        table.row().padTop(50);
+        table.row().padTop(200);
         table.add(singleplayerButton).uniformX();
         table.row().pad(20, 0, 0, 0);
         table.add(createGameButton).uniformX();
@@ -80,10 +81,10 @@ public class MainMenuView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sb.draw(logo,
-                (Gdx.graphics.getWidth()/2f) - (logo.getWidth()*logoScaler/2f),
-                (Gdx.graphics.getHeight()* (2f/3f)),
-                logo.getWidth()*logoScaler,
-                logo.getHeight()*logoScaler);
+                (Gdx.graphics.getWidth() / 2f) - (logo.getWidth() * assetScaler / 2f),
+                (Gdx.graphics.getHeight() * (2f / 3f)),
+                logo.getWidth() * assetScaler,
+                logo.getHeight() * assetScaler);
         sb.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

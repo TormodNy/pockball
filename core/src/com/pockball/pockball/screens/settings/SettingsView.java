@@ -20,20 +20,20 @@ import com.pockball.pockball.screens.Util;
 
 public class SettingsView implements Screen {
 
-    private Stage stage;
-    private AssetsController assetsController;
-    private ScreenController screenController;
-    private ScreenModel.Screen screenModel;
-    private BitmapFont font;
-    float fontScaler;
+    private final Stage stage;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
+    private final ScreenModel.Screen screenModel;
+
+    private final float assetScaler;
 
     public SettingsView(ScreenController screenController, ScreenModel.Screen screenModel) {
         this.screenController = screenController;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         this.assetsController = AssetsController.getInstance();
+        this.assetScaler = assetsController.getAssetScaler();
         this.screenModel = screenModel;
-        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
     }
 
 
@@ -47,13 +47,11 @@ public class SettingsView implements Screen {
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
         volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
-        volumeSlider.getStyle().knob.setMinHeight(fontScaler*15);
-        volumeSlider.getStyle().knob.setMinWidth(fontScaler*15);
+        volumeSlider.getStyle().knob.setMinHeight(assetScaler * 30);
+        volumeSlider.getStyle().knob.setMinWidth(assetScaler * 30);
 
-        settingsTitle.setFontScale(fontScaler);
-        volumeTitle.setFontScale(fontScaler);
-
-
+        settingsTitle.setFontScale(assetScaler);
+        volumeTitle.setFontScale(assetScaler);
 
         table.add(settingsTitle);
         table.row().padTop(50);
@@ -70,7 +68,7 @@ public class SettingsView implements Screen {
 
         if (screenModel == ScreenModel.Screen.MAINMENU) {
             TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
-            mainMenuButton.getLabel().setFontScale(fontScaler);
+            mainMenuButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(mainMenuButton).uniformX();
 
@@ -78,21 +76,18 @@ public class SettingsView implements Screen {
         }
         else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
-            quitButton.getLabel().setFontScale(fontScaler);
+            quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(quitButton).uniformX();
 
             TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
-            resumeButton.getLabel().setFontScale(fontScaler);
+            resumeButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
 
             Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
             Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
-
         }
-
-
     }
 
     @Override

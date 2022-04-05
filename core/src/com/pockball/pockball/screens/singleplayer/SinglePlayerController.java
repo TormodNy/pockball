@@ -12,7 +12,6 @@ import com.pockball.pockball.screens.ScreenModel;
 
 public class SinglePlayerController extends GameController {
     public static SinglePlayerController singlePlayerControllerInstance;
-    private ScreenController screenController;
 
     private SinglePlayerController() {
         // Set single player state
@@ -26,10 +25,6 @@ public class SinglePlayerController extends GameController {
 
         currentController = singlePlayerControllerInstance;
         return singlePlayerControllerInstance;
-    }
-
-    public void checkGameOver() {
-        screenController.changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
     }
 
     public int getNumberOfShots() {

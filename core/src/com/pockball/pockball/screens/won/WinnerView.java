@@ -15,20 +15,18 @@ import com.pockball.pockball.screens.Util;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
 public class WinnerView implements Screen {
-    private Stage stage;
-    private AssetsController assetsController;
-    private ScreenController screenController;
-    private ScreenModel.Screen screenModel;
-    float fontScaler;
+    private final Stage stage;
+    private final AssetsController assetsController;
+    private final ScreenController screenController;
+    private final float assetScaler;
 
     public WinnerView(ScreenController screenController, ScreenModel.Screen screenModel) {
-        this.screenController = screenController;
-        fontScaler = Gdx.graphics.getHeight()*(3f/1000f);
-
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        this.screenController = screenController;
         this.assetsController = AssetsController.getInstance();
-        this.screenModel = screenModel;
+        assetScaler = assetsController.getAssetScaler();
     }
 
     @Override
@@ -38,16 +36,16 @@ public class WinnerView implements Screen {
         stage.addActor(table);
 
         Label gameoverTitle = new Label("YOU WON! ", assetsController.getSkin());
-        gameoverTitle.setFontScale(fontScaler);
+        gameoverTitle.setFontScale(assetScaler);
         table.add(gameoverTitle);
         table.row().padTop(50);
 
         Label winnerScore = new Label("YOUR SCORE: " + SinglePlayerController.getInstance().getNumberOfShots(), assetsController.getSkin());
-        winnerScore.setFontScale(fontScaler);
+        winnerScore.setFontScale(assetScaler);
         table.add(winnerScore);
 
         TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
-        quitButton.getLabel().setFontScale(fontScaler);
+        quitButton.getLabel().setFontScale(assetScaler);
         table.row().padTop(50);
         table.add(quitButton).uniformX();
 

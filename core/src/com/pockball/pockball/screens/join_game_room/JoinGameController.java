@@ -1,5 +1,6 @@
 package com.pockball.pockball.screens.join_game_room;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
@@ -12,14 +13,12 @@ import java.util.List;
 
 public class JoinGameController {
     private static JoinGameController joinGameControllerInstance = null;
-    private ScreenController screenController;
-    private FirebaseController firebaseController;
+    private final FirebaseController firebaseController;
 
     private JoinGameController() {
         firebaseController = FirebaseController.getInstance();
     }
 
-    private List<RoomModel> availableRooms;
     private String errorMessage = "";
 
     public static JoinGameController getInstance() {
@@ -27,14 +26,6 @@ public class JoinGameController {
             joinGameControllerInstance = new JoinGameController();
         }
         return joinGameControllerInstance;
-    }
-
-    public void setAvailableRooms(List<RoomModel> availableRooms) {
-        this.availableRooms = availableRooms;
-    }
-
-    public List<RoomModel> getAvailableRooms() {
-        return availableRooms;
     }
 
     public void getRoom(String roomId) {
@@ -46,8 +37,6 @@ public class JoinGameController {
     }
 
     public void joinGame (RoomModel roomModel) {
-        System.out.println("Joined game with roomID: " + roomModel);
-
         if (roomModel == null || roomModel.client != null) {
             errorMessage = "Invalid room";
             return;

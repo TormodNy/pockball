@@ -160,7 +160,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
             if (i == 0) {
                 whiteBallEntity = balls.get(i);
-                System.out.println("INITIALIZE");
                 engineInstance.addEntity(entityFactory.createCue(whiteBallEntity));
             }
             engineInstance.addEntity(balls.get(i));
@@ -183,13 +182,13 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         SizeComponent size = engineInstance.createComponent(SizeComponent.class);
         DirectionComponent direction = engineInstance.createComponent(DirectionComponent.class);
 
-        sprite.sprite = new Sprite(new Texture("table.png"));
+        sprite.sprite = new Sprite(new Texture("pooltable.png"));
 
         // Set position and size
         position.position.x = 0;
         position.position.y = 0;
 
-        int scl = 40;
+        int scl = 80;
         size.width = sprite.sprite.getWidth() / scl;
         size.height = sprite.sprite.getHeight() / scl; // For reference: Height is 13.75
 
@@ -213,8 +212,8 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         wallsDef.position.set(startPosition); // TODO: WHY IS THIS 0.5f OFF?
 
         // Scale vector
-        float x = 1f / sprite.sprite.getWidth() * size.width;
-        float y = 1f / sprite.sprite.getHeight() * size.height;
+        float x = 2f / sprite.sprite.getWidth() * size.width;
+        float y = 2f / sprite.sprite.getHeight() * size.height;
         Vector2 scl = new Vector2(x, y);
 
         Vector2[] vs = new Vector2[40];
@@ -287,8 +286,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
-
-        System.out.println("WHITE BALL - shootBall " + whiteBallEntity + " " + physics);
 
         physics.body.applyForceToCenter(force, true);
     }
