@@ -17,26 +17,15 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 
-public class CreateGameRoomView implements Screen {
+public class CreateGameRoomView extends ScreenView {
     private final CreateGameRoomController controller;
-    private final AssetsController assetsController;
-    private final ScreenController screenController;
-
-    private final Stage stage;
     private Label title;
 
-    private final float assetScaler;
-
-    public CreateGameRoomView(CreateGameRoomController controller) {
-        this.controller = controller;
-        this.screenController = ScreenController.getInstance();
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-
-        this.assetsController = AssetsController.getInstance();
-        this.assetScaler = assetsController.getAssetScaler();
+    public CreateGameRoomView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
+        this.controller = CreateGameRoomController.getInstance();
     }
 
     @Override
@@ -82,30 +71,5 @@ public class CreateGameRoomView implements Screen {
         }
 
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

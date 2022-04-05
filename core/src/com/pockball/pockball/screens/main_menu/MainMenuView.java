@@ -17,27 +17,19 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 
-public class MainMenuView implements Screen {
+public class MainMenuView extends ScreenView {
 
     private final SpriteBatch sb;
-    private final Stage stage;
-    private final AssetsController assetsController;
-    private final ScreenController screenController;
-    private final float assetScaler;
-
     private final Texture logo;
 
 
     public MainMenuView(ScreenController screenController) {
-        this.screenController = screenController;
-        this.sb = new SpriteBatch();
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
+        super(screenController, null);
 
-        assetScaler = assetsController.getAssetScaler();
+        this.sb = new SpriteBatch();
         this.logo = new Texture("pockballLogo.png");
     }
 
@@ -89,26 +81,6 @@ public class MainMenuView implements Screen {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override

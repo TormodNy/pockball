@@ -16,26 +16,16 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 
-public class JoinGameView implements Screen {
+public class JoinGameView extends ScreenView {
     private final JoinGameController controller;
-    private final AssetsController assetsController;
-    private final ScreenController screenController;
-
-    private final Stage stage;
     private Label errorLabel;
 
-    private final float assetScaler;
+    public JoinGameView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
 
-    public JoinGameView(JoinGameController controller) {
-        this.controller = controller;
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-
-        this.screenController = ScreenController.getInstance();
-        this.assetsController = AssetsController.getInstance();
-        this.assetScaler = assetsController.getAssetScaler();
+        this.controller = JoinGameController.getInstance();
     }
 
     @Override
@@ -103,32 +93,6 @@ public class JoinGameView implements Screen {
 
         errorLabel.setText(controller.getErrorMessage());
 
-        //stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

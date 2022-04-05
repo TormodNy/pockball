@@ -14,6 +14,7 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -38,28 +39,23 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.State;
 
-public class SinglePlayerView implements Screen {
+public class SinglePlayerView extends ScreenView {
 
-    private final Stage stage;
     private final SinglePlayerController singlePlayerController;
-    private final AssetsController assetsController;
-
     private final Label numberOfShots;
-    private final ScreenController screenController;
-    private final float assetScaler;
 
-    public SinglePlayerView(ScreenController screenController, SinglePlayerController singlePlayerController) {
-        this.singlePlayerController = singlePlayerController;
+    private final float buttonScaler;
+
+    public SinglePlayerView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
+
+        this.singlePlayerController = SinglePlayerController.getInstance();
         Engine.getInstance().initializeEngine(0);
 
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
-        assetScaler = 0.65f * assetsController.getAssetScaler();
+        buttonScaler = assetScaler * 0.65f;
 
         numberOfShots = new Label("Shots: " + singlePlayerController.getNumberOfShots(), assetsController.getSkin());
-        numberOfShots.setFontScale(assetScaler);
-        this.screenController = screenController;
+        numberOfShots.setFontScale(buttonScaler);
     }
 
     @Override
@@ -77,7 +73,7 @@ public class SinglePlayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
-        pauseButton.getLabel().setFontScale(assetScaler);
+        pauseButton.getLabel().setFontScale(buttonScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
@@ -91,7 +87,7 @@ public class SinglePlayerView implements Screen {
         stage.addActor(table);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(assetScaler);
+        powerupsButton.getLabel().setFontScale(buttonScaler);
         table.add(powerupsButton);
         table.top().left();
         table.pad(4);
@@ -112,32 +108,6 @@ public class SinglePlayerView implements Screen {
         numberOfShots.setText("Shots: " + singlePlayerController.getNumberOfShots());
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        // stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-        stage.getActors().clear();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

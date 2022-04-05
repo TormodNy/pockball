@@ -16,26 +16,14 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 
-public class SettingsView implements Screen {
+public class SettingsView extends ScreenView {
 
-    private final Stage stage;
-    private final AssetsController assetsController;
-    private final ScreenController screenController;
-    private final ScreenModel.Screen screenModel;
-
-    private final float assetScaler;
-
-    public SettingsView(ScreenController screenController, ScreenModel.Screen screenModel) {
-        this.screenController = screenController;
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
-        this.assetScaler = assetsController.getAssetScaler();
-        this.screenModel = screenModel;
+    public SettingsView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
     }
-
 
     @Override
     public void show() {
@@ -66,7 +54,7 @@ public class SettingsView implements Screen {
             }
         });
 
-        if (screenModel == ScreenModel.Screen.MAINMENU) {
+        if (previousScreen == ScreenModel.Screen.MAINMENU) {
             TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
             mainMenuButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
@@ -74,7 +62,7 @@ public class SettingsView implements Screen {
 
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
-        else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
+        else if (previousScreen == ScreenModel.Screen.SINGLEPLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
             quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
@@ -88,40 +76,5 @@ public class SettingsView implements Screen {
             Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
             Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
         }
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

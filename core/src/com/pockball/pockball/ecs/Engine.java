@@ -208,8 +208,8 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
         // Create walls
         BodyDef wallsDef = new BodyDef();
-        Vector2 startPosition = new Vector2(-0.5f + position.position.x, -0.5f + position.position.y);
-        wallsDef.position.set(startPosition); // TODO: WHY IS THIS 0.5f OFF?
+        Vector2 startPosition = new Vector2(-0.4f + position.position.x, -0.4f + position.position.y);
+        wallsDef.position.set(startPosition);
 
         // Scale vector
         float x = 2f / sprite.sprite.getWidth() * size.width;
