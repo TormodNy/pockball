@@ -50,6 +50,7 @@ public class SinglePlayerView extends ScreenView {
         super(screenController, previousScreen);
 
         this.singlePlayerController = SinglePlayerController.getInstance();
+        singlePlayerController.reset();
         Engine.getInstance().initializeEngine(0);
 
         buttonScaler = assetScaler * 0.65f;

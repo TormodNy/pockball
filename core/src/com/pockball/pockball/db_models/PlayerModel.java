@@ -9,10 +9,9 @@ import java.util.List;
 public class PlayerModel {
     public String playerId;
     public BallType ballType;
-    public List<String> score;
-    public List<EventModel> events;
+    public List<String> score = new ArrayList<>();
+    public List<EventModel> events = new ArrayList<>();
     public boolean idle = false;
-
 
     public PlayerModel() {
         // Required for calls to DataSnapshot.getValue(User.class)
@@ -21,8 +20,6 @@ public class PlayerModel {
 
     public PlayerModel(String playerId) {
         this.playerId = playerId;
-        this.score = new ArrayList<>();
-        this.events = new ArrayList<>();
     }
 
     public void setBallType(BallType ballType) {

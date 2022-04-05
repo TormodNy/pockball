@@ -1,7 +1,6 @@
 package com.pockball.pockball.firebase;
 
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -12,19 +11,19 @@ import com.google.firebase.database.ValueEventListener;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.RoomModel;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.screens.join_game_room.JoinGameController;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
+import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 
 public class FirebaseService implements FirebaseInterface {
     private DatabaseReference ref;
-    private FirebaseDatabase db;
+    private final FirebaseDatabase db;
     private FirebaseController firebaseController;
     private static final String TAG = "ReadAndWriteSnippets";
 
@@ -114,6 +113,7 @@ public class FirebaseService implements FirebaseInterface {
                             eventType = keySnap.getValue(EventModel.Type.class);
                         }
                     }
+
                     if (eventType == null) return;
 
                     EventModel event = null;
@@ -156,6 +156,9 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean hostTurn = snapshot.getValue(Boolean.class);
+
+                if (hostTurn == null) return;
+
                 Context.getInstance().getState().fireHostTurn(hostTurn);
             }
 
@@ -221,13 +224,15 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void listenToBallType(String roomId) {
-        ballTypeRef = db.getReference().child("test").child(roomId).child("ballType");
+        ballTypeRef = db.getReference().child("test").child(roomId).child("ballTypes");
 
         ballTypeListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                PlayerModel opponent = snapshot.getValue(PlayerModel.class);
-                CreateGameRoomController.getInstance().notifyNewClient(opponent);
+                BallTypeModel ballType = snapshot.getValue(BallTypeModel.class);
+                if (ballType == null) return;
+
+                Context.getInstance().getState().fireBallTypeSet(ballType);
             }
 
             @Override

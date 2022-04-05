@@ -10,6 +10,7 @@ import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.firebase.FirebaseController;
 
 import java.util.ArrayList;
@@ -26,9 +27,10 @@ public class MultiPlayerState implements State {
     private String myKey, opponentKey;
 
     // Is this player host
-    private PlayerModel myPlayer, opponentPlayer;
     private boolean isHost, myTurn, whiteBallFellDownThisRound, meIdle, opponentIdle;
     private BallType myBallType, opponentBallType;
+
+    private int lastEventHandled = -1;
 
 
     public MultiPlayerState(RoomModel roomModel, boolean isHost) {
@@ -41,11 +43,9 @@ public class MultiPlayerState implements State {
         if (isHost) {
             // Who am I
             myKey = "host";
-            myPlayer = roomModel.host;
 
             // Who are the opponent
             opponentKey = "client";
-            opponentPlayer = roomModel.client;
         } else {
             // Who am I
             myKey = "client";
@@ -85,7 +85,6 @@ public class MultiPlayerState implements State {
             default:
                 // Set ball type
                 if (!ballTypeSet) {
-                    ballTypeSet = true;
                     setMyBallType(ballType);
                 }
 
@@ -102,12 +101,12 @@ public class MultiPlayerState implements State {
         return myTurn ? myBallType : opponentBallType;
     }
 
-    public BallType getMyBallType () {
-        return myBallType;
-    }
-
     private PlayerModel getActivePlayerModel() {
         return isHost ? (myTurn ? roomModel.host : roomModel.client) : (myTurn ? roomModel.client : roomModel.host);
+    }
+
+    public BallType getMyBallType () {
+        return myBallType;
     }
 
     @Override
@@ -149,8 +148,6 @@ public class MultiPlayerState implements State {
                 (isHost ? roomModel.client : roomModel.host).events
         );
 
-        System.out.println("addEvent");
-
         // Switch player if it is a shot event
         if (event.type == EventModel.Type.SHOT) setNextPlayerTurn();
     }
@@ -159,7 +156,13 @@ public class MultiPlayerState implements State {
     public void fireOpponentEventChange(List<EventModel> eventModelList) {
         if (eventModelList.size() == 0) return;
 
-        EventModel event = eventModelList.get(eventModelList.size() - 1);
+        if (lastEventHandled == eventModelList.size() - 1) {
+            // Event is already handled
+            return;
+        }
+
+        lastEventHandled = eventModelList.size() - 1;
+        EventModel event = eventModelList.get(lastEventHandled);
 
         opponentIdle = false;
 
@@ -179,33 +182,26 @@ public class MultiPlayerState implements State {
     @Override
     public void fireOpponentIsIdle() {
         this.opponentIdle = true;
-        System.out.println("fireOpponentIsIdle()");
         updateMyTurn();
     }
 
     @Override
-    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
+    public void fireBallTypeSet(BallTypeModel ballType) {
         if (isHost) {
-            myBallType = hostBallType;
-            this.opponentBallType = opponentBallType;
+            myBallType = ballType.host;
+            this.opponentBallType = ballType.client;
         } else {
-            this.opponentBallType = hostBallType;
-            myBallType = hostBallType;
+            myBallType = ballType.client;
+            this.opponentBallType = ballType.host;
         }
         ballTypeSet = true;
         firebaseController.stopListenToBallType();
-        System.out.println("fireBallTypeSet() -> myBallType = " + myBallType);
     }
 
     @Override
     public void fireHostTurn(boolean hostTurn) {
-        System.out.println("fireHostTurn(" +hostTurn +")");
         roomModel.hostTurn = hostTurn;
         updateMyTurn();
-    }
-
-    public void setHostTurn(boolean hostTurn) {
-        roomModel.hostTurn = hostTurn;
     }
 
     @Override
@@ -228,9 +224,23 @@ public class MultiPlayerState implements State {
     public void setMyBallType(BallType ballType) {
         myBallType = ballType;
         opponentBallType = myBallType == BallType.STRIPED ? BallType.SOLID : BallType.STRIPED;
+
+        BallTypeModel ballTypeModel;
+        if (isHost) {
+            ballTypeModel = new BallTypeModel(myBallType, opponentBallType);
+        } else {
+            ballTypeModel = new BallTypeModel(opponentBallType, myBallType);
+        }
+
+
         firebaseController.stopListenToBallType();
-        firebaseController.writeToDb(roomModel.roomId + ".ballTypes." + myKey, myBallType);
-        firebaseController.writeToDb(roomModel.roomId + ".ballTypes." + opponentKey, opponentBallType);
+        firebaseController.writeToDb(roomModel.roomId + ".ballTypes", ballTypeModel);
+
+        ballTypeSet = true;
+    }
+
+    public void removeRoom () {
+        firebaseController.removeFromDb(roomModel.roomId);
     }
 
     public int getNumberOfShots() {
@@ -251,7 +261,6 @@ public class MultiPlayerState implements State {
 
     public void updateMyTurn() {
         myTurn = isHost == roomModel.hostTurn;
-        System.out.println("updateMyTurn() -> myTurn = "+myTurn);
     }
 
     @Override

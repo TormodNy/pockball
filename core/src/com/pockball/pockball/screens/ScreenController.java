@@ -41,15 +41,19 @@ public class ScreenController implements Disposable {
                         previousScreen = null;
                     }
                     else {
-                        SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
-                        singlePlayerController.reset();
                         SinglePlayerView singlePlayerView = new SinglePlayerView(this, previousScreenType);
                         this.setScreen(singlePlayerView);
                     }
                     break;
                 case MULTIPLAYER:
-                    MultiplayerView multiplayerView = new MultiplayerView(this, previousScreenType);
-                    this.setScreen(multiplayerView);
+                    if (previousScreenType == ScreenModel.Screen.SETTINGS) {
+                        this.setScreen(previousScreen);
+                        previousScreen = null;
+                    }
+                    else {
+                        MultiplayerView multiplayerView = new MultiplayerView(this, previousScreenType);
+                        this.setScreen(multiplayerView);
+                    }
                     break;
                 case JOIN_GAME:
                     JoinGameView joinGameView = new JoinGameView(this, previousScreenType);
@@ -61,7 +65,7 @@ public class ScreenController implements Disposable {
                     previousScreen = null;
                     break;
                 case SETTINGS:
-                    if (previousScreenType == ScreenModel.Screen.SINGLEPLAYER) {
+                    if (previousScreenType == ScreenModel.Screen.SINGLEPLAYER || previousScreenType == ScreenModel.Screen.MULTIPLAYER) {
                         previousScreen = screen;
                     }
                     SettingsView settingsView = new SettingsView(this, previousScreenType);

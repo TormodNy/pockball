@@ -286,7 +286,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
-
         physics.body.applyForceToCenter(force, true);
     }
 
