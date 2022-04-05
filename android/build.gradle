@@ -97,6 +97,12 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google:google:5'
+    implementation 'com.badlogicgames.gdx:gdx-freetype:1.10.0'
+    implementation 'com.badlogicgames.gdx:gdx-freetype-platform:1.10.0'
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
 }
 
 eclipse.project.name = appName + "-android"

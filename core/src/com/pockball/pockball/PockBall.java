@@ -15,10 +15,11 @@ public class PockBall extends Game {
 	public static final int HEIGHT = 15;
 	public static final String TITLE = "PockBall";
 
-	private ScreenController screenController;
 	public static Camera camera;
-	private FirebaseInterface firebaseInterface;
-	private FirebaseController firebaseController;
+
+	private final ScreenController screenController;
+	private final FirebaseInterface firebaseInterface;
+	private final FirebaseController firebaseController;
 
 	public PockBall(FirebaseInterface firebaseInterface) {
 		this.screenController = ScreenController.getInstance();

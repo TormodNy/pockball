@@ -35,7 +35,6 @@ public class SinglePlayerState implements State {
     public void ballIntoHole(BallType ballType, int holeID) {
         switch (ballType) {
             case WHITE:
-                System.out.println("Penalty point! White ball into hole.");
                 incNumberOfShots();
                 break;
 
@@ -51,7 +50,6 @@ public class SinglePlayerState implements State {
 
 
             default:
-                System.out.println(ballType.toString() + " ball into hole.");
                 score.balls++;
                 Engine.getInstance().givePowerup();
 

@@ -1,46 +1,36 @@
 package com.pockball.pockball.screens.multiplayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
-public class MultiplayerView implements Screen {
-    private Stage stage;
-    private MultiplayerController controller;
-    private AssetsController assetsController;
-    float fontScaler;
-    private ScreenController screenController;
+public class MultiplayerView extends ScreenView {
+    private final MultiplayerController controller;
 
-    private Label waitingForOtherPlayerLabel;
+    private final Label waitingForOtherPlayerLabel;
     private boolean showWaitingForOtherPlayer = true;
 
+    private final float buttonScaler;
 
-    public MultiplayerView(ScreenController screenController, MultiplayerController controller) {
-        this.controller = controller;
+    public MultiplayerView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
+
+        this.controller = MultiplayerController.getInstance();
         Engine.getInstance().initializeEngine(0);
-        fontScaler = Gdx.graphics.getHeight() * (3f / 1000f);
 
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
-
-        this.screenController = screenController;
+        buttonScaler = assetScaler * 0.65f;
 
         waitingForOtherPlayerLabel = new Label("Waiting for other player...", assetsController.getSkin());
-        waitingForOtherPlayerLabel.setFontScale(fontScaler);
+        waitingForOtherPlayerLabel.setFontScale(buttonScaler);
         Context.getInstance().getState().setIdle(true);
     }
 
@@ -59,7 +49,7 @@ public class MultiplayerView implements Screen {
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
         TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
-        pauseButton.getLabel().setFontScale(fontScaler);
+        pauseButton.getLabel().setFontScale(buttonScaler);
         tablePause.top().right();
         tablePause.padTop(5);
         tablePause.padRight(5);
@@ -73,7 +63,7 @@ public class MultiplayerView implements Screen {
         stage.addActor(table);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(fontScaler);
+        powerupsButton.getLabel().setFontScale(buttonScaler);
         table.add(powerupsButton);
         table.top().left();
         table.pad(4);
@@ -87,8 +77,6 @@ public class MultiplayerView implements Screen {
         });
 
     }
-
-    ;
 
     // Call this method to toggle the text
     private void toggleWaitingForOtherPlayer() {
@@ -111,30 +99,5 @@ public class MultiplayerView implements Screen {
         // stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
         ;
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-        stage.getActors().clear();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

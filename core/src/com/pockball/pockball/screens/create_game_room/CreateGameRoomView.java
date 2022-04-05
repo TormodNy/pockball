@@ -17,24 +17,15 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 
-public class CreateGameRoomView implements Screen {
-    private Stage stage;
-    private CreateGameRoomController controller;
-    private AssetsController assetsController;
-    private Screen previousScreen;
-    private ScreenController screenController;
-
+public class CreateGameRoomView extends ScreenView {
+    private final CreateGameRoomController controller;
     private Label title;
 
-    public CreateGameRoomView(CreateGameRoomController controller) {
-        this.controller = controller;
-        this.screenController = ScreenController.getInstance();
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-
-        this.assetsController = AssetsController.getInstance();
+    public CreateGameRoomView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
+        this.controller = CreateGameRoomController.getInstance();
     }
 
     @Override
@@ -47,16 +38,18 @@ public class CreateGameRoomView implements Screen {
         stage.addActor(table);
 
         title = new Label("Setting up room",  assetsController.getSkin());
-        title.setFontScale(2);
+        title.setFontScale(assetScaler * 2);
         title.setColor(Color.WHITE);
         table.add(title);
         table.row().padBottom(20);
 
         Label waitingLabel = new Label("Waiting for someone to join...", assetsController.getSkin());
+        waitingLabel.setFontScale(assetScaler);
         table.add(waitingLabel);
         table.row().padBottom(10);
 
         TextButton backButton = new TextButton("Back", assetsController.getSkin());
+        backButton.getLabel().setFontScale(assetScaler);
         table.add(backButton);
         backButton.addListener(new EventListener() {
             @Override
@@ -78,30 +71,5 @@ public class CreateGameRoomView implements Screen {
         }
 
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

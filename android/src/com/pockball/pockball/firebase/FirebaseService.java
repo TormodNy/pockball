@@ -38,7 +38,6 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     private DatabaseReference getRefFromNestedTarget(String nestedTarget) {
-        System.out.println("nestedTarget: " + nestedTarget);
         String[] targets = nestedTarget.split("\\.");
 
         ref = db.getReference().child("test");
@@ -58,7 +57,6 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void removeFromDb(String target) {
-        System.out.println("Removing: " + target);
         ref = getRefFromNestedTarget(target);
         ref.removeValue();
     }
@@ -71,7 +69,6 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PlayerModel opponent = snapshot.getValue(PlayerModel.class);
-                System.out.println("listenToClientsInGame " + opponent);
                 CreateGameRoomController.getInstance().notifyNewClient(opponent);
             }
 
@@ -86,7 +83,6 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void stopListenToClientsInGame() {
-        System.out.println("stopListenToClientsInGame");
         opponentRef.removeEventListener(opponentListener);
     }
 
@@ -119,8 +115,6 @@ public class FirebaseService implements FirebaseInterface {
                         }
                     }
                     if (eventType == null) return;
-
-                    System.out.println(eventType);
 
                     EventModel event = null;
                     switch (eventType) {
@@ -233,7 +227,6 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PlayerModel opponent = snapshot.getValue(PlayerModel.class);
-                System.out.println("listenToClientsInGame " + opponent);
                 CreateGameRoomController.getInstance().notifyNewClient(opponent);
             }
 

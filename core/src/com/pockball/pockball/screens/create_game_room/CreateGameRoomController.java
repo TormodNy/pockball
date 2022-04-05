@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class CreateGameRoomController {
     private static CreateGameRoomController createGameRoomControllerInstance = null;
-    private ScreenController screenController;
-    private FirebaseController firebaseController;
+    private final ScreenController screenController;
+    private final FirebaseController firebaseController;
 
     private RoomModel roomModel;
     private String randomRoomId;
@@ -64,13 +64,11 @@ public class CreateGameRoomController {
         if (client == null) return;
 
         firebaseController.stopListenToClientsInGame();
-        System.out.println("notifyNewClient " + client);
         roomModel.client = client;
         startGame();
     }
 
     public void startGame() {
-        System.out.println("startGame " + roomModel.roomId);
         Context.getInstance().setState(new MultiPlayerState(roomModel, true));
         screenController.changeScreen(ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.CREATE_GAME);
     }
