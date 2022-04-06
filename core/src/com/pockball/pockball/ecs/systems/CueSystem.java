@@ -64,7 +64,7 @@ public class CueSystem extends IteratingSystem {
         if (canShoot) {
             direction.rotation = ball.dir.angleDeg();
             Vector2 dir = new Vector2(ball.dir).nor();
-            position.position.set(ballPos.position.x - size.width - ball.radius, ballPos.position.y).sub(dir.scl(ball.power.len()));
+            position.position.set(ballPos.position.x - size.width + ball.radius - 0.01f, ballPos.position.y - 0.09f).sub(dir.scl(0.7f + ball.power.len()));
         } else if (!Context.getInstance().getState().hasAimed()) {
             position.position.set(100, 100);
         }

@@ -71,7 +71,7 @@ public class BallSystem extends IteratingSystem {
 
                 if (!hasAimed) {
                     // If first touch, set direction
-                    ball.dir = inputInWorld.sub(origin);
+                    ball.dir = inputInWorld.sub(origin).scl(-1);
                 }
                 if (hasAimed && !justTouched) {
                     // If first touch after aim, set reference for power
