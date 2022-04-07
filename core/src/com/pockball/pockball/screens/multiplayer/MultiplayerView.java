@@ -16,6 +16,7 @@ import com.pockball.pockball.game_states.Context;
 public class MultiplayerView extends ScreenView {
     private final MultiplayerController controller;
 
+    private final Label timerLabel;
     private final Label myBallType;
     private final Label waitingForOtherPlayerLabel;
     private boolean showWaitingForOtherPlayer = true;
@@ -29,6 +30,10 @@ public class MultiplayerView extends ScreenView {
         Engine.getInstance().initializeEngine(0);
 
         buttonScaler = assetScaler * 0.65f;
+
+
+        timerLabel = new Label("60", assetsController.getSkin());
+        timerLabel.setFontScale(buttonScaler);
 
         myBallType = new Label("Type", assetsController.getSkin());
         myBallType.setFontScale(buttonScaler);
@@ -44,6 +49,9 @@ public class MultiplayerView extends ScreenView {
 
         myBallType.setPosition(300 * assetScaler, 980 * assetScaler);
         stage.addActor(myBallType);
+
+        timerLabel.setPosition(1500 * assetScaler, 980*assetScaler);
+        stage.addActor(timerLabel);
 
         Table tableScore = new Table();
         tableScore.setFillParent(true);
@@ -66,16 +74,16 @@ public class MultiplayerView extends ScreenView {
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
                 ScreenModel.Screen.MULTIPLAYER);
 
-        // TODO: Rename
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+
+        Table powerupTable = new Table();
+        powerupTable.setFillParent(true);
+        stage.addActor(powerupTable);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
         powerupsButton.getLabel().setFontScale(buttonScaler);
-        table.add(powerupsButton);
-        table.top().left();
-        table.pad(4);
+        powerupTable.add(powerupsButton);
+        powerupTable.top().left();
+        powerupTable.pad(4);
 
         powerupsButton.addListener(new ChangeListener() {
             @Override
@@ -103,6 +111,8 @@ public class MultiplayerView extends ScreenView {
         } else {
             waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
         }
+
+        timerLabel.setText(controller.updateTimerString(delta));
 
         myBallType.setText(controller.getMyBallType());
 

@@ -38,6 +38,44 @@ public class MultiplayerController extends GameController {
         state.removeRoom();
     }
 
+    public String updateTimerString(float delta) {
+        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        state.updateTimer(delta);
+        boolean myTurn = state.getIsMyTurn();
+        int timer = state.getTimerInt();
+        if (timer >= 0){
+            return Integer.toString(timer);
+        } else{
+            if (timer <= -3){
+                if (myTurn){
+                    gameLost();
+                } else{
+                    gameWon();
+                }
+            }
+            return Integer.toString(0);
+
+        }
+    }
+    public void gameOver(){
+        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        boolean myTurn = state.getIsMyTurn();
+        state.reset();
+        if (myTurn){
+            removeRoom();
+        }
+    }
+
+    public void gameLost(){
+        gameOver();
+        ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
+    }
+    public void gameWon(){
+        gameOver();
+        ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+    }
+
+
     @Override
     public String getCurrentStateString() {
         State state = Context.getInstance().getState();
