@@ -44,18 +44,16 @@ public class ScreenController implements Disposable {
                     else {
                         SinglePlayerController singlePlayerController = SinglePlayerController.getInstance();
                         singlePlayerController.reset();
-                        SinglePlayerView singlePlayerView = new SinglePlayerView(this, singlePlayerController);
+                        SinglePlayerView singlePlayerView = new SinglePlayerView(this, previousScreenType);
                         this.setScreen(singlePlayerView);
                     }
                     break;
                 case MULTIPLAYER:
-                    MultiplayerController multiplayerController = MultiplayerController.getInstance();
-                    MultiplayerView multiplayerView = new MultiplayerView(this, multiplayerController);
+                    MultiplayerView multiplayerView = new MultiplayerView(this, previousScreenType);
                     this.setScreen(multiplayerView);
                     break;
                 case JOIN_GAME:
-                    JoinGameController joinGameController = JoinGameController.getInstance();
-                    JoinGameView joinGameView = new JoinGameView(joinGameController);
+                    JoinGameView joinGameView = new JoinGameView(this, previousScreenType);
                     this.setScreen(joinGameView);
                     break;
                 case MAINMENU:
@@ -71,16 +69,15 @@ public class ScreenController implements Disposable {
                     this.setScreen(settingsView);
                     break;
                 case CREATE_GAME:
-                    CreateGameRoomController createGameRoomController = CreateGameRoomController.getInstance();
-                    CreateGameRoomView createGameRoomView = new CreateGameRoomView(createGameRoomController);
+                    CreateGameRoomView createGameRoomView = new CreateGameRoomView(this, previousScreenType);
                     this.setScreen(createGameRoomView);
                     break;
                 case GAMEOVER:
-                    GameoverView gameoverView = new GameoverView(this, ScreenModel.Screen.SINGLEPLAYER);
+                    GameoverView gameoverView = new GameoverView(this, previousScreenType);
                     this.setScreen(gameoverView);
                     break;
                 case WINNER:
-                    WinnerView winnerView = new WinnerView(this, ScreenModel.Screen.SINGLEPLAYER);
+                    WinnerView winnerView = new WinnerView(this, previousScreenType);
                     this.setScreen(winnerView);
                     break;
                 case TUTORIAL:

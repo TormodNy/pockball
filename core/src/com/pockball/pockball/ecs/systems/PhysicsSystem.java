@@ -47,11 +47,9 @@ public class PhysicsSystem extends IteratingSystem {
 
             if (moving && timeLastMovement + 1000l < now) {
                 moving = false;
-                System.out.println("Stopped");
                 Context.getInstance().getState().setIdle(!moving);
             } else if (!moving && timeLastMovement + 1000l >= now) {
                 moving = true;
-                System.out.println("Moving");
                 Context.getInstance().getState().setIdle(!moving);
             }
         }

@@ -1,43 +1,29 @@
 package com.pockball.pockball.screens.tutorial;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
-import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
-public class TutorialView implements Screen {
-    private SpriteBatch sb;
-    private Stage stage;
-    private AssetsController assetsController;
-    private ScreenController screenController;
-    private ScreenModel.Screen screenModel;
-    private final float fontScaler;
-    private final float pngScaler;
-    private Array<Texture> textures;
+public class TutorialView extends ScreenView {
+    private final SpriteBatch sb;
+    private final Array<Texture> textures;
     private int currentPng;
 
 
-    public TutorialView(ScreenController screenController, ScreenModel.Screen screenModel) {
-        this.screenController = screenController;
+    public TutorialView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
         this.sb = new SpriteBatch();
 
-        fontScaler = Gdx.graphics.getHeight()*(3f/1000f);
-        pngScaler = Gdx.graphics.getHeight()*(1f/1000f);
         this.setCurrentPng(0);
 
         textures = new Array<>();
@@ -45,12 +31,7 @@ public class TutorialView implements Screen {
         textures.add(new Texture("tutorial/first.png"));
         textures.add(new Texture("tutorial/first.png"));
         textures.add(new Texture("tutorial/first.png"));
-
-
-        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
-        this.screenModel = screenModel;
     }
 
     @Override
@@ -63,44 +44,38 @@ public class TutorialView implements Screen {
         stage.addActor(table);
 
         Label header = new Label(getHeaderText(), assetsController.getSkin());
-        header.setFontScale(fontScaler);
+        header.setFontScale(assetsController.getAssetScaler());
         titleTable.add(header);
         titleTable.top();
         titleTable.row().padTop(50);
 
 
         TextButton lastButton = new TextButton("LAST", assetsController.getSkin());
-        lastButton.getLabel().setFontScale(fontScaler);
+        lastButton.getLabel().setFontScale(assetScaler);
         table.add(lastButton).align(Align.left);
-        lastButton.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (Gdx.input.justTouched()) {
-                    decrementCurrentPng();
-                    header.setText(getHeaderText());
+        lastButton.addListener(event -> {
+            if (Gdx.input.justTouched()) {
+                decrementCurrentPng();
+                header.setText(getHeaderText());
 
-                }
-                return true;
             }
+            return true;
         });
 
         table.bottom();
         TextButton quitButton = new TextButton("MAIN MENU", assetsController.getSkin());
-        quitButton.getLabel().setFontScale(fontScaler);
-        table.add(quitButton).align(Align.center);
+        quitButton.getLabel().setFontScale(assetScaler);
+        table.add(quitButton).align(Align.center).pad(50);
 
         TextButton nextButton = new TextButton("NEXT", assetsController.getSkin());
-        nextButton.getLabel().setFontScale(fontScaler);
+        nextButton.getLabel().setFontScale(assetScaler);
         table.add(nextButton).align(Align.right);
-        nextButton.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                if (Gdx.input.justTouched()) {
-                    incrementCurrentPng();
-                    header.setText(getHeaderText());
-                }
-                return true;
+        nextButton.addListener(event -> {
+            if (Gdx.input.justTouched()) {
+                incrementCurrentPng();
+                header.setText(getHeaderText());
             }
+            return true;
         });
 
         Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.TUTORIAL);
@@ -113,10 +88,10 @@ public class TutorialView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sb.draw(textures.get(getCurrentPng()),
-                (Gdx.graphics.getWidth()/2f) - (textures.get(currentPng).getWidth()*pngScaler/2f),
+                (Gdx.graphics.getWidth()/2f) - (textures.get(currentPng).getWidth()*assetScaler/2f),
                 (Gdx.graphics.getHeight()* (1f/5f)),
-                textures.get(currentPng).getWidth()*pngScaler,
-                textures.get(currentPng).getHeight()*pngScaler);
+                textures.get(currentPng).getWidth()*assetScaler,
+                textures.get(currentPng).getHeight()*assetScaler);
         sb.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -174,7 +149,7 @@ public class TutorialView implements Screen {
         }
     }
     public String getHeaderText(){
-        return  "TUTORIAL: " + currentPng + " of " + textures.size;
+        return  "TUTORIAL: " + (currentPng+1) + " of " + textures.size;
     }
 
 }
