@@ -80,7 +80,7 @@ public class ScreenController implements Disposable {
                     this.setScreen(gameoverView);
                     break;
                 case WINNER:
-                    WinnerView winnerView = new WinnerView(this, previousScreenType);
+                    WinnerView winnerView = new WinnerView(this, previousScreenType, previousScreenType == ScreenModel.Screen.MULTIPLAYER);
                     this.setScreen(winnerView);
                     break;
             }

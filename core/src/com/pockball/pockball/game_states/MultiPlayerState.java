@@ -158,7 +158,6 @@ public class MultiPlayerState implements State {
                     }
                     break;
                 }
-                // TODO: THIS DOES NOT WORK
                 if (getCurrentPlayerBallType().equals(ballType) && !firstBall) {
                     getActivePlayerModel().score.add(ballType.toString());
                     if (!myTurn && !whiteBallFellDownThisRound && !putOpponent) setNextPlayerTurn(true);
@@ -194,10 +193,10 @@ public class MultiPlayerState implements State {
         return myTurn ? opponentBallType : myBallType;
     }
 
-    private PlayerModel getActivePlayerModel() {
+    public PlayerModel getActivePlayerModel() {
         return isHost ? (myTurn ? roomModel.host : roomModel.client) : (myTurn ? roomModel.client : roomModel.host);
     }
-    private PlayerModel getInActivePlayerModel(){
+    public PlayerModel getInActivePlayerModel(){
         return  isHost ? (myTurn ? roomModel.client : roomModel.host) : (myTurn ? roomModel.host : roomModel.client);
     }
 

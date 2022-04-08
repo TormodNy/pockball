@@ -66,13 +66,24 @@ public class MultiplayerController extends GameController {
         }
     }
 
+    public int getMyScore(){
+        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        int score = 0;
+        if (state.getIsMyTurn()){
+            score = state.getActivePlayerModel().score.size();
+        } else {
+            score = state.getInActivePlayerModel().score.size();
+        }
+        return score;
+    }
+
     public void gameLost(){
         gameOver();
-        ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
+        ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.MULTIPLAYER);
     }
     public void gameWon(){
         gameOver();
-        ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+        ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.MULTIPLAYER);
     }
 
 
