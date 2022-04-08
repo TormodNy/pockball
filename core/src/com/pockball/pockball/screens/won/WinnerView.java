@@ -41,7 +41,7 @@ public class WinnerView extends ScreenView {
         winnerScore.setFontScale(assetScaler);
         table.add(winnerScore);
 
-        TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+        TextButton quitButton = new TextButton(" QUIT ", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);
         table.row().padTop(50);
         table.add(quitButton).uniformX();

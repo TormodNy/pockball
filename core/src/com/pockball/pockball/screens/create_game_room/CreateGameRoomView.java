@@ -48,7 +48,7 @@ public class CreateGameRoomView extends ScreenView {
         table.add(waitingLabel);
         table.row().padBottom(10);
 
-        TextButton backButton = new TextButton("Back", assetsController.getSkin());
+        TextButton backButton = new TextButton(" Back ", assetsController.getSkin());
         backButton.getLabel().setFontScale(assetScaler);
         table.add(backButton);
         backButton.addListener(new EventListener() {
