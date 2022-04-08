@@ -50,7 +50,7 @@ public class TutorialView extends ScreenView {
         titleTable.row().padTop(50);
 
 
-        TextButton lastButton = new TextButton("LAST", assetsController.getSkin());
+        TextButton lastButton = new TextButton(" LAST ", assetsController.getSkin());
         lastButton.getLabel().setFontScale(assetScaler);
         table.add(lastButton).align(Align.left);
         lastButton.addListener(event -> {
@@ -63,11 +63,11 @@ public class TutorialView extends ScreenView {
         });
 
         table.bottom();
-        TextButton quitButton = new TextButton("MAIN MENU", assetsController.getSkin());
+        TextButton quitButton = new TextButton(" MAIN MENU ", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);
         table.add(quitButton).align(Align.center).pad(50);
 
-        TextButton nextButton = new TextButton("NEXT", assetsController.getSkin());
+        TextButton nextButton = new TextButton(" NEXT ", assetsController.getSkin());
         nextButton.getLabel().setFontScale(assetScaler);
         table.add(nextButton).align(Align.right);
         nextButton.addListener(event -> {
