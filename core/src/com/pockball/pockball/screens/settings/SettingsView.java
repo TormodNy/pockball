@@ -16,26 +16,14 @@ import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
+import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 
-public class SettingsView implements Screen {
+public class SettingsView extends ScreenView {
 
-    private Stage stage;
-    private AssetsController assetsController;
-    private ScreenController screenController;
-    private ScreenModel.Screen screenModel;
-    private BitmapFont font;
-    float fontScaler;
-
-    public SettingsView(ScreenController screenController, ScreenModel.Screen screenModel) {
-        this.screenController = screenController;
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        this.assetsController = AssetsController.getInstance();
-        this.screenModel = screenModel;
-        fontScaler = Gdx.graphics.getHeight()*(2.5f/1000f);
+    public SettingsView(ScreenController screenController, ScreenModel.Screen previousScreen) {
+        super(screenController, previousScreen);
     }
-
 
     @Override
     public void show() {
@@ -47,13 +35,11 @@ public class SettingsView implements Screen {
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
         volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
-        volumeSlider.getStyle().knob.setMinHeight(fontScaler*15);
-        volumeSlider.getStyle().knob.setMinWidth(fontScaler*15);
+        volumeSlider.getStyle().knob.setMinHeight(assetScaler * 30);
+        volumeSlider.getStyle().knob.setMinWidth(assetScaler * 30);
 
-        settingsTitle.setFontScale(fontScaler);
-        volumeTitle.setFontScale(fontScaler);
-
-
+        settingsTitle.setFontScale(assetScaler);
+        volumeTitle.setFontScale(assetScaler);
 
         table.add(settingsTitle);
         table.row().padTop(50);
@@ -68,65 +54,27 @@ public class SettingsView implements Screen {
             }
         });
 
-        if (screenModel == ScreenModel.Screen.MAINMENU) {
+        if (previousScreen == ScreenModel.Screen.MAINMENU) {
             TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
-            mainMenuButton.getLabel().setFontScale(fontScaler);
+            mainMenuButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(mainMenuButton).uniformX();
 
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
-        else if (screenModel == ScreenModel.Screen.SINGLEPLAYER) {
+        else if (previousScreen == ScreenModel.Screen.SINGLEPLAYER) {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
-            quitButton.getLabel().setFontScale(fontScaler);
+            quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(quitButton).uniformX();
 
             TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
-            resumeButton.getLabel().setFontScale(fontScaler);
+            resumeButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
 
             Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
             Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
-
         }
-
-
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }

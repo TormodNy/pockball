@@ -29,8 +29,6 @@ public class CueFactory {
     }
 
     public Entity createCue(Entity ball) {
-        System.out.println("cuefactory: " + ball);
-
         PositionComponent position = Engine.getInstance().createComponent(PositionComponent.class);
         DirectionComponent direction = Engine.getInstance().createComponent(DirectionComponent.class);
         SizeComponent size = Engine.getInstance().createComponent(SizeComponent.class);
@@ -40,8 +38,6 @@ public class CueFactory {
         size.width = 9;
         size.height = 1;
 
-        // Vector2 ballPos = ball.getComponent(PositionComponent.class).position;
-        // BallComponent ballComp = ball.getComponent(BallComponent.class);
         position.position.set(100, 100);
 
         sprite.sprite = new Sprite(new Texture("cue.png"));
