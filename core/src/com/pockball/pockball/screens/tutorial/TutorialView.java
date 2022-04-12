@@ -5,12 +5,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -72,15 +74,11 @@ public class TutorialView implements Screen {
         TextButton lastButton = new TextButton("LAST", assetsController.getSkin());
         lastButton.getLabel().setFontScale(fontScaler);
         table.add(lastButton).align(Align.left);
-        lastButton.addListener(new EventListener() {
+        lastButton.addListener(new ChangeListener() {
             @Override
-            public boolean handle(Event event) {
-                if (Gdx.input.justTouched()) {
-                    decrementCurrentPng();
-                    header.setText(getHeaderText());
-
-                }
-                return true;
+            public void changed(ChangeEvent event, Actor actor) {
+                decrementCurrentPng();
+                header.setText(getHeaderText());
             }
         });
 
@@ -92,14 +90,11 @@ public class TutorialView implements Screen {
         TextButton nextButton = new TextButton("NEXT", assetsController.getSkin());
         nextButton.getLabel().setFontScale(fontScaler);
         table.add(nextButton).align(Align.right);
-        nextButton.addListener(new EventListener() {
+        nextButton.addListener(new ChangeListener() {
             @Override
-            public boolean handle(Event event) {
-                if (Gdx.input.justTouched()) {
-                    incrementCurrentPng();
-                    header.setText(getHeaderText());
-                }
-                return true;
+            public void changed(ChangeEvent event, Actor actor) {
+                incrementCurrentPng();
+                header.setText(getHeaderText());
             }
         });
 
