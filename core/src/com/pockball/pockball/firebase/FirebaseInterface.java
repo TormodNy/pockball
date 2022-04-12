@@ -7,27 +7,27 @@ public interface FirebaseInterface {
     // Interacting with platform specific code as suggested in LibGDX docs
     // https://libgdx.com/wiki/app/interfacing-with-platform-specific-code
 
-    public void writeToDb(String target, Object value);
-    public void removeFromDb(String target);
+    void writeToDb(String target, Object value);
+    void removeFromDb(String target);
 
-    public void addNewShot(String gameId, ShotEvent shotEvent);
-    public void appendToArrayInDb(String target, Object value);
+    void addNewShot(String gameId, ShotEvent shotEvent);
+    void appendToArrayInDb(String target, Object value);
 
-    public void listenToClientsInGame(String target);
-    public void stopListenToClientsInGame();
+    void listenToClientsInGame(String target);
+    void stopListenToClientsInGame();
 
-    public void listenToPlayerEvents(String target);
-    public void stopListenToShotChanges(String target);
+    void listenToPlayerEvents(String target);
+    void stopListenToEventsChanges();
 
-    public void listenToHostTurn(String target);
-    public void stopListenToHostTurn(String target);
+    void listenToHostTurn(String target);
+    void stopListenToHostTurn();
 
-    public void listenToOpponentIdleState(String target);
-    public void stopListenToOpponentIdleState();
+    void listenToOpponentIdleState(String target);
+    void stopListenToOpponentIdleState();
 
-    public void getRoom(String roomId);
-    public void checkRoomId(String roomId);
+    void getRoom(String roomId);
+    void checkRoomId(String roomId);
 
-    public void listenToBallType(String roomId);
-    public void stopListenToBallType();
+    void listenToBallType(String roomId);
+    void stopListenToBallType();
 }

@@ -18,6 +18,7 @@ import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
+import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 
 public class SettingsView extends ScreenView {
 
@@ -62,7 +63,7 @@ public class SettingsView extends ScreenView {
 
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
-        else if (previousScreen == ScreenModel.Screen.SINGLEPLAYER) {
+        else {
             TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
             quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
@@ -73,8 +74,20 @@ public class SettingsView extends ScreenView {
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
 
-            Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
-            Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
+            if (previousScreen == ScreenModel.Screen.SINGLEPLAYER) {
+                Util.addPathToButton(screenController, quitButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
+                Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.SINGLEPLAYER, ScreenModel.Screen.SETTINGS);
+            } else {
+                quitButton.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        MultiplayerController.getInstance().removeRoom();
+                        screenController.changeScreen(ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
+                    }
+                });
+                Util.addPathToButton(screenController, resumeButton, ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.SETTINGS);
+            }
+
         }
     }
 }

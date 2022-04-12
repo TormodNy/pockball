@@ -50,6 +50,7 @@ public class SinglePlayerView extends ScreenView {
         super(screenController, previousScreen);
 
         this.singlePlayerController = SinglePlayerController.getInstance();
+        singlePlayerController.reset();
         Engine.getInstance().initializeEngine(0);
 
         buttonScaler = assetScaler * 0.65f;
@@ -96,7 +97,9 @@ public class SinglePlayerView extends ScreenView {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // Show powerups
-                singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+                if (!Context.getInstance().getState().hasAimed()) {
+                    singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
+                }
             }
         });
     }

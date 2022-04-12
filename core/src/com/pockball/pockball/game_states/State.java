@@ -1,9 +1,9 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Vector2;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.db_models.BallTypeModel;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ public interface State {
 
     public void fireOpponentIsIdle();
 
-    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType);
+    public void fireBallTypeSet(BallTypeModel ballTypeModel);
 
-    public void setHostTurn(boolean hostTurn);
+    public void fireHostTurn(boolean hostTurn);
 
     public void setIdle(boolean idle);
 
@@ -39,4 +39,8 @@ public interface State {
     void reset();
 
     public boolean getIsMyTurn();
+
+    public void setHasAimed(boolean aimed);
+
+    public boolean hasAimed();
 }

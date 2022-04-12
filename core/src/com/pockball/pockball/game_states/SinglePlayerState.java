@@ -1,16 +1,15 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Vector2;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
-import com.pockball.pockball.screens.gameover.GameoverView;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class SinglePlayerState implements State {
     private int numberOfShots = 0;
     private float gameVolume;
     private int lastHole;
+    private boolean hasAimed = false;
 
     public SinglePlayerState() {
         // Set up player
@@ -111,12 +111,12 @@ public class SinglePlayerState implements State {
     }
 
     @Override
-    public void fireBallTypeSet(BallType hostBallType, BallType opponentBallType) {
+    public void fireBallTypeSet(BallTypeModel ballTypeModel) {
 
     }
 
     @Override
-    public void setHostTurn(boolean hostTurn) {
+    public void fireHostTurn(boolean hostTurn) {
     }
 
     @Override
@@ -146,11 +146,22 @@ public class SinglePlayerState implements State {
     @Override
     public void reset() {
         numberOfShots = 0;
+        hasAimed = false;
     }
 
     @Override
     public boolean getIsMyTurn() {
         return true;
+    }
+
+    @Override
+    public void setHasAimed(boolean aimed) {
+        hasAimed = aimed;
+    }
+
+    @Override
+    public boolean hasAimed() {
+        return hasAimed;
     }
 }
 

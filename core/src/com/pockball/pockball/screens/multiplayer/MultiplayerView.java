@@ -16,6 +16,7 @@ import com.pockball.pockball.game_states.Context;
 public class MultiplayerView extends ScreenView {
     private final MultiplayerController controller;
 
+    private final Label myBallType;
     private final Label waitingForOtherPlayerLabel;
     private boolean showWaitingForOtherPlayer = true;
 
@@ -29,6 +30,9 @@ public class MultiplayerView extends ScreenView {
 
         buttonScaler = assetScaler * 0.65f;
 
+        myBallType = new Label("Type", assetsController.getSkin());
+        myBallType.setFontScale(buttonScaler);
+
         waitingForOtherPlayerLabel = new Label("Waiting for other player...", assetsController.getSkin());
         waitingForOtherPlayerLabel.setFontScale(buttonScaler);
         Context.getInstance().getState().setIdle(true);
@@ -38,9 +42,13 @@ public class MultiplayerView extends ScreenView {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
+        myBallType.setPosition(300 * assetScaler, 980 * assetScaler);
+        stage.addActor(myBallType);
+
         Table tableScore = new Table();
         tableScore.setFillParent(true);
         stage.addActor(tableScore);
+
         tableScore.add(waitingForOtherPlayerLabel);
         tableScore.top();
         tableScore.padTop(10);
@@ -48,6 +56,7 @@ public class MultiplayerView extends ScreenView {
         Table tablePause = new Table();
         tablePause.setFillParent(true);
         stage.addActor(tablePause);
+
         TextButton pauseButton = new TextButton("Pause", assetsController.getSkin());
         pauseButton.getLabel().setFontScale(buttonScaler);
         tablePause.top().right();
@@ -55,7 +64,7 @@ public class MultiplayerView extends ScreenView {
         tablePause.padRight(5);
         tablePause.add(pauseButton);
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
-                ScreenModel.Screen.SINGLEPLAYER);
+                ScreenModel.Screen.MULTIPLAYER);
 
         // TODO: Rename
         Table table = new Table();
@@ -72,7 +81,9 @@ public class MultiplayerView extends ScreenView {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // Show powerups
-                controller.setShowPowerups(!controller.getShowPowerups());
+                if (!Context.getInstance().getState().hasAimed()) {
+                    controller.setShowPowerups(!controller.getShowPowerups());
+                }
             }
         });
 
@@ -95,9 +106,14 @@ public class MultiplayerView extends ScreenView {
             waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
         }
 
+        myBallType.setText(controller.getMyBallType());
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        // stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
-        ;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }

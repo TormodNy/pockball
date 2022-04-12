@@ -15,6 +15,7 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.game_states.Context;
 
 public class PlaceEntitySystem extends IteratingSystem {
     private final ComponentMapper<PlaceEntityComponent> placeEntityMapper;
@@ -32,7 +33,11 @@ public class PlaceEntitySystem extends IteratingSystem {
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);
 
-        if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE) && placeEntity.placeable) {
+        boolean canPlaceWhiteBall = Gdx.input.justTouched()
+                && ball.type.equals(BallType.WHITE)
+                && placeEntity.placeable
+                && Context.getInstance().getState().canPerformAction();
+        if (canPlaceWhiteBall) {
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
             Engine.getInstance().placeWhiteBall(new Vector2(input.x, input.y), true);

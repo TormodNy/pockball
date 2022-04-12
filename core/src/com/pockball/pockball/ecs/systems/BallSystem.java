@@ -7,10 +7,6 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.assets.SoundController;
@@ -20,7 +16,6 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 
 public class BallSystem extends IteratingSystem {
@@ -32,6 +27,7 @@ public class BallSystem extends IteratingSystem {
     private final SoundController soundController;
 
     private boolean justTouched = false;
+    private Vector2 powerRef = new Vector2(0, 0);
 
     public BallSystem() {
         // Må legge til NumberOfShotsComponent.class her, men da funker det heller ikke
@@ -53,6 +49,8 @@ public class BallSystem extends IteratingSystem {
         BallComponent ball = ballMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
 
+        boolean hasAimed = Context.getInstance().getState().hasAimed();
+
         // Stop balls when they are slow (Drag is not enough)
         if (physics.body.getLinearVelocity().len() <= 0.15f) {
             physics.body.setLinearVelocity(physics.body.getLinearVelocity().scl(0.8f));
@@ -67,35 +65,49 @@ public class BallSystem extends IteratingSystem {
                 && !GameController.currentController.getShowPowerups();
         if (canShoot) {
             if (Gdx.input.isTouched() && Gdx.input.getY() >= 40) {
-                if (!justTouched) {
-                    // If first touch, set direction
-                    Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-                    Vector2 inputInWorld = new Vector2(input.x, input.y);
-                    Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
-                    ball.dir = inputInWorld.sub(origin);
-                }
-                justTouched = true;
-
-                // Set power by distance dragged from first touch
                 Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
                 Vector2 inputInWorld = new Vector2(input.x, input.y);
-                Vector2 direction = new Vector2(ball.dir);
                 Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
-                ball.power = inputInWorld.sub(origin).sub(direction);
-                ball.power.clamp(0.1f, 3f);
+
+                if (!hasAimed) {
+                    // If first touch, set direction
+                    ball.dir = inputInWorld.sub(origin).scl(-1);
+                }
+                if (hasAimed && !justTouched) {
+                    // If first touch after aim, set reference for power
+                    powerRef = inputInWorld.sub(origin);
+                }
+
+                if (ball.dir.len() != 0) {
+                    justTouched = true;
+                }
+
+                if (hasAimed) {
+                    // Set power by distance dragged from reference
+                    inputInWorld = new Vector2(input.x, input.y);
+                    ball.power = inputInWorld.sub(origin).sub(powerRef);
+                    ball.power.clamp(0.1f, 3f);
+                }
             } else if (justTouched) {
-                if (ball.power.len() <= 0) return;
+                if (hasAimed) {
+                    if (ball.power.len() <= 0) return;
 
-                // Shoot ball in direction with power
-                float force = 1500;
-                Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
-                Engine.getInstance().shootBallWithForce(directionWithForce, true);
+                    // Shoot ball in direction with power
+                    float force = 1500;
+                    Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
+                    Engine.getInstance().shootBallWithForce(directionWithForce, true);
+                    ball.power = new Vector2(0,0);
 
-                // Increments number of shots for singleplayer
-                Context.getInstance().getState().incNumberOfShots();
-                
-                // Play sound
-                soundController.playSound("cueHit", ball.power.len() / 3);
+                    // Increments number of shots for singleplayer
+                    Context.getInstance().getState().incNumberOfShots();
+
+                    // Play sound
+                    soundController.playSound("cueHit", ball.power.len() / 3);
+
+                    Context.getInstance().getState().setHasAimed(false);
+                } else {
+                    Context.getInstance().getState().setHasAimed(true);
+                }
 
                 justTouched = false;
             }

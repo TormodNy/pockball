@@ -1,7 +1,6 @@
 package com.pockball.pockball.firebase;
 
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -12,24 +11,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.RoomModel;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.screens.join_game_room.JoinGameController;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
+import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 
 public class FirebaseService implements FirebaseInterface {
     private DatabaseReference ref;
-    private FirebaseDatabase db;
+    private final FirebaseDatabase db;
     private FirebaseController firebaseController;
     private static final String TAG = "ReadAndWriteSnippets";
 
-    private ValueEventListener shotsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
-    private DatabaseReference shotsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
+    private ValueEventListener eventsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
+    private DatabaseReference eventsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
 
     public FirebaseService() {
         db = FirebaseDatabase.getInstance("https://pockball-a5e58-default-rtdb.europe-west1.firebasedatabase.app");
@@ -100,10 +99,10 @@ public class FirebaseService implements FirebaseInterface {
     @Override
     public void listenToPlayerEvents(String target) {
         // stores the reference in instance variable, to be able to unsubscribe from listener when needed
-        shotsRef = getRefFromNestedTarget(target);
+        eventsRef = getRefFromNestedTarget(target);
 
         // stores the listener in instance variable, to be able to unsubscribe from listener when needed
-        shotsListener = new ValueEventListener() {
+        eventsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<EventModel> events = new ArrayList<>();
@@ -114,6 +113,7 @@ public class FirebaseService implements FirebaseInterface {
                             eventType = keySnap.getValue(EventModel.Type.class);
                         }
                     }
+
                     if (eventType == null) return;
 
                     EventModel event = null;
@@ -137,12 +137,12 @@ public class FirebaseService implements FirebaseInterface {
                 System.out.println(error);
             }
         };
-        shotsRef.addValueEventListener(shotsListener);
+        eventsRef.addValueEventListener(eventsListener);
     }
 
     @Override
-    public void stopListenToShotChanges(String target) {
-        shotsRef.removeEventListener(shotsListener);
+    public void stopListenToEventsChanges() {
+        eventsRef.removeEventListener(eventsListener);
     }
 
     @Override
@@ -156,7 +156,10 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean hostTurn = snapshot.getValue(Boolean.class);
-                Context.getInstance().getState().setHostTurn(hostTurn);
+
+                if (hostTurn == null) return;
+
+                Context.getInstance().getState().fireHostTurn(hostTurn);
             }
 
             @Override
@@ -169,7 +172,7 @@ public class FirebaseService implements FirebaseInterface {
     }
 
     @Override
-    public void stopListenToHostTurn(String target) {
+    public void stopListenToHostTurn() {
         hostTurnRef.removeEventListener(hostTurnListener);
     }
 
@@ -221,13 +224,15 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void listenToBallType(String roomId) {
-        ballTypeRef = db.getReference().child("test").child(roomId).child("ballType");
+        ballTypeRef = db.getReference().child("test").child(roomId).child("ballTypes");
 
         ballTypeListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                PlayerModel opponent = snapshot.getValue(PlayerModel.class);
-                CreateGameRoomController.getInstance().notifyNewClient(opponent);
+                BallTypeModel ballType = snapshot.getValue(BallTypeModel.class);
+                if (ballType == null) return;
+
+                Context.getInstance().getState().fireBallTypeSet(ballType);
             }
 
             @Override

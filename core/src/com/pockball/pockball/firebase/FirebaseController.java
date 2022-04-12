@@ -59,8 +59,8 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void stopListenToShotChanges(String target) {
-        firebaseInterface.stopListenToShotChanges(target);
+    public void stopListenToEventsChanges() {
+        firebaseInterface.stopListenToEventsChanges();
     }
 
     @Override
@@ -69,8 +69,8 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
-    public void stopListenToHostTurn(String target) {
-        firebaseInterface.stopListenToHostTurn(target);
+    public void stopListenToHostTurn() {
+        firebaseInterface.stopListenToHostTurn();
     }
 
     @Override

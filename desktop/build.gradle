@@ -34,7 +34,7 @@ task dist(type: Jar) {
 }
 
 dependencies {
-    implementation 'com.badlogicgames.gdx:gdx-freetype-platform:1.10.0'
+    implementation 'com.badlogicgames.gdx:gdx-freetype-platform:1.10.0:natives-desktop'
 }
 
 

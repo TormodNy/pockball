@@ -41,7 +41,7 @@ public class CueFactory {
         position.position.set(100, 100);
 
         sprite.sprite = new Sprite(new Texture("cue.png"));
-        sprite.sprite.setOrigin(size.width + 1, size.height / 2);
+        sprite.sprite.setOrigin(size.width, size.height / 2);
         sprite.sprite.setPosition(position.position.x, position.position.y);
         sprite.layer = 2;
 
