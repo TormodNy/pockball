@@ -72,6 +72,11 @@ public class FirebaseController implements FirebaseInterface {
     }
 
     @Override
+    public void checkRoomId(String roomId) {
+
+    }
+
+    @Override
     public void listenToBallType(String roomId) {
 
     }
