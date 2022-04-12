@@ -29,10 +29,16 @@ public class TutorialView extends ScreenView {
         this.setCurrentPng(0);
 
         textures = new Array<>();
-        textures.add(new Texture("tutorial/first.png"));
-        textures.add(new Texture("tutorial/first.png"));
-        textures.add(new Texture("tutorial/first.png"));
-        textures.add(new Texture("tutorial/first.png"));
+        textures.add(new Texture("tutorial/tutorial1.png"));
+        textures.add(new Texture("tutorial/tutorial2.png"));
+        textures.add(new Texture("tutorial/tutorial3.png"));
+        textures.add(new Texture("tutorial/tutorial4.png"));
+        textures.add(new Texture("tutorial/tutorial5.png"));
+        textures.add(new Texture("tutorial/tutorial6.png"));
+        textures.add(new Texture("tutorial/tutorial7.png"));
+        textures.add(new Texture("tutorial/tutorial8.png"));
+        textures.add(new Texture("tutorial/tutorial9.png"));
+        textures.add(new Texture("tutorial/tutorial10.png"));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -51,7 +57,6 @@ public class TutorialView extends ScreenView {
         titleTable.top();
         titleTable.row().padTop(50);
 
-
         TextButton lastButton = new TextButton(" LAST ", assetsController.getSkin());
         lastButton.getLabel().setFontScale(assetScaler);
         table.add(lastButton).align(Align.left);
@@ -66,7 +71,7 @@ public class TutorialView extends ScreenView {
         table.bottom();
         TextButton quitButton = new TextButton(" MAIN MENU ", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);
-        table.add(quitButton).align(Align.center).pad(50);
+        table.add(quitButton).align(Align.center).pad(10);
 
         TextButton nextButton = new TextButton(" NEXT ", assetsController.getSkin());
         nextButton.getLabel().setFontScale(assetScaler);
@@ -89,15 +94,14 @@ public class TutorialView extends ScreenView {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         sb.draw(textures.get(getCurrentPng()),
-                (Gdx.graphics.getWidth()/2f) - (textures.get(currentPng).getWidth()*assetScaler/2f),
-                (Gdx.graphics.getHeight()* (1f/5f)),
-                textures.get(currentPng).getWidth()*assetScaler,
-                textures.get(currentPng).getHeight()*assetScaler);
+                (Gdx.graphics.getWidth()/2f) - (textures.get(currentPng).getWidth()*assetScaler*1.35f/2f),
+                Gdx.graphics.getHeight()*(1f/6f),
+                textures.get(currentPng).getWidth()*assetScaler*1.35f,
+                textures.get(currentPng).getHeight()*assetScaler*1.35f);
         sb.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
     }
 
     @Override
