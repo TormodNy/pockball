@@ -14,6 +14,7 @@ import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
+import com.pockball.pockball.screens.tutorial.TutorialView;
 import com.pockball.pockball.screens.won.WinnerView;
 
 public class ScreenController implements Disposable {
@@ -83,6 +84,11 @@ public class ScreenController implements Disposable {
                     WinnerView winnerView = new WinnerView(this, previousScreenType);
                     this.setScreen(winnerView);
                     break;
+                case TUTORIAL:
+                    TutorialView tutorialView = new TutorialView(this, ScreenModel.Screen.TUTORIAL);
+                    this.setScreen(tutorialView);
+                    break;
+
             }
         });
     }

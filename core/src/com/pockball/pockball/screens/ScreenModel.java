@@ -11,5 +11,6 @@ public class ScreenModel {
         CREATE_GAME,
         GAMEOVER,
         WINNER,
+        TUTORIAL,
     }
 }
