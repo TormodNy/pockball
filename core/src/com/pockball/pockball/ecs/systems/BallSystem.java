@@ -64,7 +64,7 @@ public class BallSystem extends IteratingSystem {
                 && !placeEntity.placeable
                 && !GameController.currentController.getShowPowerups();
         if (canShoot) {
-            if (Gdx.input.isTouched() && Gdx.input.getY() >= 40) {
+            if (Gdx.input.isTouched() && (Gdx.input.getY() >= 40 || justTouched)) {
                 Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
                 Vector2 inputInWorld = new Vector2(input.x, input.y);
                 Vector2 origin = new Vector2(position.position.x, position.position.y).add(ball.radius, ball.radius);
@@ -97,6 +97,7 @@ public class BallSystem extends IteratingSystem {
                     Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
                     Engine.getInstance().shootBallWithForce(directionWithForce, true);
                     ball.power = new Vector2(0,0);
+                    ball.dir = new Vector2(0, 0);
 
                     // Increments number of shots for singleplayer
                     Context.getInstance().getState().incNumberOfShots();

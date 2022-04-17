@@ -57,7 +57,8 @@ public class CueSystem extends IteratingSystem {
                 !placeEntity.placeable &&
                 !GameController.currentController.getShowPowerups() &&
                 Context.getInstance().getState().canPerformAction() &&
-                Gdx.input.getY() >= 40 &&
+                (Gdx.input.getY() >= 40 ||
+                        ball.dir.len() != 0) &&
                 ball.dir.len() != 0 &&
                 physics.body.getLinearVelocity().len() <= 0.01f;
 
