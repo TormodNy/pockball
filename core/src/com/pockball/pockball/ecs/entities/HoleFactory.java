@@ -28,13 +28,7 @@ public class HoleFactory {
         PositionComponent position = Engine.getInstance().createComponent(PositionComponent.class);
         PhysicsBodyComponent physicsBody = Engine.getInstance().createComponent(PhysicsBodyComponent.class);
         HoleComponent hole = Engine.getInstance().createComponent(HoleComponent.class);
-        // SpriteComponent sprite = Engine.getInstance().createComponent(SpriteComponent.class);
-        DirectionComponent direction = Engine.getInstance().createComponent(DirectionComponent.class);
         SizeComponent size = Engine.getInstance().createComponent(SizeComponent.class);
-
-        /* sprite.sprite = new Sprite(new Texture("redBall.png"));
-        sprite.sprite.setOrigin(hole.radius, hole.radius);
-        sprite.sprite.setPosition(position.position.x, position.position.y);*/
 
         size.width = hole.radius * 2;
         size.height = hole.radius * 2;
@@ -61,7 +55,6 @@ public class HoleFactory {
         newHole.add(position);
         newHole.add(physicsBody);
         newHole.add(hole);
-        newHole.add(direction);
         newHole.add(size);
 
         physicsBody.body.setUserData(holeID);
