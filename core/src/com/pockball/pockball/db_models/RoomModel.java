@@ -1,5 +1,7 @@
 package com.pockball.pockball.db_models;
 
+import java.util.Random;
+
 public class RoomModel {
     public String roomId;
     public PlayerModel host;
@@ -21,7 +23,7 @@ public class RoomModel {
         this.roomId = roomId;
         this.host = host;
         this.client = null; // this.opponent is set later on
-        this.hostTurn = true; // Todo - change to random bool
+        this.hostTurn = new Random().nextBoolean();
     }
 
     @Override
