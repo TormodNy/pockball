@@ -134,7 +134,6 @@ public class TutorialView extends ScreenView {
     }
 
     public void setCurrentPng(int currentPng) {
-        System.out.println(currentPng);
         this.currentPng = currentPng;
     }
 

@@ -68,7 +68,9 @@ public class BallFactory {
 
         // Place body in world
         physicsBody.body = Engine.getInstance().getWorld().createBody(bodyDef);
-
+        if (ballID == 0) {
+            physicsBody.body.setSleepingAllowed(false);
+        }
         // Add collider
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(ball.radius);

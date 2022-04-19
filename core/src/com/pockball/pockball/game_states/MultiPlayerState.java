@@ -154,10 +154,6 @@ public class MultiPlayerState implements State {
                         getActivePlayerModel().score.add(ballType.toString());
                         putOpponent = true;
                     }
-                    if(getCurrentPlayerBallType() != null){
-                        System.out.println("\n score of : " + getNotCurrentPlayerBallType().toString() + ": " + getInActivePlayerModel().score.size());
-                        System.out.println("\n score of : " + getCurrentPlayerBallType().toString() + ": " + getActivePlayerModel().score.size());
-                    }
                     break;
                 }
                 if (getCurrentPlayerBallType().equals(ballType) && !firstBall) {
@@ -166,10 +162,6 @@ public class MultiPlayerState implements State {
                 } else {
                     getInActivePlayerModel().score.add(ballType.toString());
                     putOpponent = true;
-                }
-                if(getCurrentPlayerBallType() != null){
-                    System.out.println("\n score of : " + getNotCurrentPlayerBallType().toString() + ": " + getInActivePlayerModel().score.size());
-                    System.out.println("\n score of : " + getCurrentPlayerBallType().toString() + ": " + getActivePlayerModel().score.size());
                 }
         }
     }
@@ -264,7 +256,6 @@ public class MultiPlayerState implements State {
 
         lastEventHandled = eventModelList.size() - 1;
         EventModel event = eventModelList.get(lastEventHandled);
-
         opponentIdle = false;
 
         switch (event.type) {
@@ -279,8 +270,7 @@ public class MultiPlayerState implements State {
                 PlaceBallEvent placeBall = (PlaceBallEvent) event;
                 Vector2 position = new Vector2(placeBall.x, placeBall.y);
                 Engine.getInstance().placeWhiteBall(position, false);
-
-
+                break;
         }
     }
 

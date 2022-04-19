@@ -45,9 +45,9 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
     private World world;
 
-    private Array<Entity> balls = new Array<Entity>();
+    private final Array<Entity> balls = new Array<>();
 
-    private List<Body> bodiesToRemove = new ArrayList<>();
+    private final List<Body> bodiesToRemove = new ArrayList<>();
 
     private final Vector2[][] ballLocations = {
             {
@@ -151,7 +151,8 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         createBackdrop();
 
         // Powerups
-        for (int i = 0; i < 0; i++) {
+        int numberOfStartPowerups = 1;
+        for (int i = 0; i < numberOfStartPowerups; i++) {
             engineInstance.addEntity(entityFactory.createPowerup(0));
         }
         // Place balls on table
@@ -285,7 +286,10 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
-        physics.body.applyForceToCenter(force, true);
+
+        physics.body.setAwake(true);
+        //physics.body.applyForceToCenter(force, true);
+        physics.body.applyLinearImpulse(force, physics.body.getPosition(), true);
     }
 
     public void placeWhiteBall(Vector2 position, boolean changeState) {

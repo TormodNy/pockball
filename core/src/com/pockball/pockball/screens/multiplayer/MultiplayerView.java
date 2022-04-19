@@ -70,12 +70,14 @@ public class MultiplayerView extends ScreenView {
         tablePause.padRight(5);
         tablePause.add(pauseButton);
 
+
         Util.addPathToButton(screenController,
                             pauseButton,
                             ScreenModel.Screen.SETTINGS,
                             ScreenModel.Screen.MULTIPLAYER);
 
     }
+
 
     // Call this method to toggle the text
     private void toggleWaitingForOtherPlayer() {
