@@ -46,6 +46,8 @@ public class MultiPlayerState implements State {
         this.firstBall = true;
         this.putOpponent = false;
 
+        this.gameVolume = Context.getInstance().getState().getGameVolume();
+
         if (isHost) {
             // Who am I
             myKey = "host";
