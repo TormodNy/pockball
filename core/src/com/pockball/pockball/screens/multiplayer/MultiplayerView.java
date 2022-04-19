@@ -63,30 +63,10 @@ public class MultiplayerView extends ScreenView {
         tablePause.padTop(5);
         tablePause.padRight(5);
         tablePause.add(pauseButton);
-        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
-                ScreenModel.Screen.MULTIPLAYER);
-
-        // TODO: Rename
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(buttonScaler);
-        table.add(powerupsButton);
-        table.top().left();
-        table.pad(4);
-
-        powerupsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // Show powerups
-                if (!Context.getInstance().getState().hasAimed()) {
-                    controller.setShowPowerups(!controller.getShowPowerups());
-                }
-            }
-        });
-
+        Util.addPathToButton(screenController,
+                            pauseButton,
+                            ScreenModel.Screen.SETTINGS,
+                            ScreenModel.Screen.MULTIPLAYER);
     }
 
     // Call this method to toggle the text

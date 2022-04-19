@@ -121,7 +121,6 @@ public class SinglePlayerState implements State {
 
     @Override
     public void setIdle(boolean idle) {
-        // TODO: Implement
     }
 
     @Override
@@ -131,7 +130,6 @@ public class SinglePlayerState implements State {
 
     @Override
     public boolean canPerformAction() {
-        // TODO: Implement
         return true;
     }
 

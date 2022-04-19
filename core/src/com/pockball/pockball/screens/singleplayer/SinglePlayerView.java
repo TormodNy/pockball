@@ -82,16 +82,15 @@ public class SinglePlayerView extends ScreenView {
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
                 ScreenModel.Screen.SINGLEPLAYER);
 
-        // TODO: Rename
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        Table powerupTable = new Table();
+        powerupTable.setFillParent(true);
+        stage.addActor(powerupTable);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
         powerupsButton.getLabel().setFontScale(buttonScaler);
-        table.add(powerupsButton);
-        table.top().left();
-        table.pad(4);
+        powerupTable.add(powerupsButton);
+        powerupTable.top().left();
+        powerupTable.pad(4);
 
         powerupsButton.addListener(new ChangeListener() {
             @Override
