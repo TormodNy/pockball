@@ -7,7 +7,6 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
@@ -15,8 +14,6 @@ import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.PowerupComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 
 import java.util.ArrayList;

@@ -2,8 +2,6 @@ package com.pockball.pockball.ecs.systems;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -11,13 +9,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.HoleComponent;
+import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
-import com.pockball.pockball.ecs.components.PositionComponent;
-import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
 

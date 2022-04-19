@@ -1,17 +1,15 @@
 package com.pockball.pockball.screens.multiplayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
-import com.pockball.pockball.game_states.Context;
 
 public class MultiplayerView extends ScreenView {
     private final MultiplayerController controller;

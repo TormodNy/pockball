@@ -10,10 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.BallComponent;
-import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
-import com.pockball.pockball.ecs.components.PositionComponent;
-import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.game_states.Context;
 

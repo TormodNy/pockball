@@ -1,6 +1,5 @@
 package com.pockball.pockball.firebase;
 
-import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.db_models.ShotEvent;
 
 public class FirebaseController implements FirebaseInterface {

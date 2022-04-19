@@ -3,19 +3,12 @@ package com.pockball.pockball.ecs.entities;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.CueComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
-import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.ecs.types.BallType;
 
 public class CueFactory {
     private static CueFactory cueFactory;

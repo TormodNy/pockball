@@ -1,9 +1,9 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.db_models.BallTypeModel;
 
 import java.util.List;
 

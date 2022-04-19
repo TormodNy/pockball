@@ -1,13 +1,8 @@
 package com.pockball.pockball.screens.singleplayer;
 
-import com.badlogic.ashley.core.Entity;
-import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.GameController;
-import com.pockball.pockball.screens.ScreenController;
-import com.pockball.pockball.screens.ScreenModel;
 
 
 public class SinglePlayerController extends GameController {

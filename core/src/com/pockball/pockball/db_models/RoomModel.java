@@ -37,32 +37,4 @@ public class RoomModel {
                 '}';
     }
 
-    /*{
-        rooms: {
-            room1312: {
-                host: {
-                    playerID,
-                            ballType,
-                            score: ballID[] // Balls fallen into hole
-                },
-                opponent: null | {
-                        playerID,
-                        ballType,
-                        score: ballID[] // Balls fallen into hole
-                        shots: [
-                {
-                    force: Vector2, // Direction with force
-                }
-                    ],
-                },
-                hostTurn: boolean,
-                timeStamp: int, // Last hit
-                winner: null | playerID,
-
-            },
-            room2: { ... }
-        }
-
-    }
-    */
 }

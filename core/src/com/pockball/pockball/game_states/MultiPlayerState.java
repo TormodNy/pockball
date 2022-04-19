@@ -2,6 +2,7 @@ package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.db_models.PlaceBallEvent;
 import com.pockball.pockball.db_models.PlayerModel;
@@ -10,7 +11,6 @@ import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 
@@ -88,7 +88,6 @@ public class MultiPlayerState implements State {
                 whiteBallFellDownThisRound = true;
                 break;
             case BLACK:
-                //TODO: implement bb logic
                 boolean lost;
                 if (firstBall){
                     if (!myTurn){
@@ -218,7 +217,7 @@ public class MultiPlayerState implements State {
     }
 
     private void setNextPlayerTurn(boolean myTurn) {
-        whiteBallFellDownThisRound = false; //TODO: What if white ball falls in after?
+        whiteBallFellDownThisRound = false;
         roomModel.hostTurn = isHost == myTurn;
         firebaseController.writeToDb(roomModel.roomId + ".hostTurn", roomModel.hostTurn);
     }
