@@ -68,7 +68,7 @@ public class MultiplayerController extends GameController {
 
     public int getMyScore(){
         MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
-        int score = 0;
+        int score;
         if (state.getIsMyTurn()){
             score = state.getActivePlayerModel().score.size();
         } else {

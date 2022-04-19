@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderSystem extends IteratingSystem {
-    private SpriteBatch spriteBatch;
-    private List<Array<Entity>> renderQueue;
+    private final SpriteBatch spriteBatch;
+    private final List<Array<Entity>> renderQueue;
 
     private final ComponentMapper<SpriteComponent> spriteMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -56,7 +56,6 @@ public class RenderSystem extends IteratingSystem {
 
         spriteBatch.begin();
 
-        boolean stopped = true;
 
         for (Array<Entity> entityArray : renderQueue) {
             for (Entity entity : entityArray) {

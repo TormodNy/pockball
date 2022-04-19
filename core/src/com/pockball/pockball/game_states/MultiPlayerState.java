@@ -24,12 +24,18 @@ public class MultiPlayerState implements State {
     private float gameVolume;
     private boolean hasAimed = false;
 
-    private RoomModel roomModel;
-    private FirebaseController firebaseController;
-    private String myKey, opponentKey;
+    private final RoomModel roomModel;
+    private final FirebaseController firebaseController;
+    private final String myKey;
 
     // Is this player host
-    private boolean isHost, myTurn, whiteBallFellDownThisRound, meIdle, opponentIdle, firstBall, putOpponent;
+    private final boolean isHost;
+    private boolean myTurn;
+    private boolean whiteBallFellDownThisRound;
+    private boolean meIdle;
+    private boolean opponentIdle;
+    private boolean firstBall;
+    private boolean putOpponent;
     private BallType myBallType, opponentBallType;
 
     private int lastEventHandled = -1;
@@ -48,6 +54,7 @@ public class MultiPlayerState implements State {
 
         this.gameVolume = Context.getInstance().getState().getGameVolume();
 
+        String opponentKey;
         if (isHost) {
             // Who am I
             myKey = "host";
@@ -156,22 +163,21 @@ public class MultiPlayerState implements State {
                     }
                     break;
                 }
-                if (getCurrentPlayerBallType().equals(ballType) && !firstBall) {
+                if (getCurrentPlayerBallType().equals(ballType)) {
                     getActivePlayerModel().score.add(ballType.toString());
                     if (!myTurn && !whiteBallFellDownThisRound && !putOpponent) setNextPlayerTurn(true);
                 } else {
                     getInActivePlayerModel().score.add(ballType.toString());
                     putOpponent = true;
                 }
+                break;
         }
     }
 
     public int getTimerInt(){
         return (int) timer;
     }
-    public float getTimer(){
-        return timer;
-    }
+
     public void updateTimer(float delta){
         if(!getIdle()){
             timer = 60;

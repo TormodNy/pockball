@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
@@ -16,7 +15,6 @@ import java.util.List;
 public class SinglePlayerState implements State {
 
     private final Entity playerEntity;
-    private final PlayerComponent player;
     private final ScoreComponent score;
     private int numberOfShots = 0;
     private float gameVolume;
@@ -28,7 +26,6 @@ public class SinglePlayerState implements State {
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
         gameVolume = 0;
         score = playerEntity.getComponent(ScoreComponent.class);
-        player = playerEntity.getComponent(PlayerComponent.class);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class WinnerView extends ScreenView {
         table.add(gameoverTitle);
         table.row().padTop(50);
 
-        Label winnerScore = new Label("empty", assetsController.getSkin());
+        Label winnerScore;
 
         if (multiplayer){
             winnerScore = new Label("YOUR SCORE: " + MultiplayerController.getInstance().getMyScore(), assetsController.getSkin());

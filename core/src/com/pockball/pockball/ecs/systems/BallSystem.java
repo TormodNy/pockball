@@ -30,7 +30,6 @@ public class BallSystem extends IteratingSystem {
     private Vector2 powerRef = new Vector2(0, 0);
 
     public BallSystem() {
-        // Må legge til NumberOfShotsComponent.class her, men da funker det heller ikke
         super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
 
         soundController = SoundController.getInstance();
@@ -98,7 +97,7 @@ public class BallSystem extends IteratingSystem {
                     ball.power = new Vector2(0,0);
                     ball.dir = new Vector2(0, 0);
 
-                    // Increments number of shots for singleplayer
+                    // Increments number of shots for singlePlayer
                     Context.getInstance().getState().incNumberOfShots();
 
                     // Play sound

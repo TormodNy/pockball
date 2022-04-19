@@ -8,39 +8,39 @@ import com.pockball.pockball.ecs.types.BallType;
 import java.util.List;
 
 public interface State {
-    public void ballIntoHole(BallType ball, int holeID);
+    void ballIntoHole(BallType ball, int holeID);
 
-    public void changeGameVolume(float gameVolume);
+    void changeGameVolume(float gameVolume);
 
-    public float getGameVolume();
+    float getGameVolume();
 
-    public Entity[] getPlayers();
+    Entity[] getPlayers();
 
-    public void addEvent(EventModel event);
+    void addEvent(EventModel event);
 
-    public void fireOpponentEventChange(List<EventModel> eventModelList);
+    void fireOpponentEventChange(List<EventModel> eventModelList);
 
-    public void fireOpponentIsIdle();
+    void fireOpponentIsIdle();
 
-    public void fireBallTypeSet(BallTypeModel ballTypeModel);
+    void fireBallTypeSet(BallTypeModel ballTypeModel);
 
-    public void fireHostTurn(boolean hostTurn);
+    void fireHostTurn(boolean hostTurn);
 
-    public void setIdle(boolean idle);
+    void setIdle(boolean idle);
 
-    public boolean getIdle();
+    boolean getIdle();
 
-    public boolean canPerformAction();
+    boolean canPerformAction();
 
-    public int getNumberOfShots();
+    int getNumberOfShots();
 
     void incNumberOfShots();
 
     void reset();
 
-    public boolean getIsMyTurn();
+    boolean getIsMyTurn();
 
-    public void setHasAimed(boolean aimed);
+    void setHasAimed(boolean aimed);
 
-    public boolean hasAimed();
+    boolean hasAimed();
 }

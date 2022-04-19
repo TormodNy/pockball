@@ -20,9 +20,9 @@ public class GameoverView extends ScreenView {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label gameoverTitle = new Label("GAME OVER! ", assetsController.getSkin());
-        gameoverTitle.setFontScale(assetScaler);
-        table.add(gameoverTitle);
+        Label gameOverTitle = new Label("GAME OVER! ", assetsController.getSkin());
+        gameOverTitle.setFontScale(assetScaler);
+        table.add(gameOverTitle);
 
         TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);

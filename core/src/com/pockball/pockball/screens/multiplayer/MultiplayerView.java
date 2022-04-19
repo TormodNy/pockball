@@ -90,11 +90,7 @@ public class MultiplayerView extends ScreenView {
 
         // TODO: Performance optimization
         // TODO: If stateChanged
-        if (showWaitingForOtherPlayer) {
-            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
-        } else {
-            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
-        }
+        waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
 
         timerLabel.setText(controller.updateTimerString(delta));
 

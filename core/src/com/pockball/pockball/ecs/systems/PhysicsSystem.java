@@ -8,14 +8,12 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
-import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.game_states.Context;
 
 public class PhysicsSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<DirectionComponent> directionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
-    private final ComponentMapper<SpriteComponent> spriteMapper;
     private long timeLastMovement;
     private boolean moving;
 
@@ -25,7 +23,6 @@ public class PhysicsSystem extends IteratingSystem {
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         directionMapper = ComponentMapper.getFor(DirectionComponent.class);
         physicsBodyMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
-        spriteMapper = ComponentMapper.getFor(SpriteComponent.class);
         timeLastMovement = 0;
         moving = false;
     }
@@ -45,10 +42,10 @@ public class PhysicsSystem extends IteratingSystem {
                 timeLastMovement = now;
             }
 
-            if (moving && timeLastMovement + 1000l < now) {
+            if (moving && timeLastMovement + 1000L < now) {
                 moving = false;
                 Context.getInstance().getState().setIdle(!moving);
-            } else if (!moving && timeLastMovement + 1000l >= now) {
+            } else if (!moving && timeLastMovement + 1000L >= now) {
                 moving = true;
                 Context.getInstance().getState().setIdle(!moving);
             }
