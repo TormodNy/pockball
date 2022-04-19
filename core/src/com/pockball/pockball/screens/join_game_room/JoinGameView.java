@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.db_models.RoomModel;
@@ -36,8 +37,11 @@ public class JoinGameView extends ScreenView {
         stage.addActor(table);
 
         // Back button
-        TextButton backButton = new TextButton("Back", assetsController.getSkin());
+        TextButton backButton = new TextButton(" Back ", assetsController.getSkin());
         backButton.getLabel().setFontScale(assetScaler);
+        backButton.setHeight(assetScaler*120);
+        backButton.setWidth(assetScaler*300);
+        backButton.pad(assetScaler*20);
         stage.addActor(backButton);
 
         backButton.addListener(new EventListener() {
@@ -48,7 +52,7 @@ public class JoinGameView extends ScreenView {
             }
         });
 
-        Label title = new Label("Join game",  assetsController.getSkin());
+        Label title = new Label(" Join game ",  assetsController.getSkin());
         title.setFontScale(assetScaler * 2);
         table.add(title);
         table.row();
@@ -60,7 +64,8 @@ public class JoinGameView extends ScreenView {
         table.row();
 
         TextField roomCodeField = new TextField("", assetsController.getSkin());
-        table.add(roomCodeField);
+        roomCodeField.setAlignment(Align.center);
+        table.add(roomCodeField).width(400*assetScaler);
         table.row();
 
         errorLabel = new Label("",  assetsController.getSkin());
@@ -69,7 +74,7 @@ public class JoinGameView extends ScreenView {
         table.add(errorLabel);
         table.row();
 
-        TextButton joinGameButton = new TextButton("Join game", assetsController.getSkin());
+        TextButton joinGameButton = new TextButton(" Join game ", assetsController.getSkin());
         joinGameButton.getLabel().setFontScale(assetScaler);
         table.add(joinGameButton);
 

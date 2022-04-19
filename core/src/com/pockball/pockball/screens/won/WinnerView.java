@@ -7,12 +7,16 @@ import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
+import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 
 public class WinnerView extends ScreenView {
 
-    public WinnerView(ScreenController screenController, ScreenModel.Screen screenModel) {
+    boolean multiplayer;
+
+    public WinnerView(ScreenController screenController, ScreenModel.Screen screenModel, boolean multiplayer) {
         super(screenController, screenModel);
+        this.multiplayer = multiplayer;
     }
 
     @Override
@@ -26,11 +30,18 @@ public class WinnerView extends ScreenView {
         table.add(gameoverTitle);
         table.row().padTop(50);
 
-        Label winnerScore = new Label("YOUR SCORE: " + SinglePlayerController.getInstance().getNumberOfShots(), assetsController.getSkin());
+        Label winnerScore = new Label("empty", assetsController.getSkin());
+
+        if (multiplayer){
+            winnerScore = new Label("YOUR SCORE: " + MultiplayerController.getInstance().getMyScore(), assetsController.getSkin());
+        } else {
+            winnerScore = new Label("YOUR SCORE: " + SinglePlayerController.getInstance().getNumberOfShots(), assetsController.getSkin());
+        }
+
         winnerScore.setFontScale(assetScaler);
         table.add(winnerScore);
 
-        TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+        TextButton quitButton = new TextButton(" QUIT ", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);
         table.row().padTop(50);
         table.add(quitButton).uniformX();

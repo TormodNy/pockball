@@ -46,7 +46,7 @@ public class SettingsView extends ScreenView {
         table.row().padTop(50);
         table.add(volumeTitle);
         table.row().padTop(10);
-        table.add(volumeSlider);
+        table.add(volumeSlider).width(400*assetScaler).height(50*assetScaler);
 
         volumeSlider.addListener(new ChangeListener() {
             @Override
@@ -56,7 +56,7 @@ public class SettingsView extends ScreenView {
         });
 
         if (previousScreen == ScreenModel.Screen.MAINMENU) {
-            TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
+            TextButton mainMenuButton = new TextButton(" MAIN MENU ", assetsController.getSkin());
             mainMenuButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(mainMenuButton).uniformX();
@@ -64,12 +64,12 @@ public class SettingsView extends ScreenView {
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
         else {
-            TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+            TextButton quitButton = new TextButton(" QUIT ", assetsController.getSkin());
             quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(quitButton).uniformX();
 
-            TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
+            TextButton resumeButton = new TextButton(" RESUME ", assetsController.getSkin());
             resumeButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
