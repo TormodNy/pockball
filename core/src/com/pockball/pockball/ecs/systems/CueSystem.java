@@ -6,8 +6,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.CueComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
@@ -15,9 +13,8 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
-import com.pockball.pockball.ecs.types.BallType;
+import com.pockball.pockball.ecs.types.CueType;
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 
 public class CueSystem extends IteratingSystem {
@@ -61,12 +58,18 @@ public class CueSystem extends IteratingSystem {
                         ball.dir.len() != 0) &&
                 ball.dir.len() != 0 &&
                 physics.body.getLinearVelocity().len() <= 0.01f;
+        boolean hasAimed = Context.getInstance().getState().hasAimed();
+        boolean isLine = cue.cueType.equals(CueType.LINE);
 
-        if (canShoot) {
-            direction.rotation = ball.dir.angleDeg();
+        if (canShoot && !(isLine && hasAimed)) {
+            if (isLine) {
+                direction.rotation = ball.dir.cpy().scl(-1).angleDeg();
+            } else {
+                direction.rotation = ball.dir.angleDeg();
+            }
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width + ball.radius - 0.01f, ballPos.position.y - 0.09f).sub(dir.scl(0.7f + ball.power.len()));
-        } else if (!Context.getInstance().getState().hasAimed()) {
+        } else if (!hasAimed || isLine) {
             position.position.set(100, 100);
         }
     }
