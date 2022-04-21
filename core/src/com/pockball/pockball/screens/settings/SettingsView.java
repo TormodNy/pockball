@@ -17,6 +17,7 @@ public class SettingsView extends ScreenView {
 
     public SettingsView(ScreenController screenController, ScreenModel.Screen previousScreen) {
         super(screenController, previousScreen);
+
     }
 
     @Override
@@ -82,5 +83,13 @@ public class SettingsView extends ScreenView {
             }
 
         }
+    }
+
+    @Override
+    public void render(float delta){
+        super.render(delta);
+
+        //update multiplayer timer in paused state
+        Context.getInstance().getState().updateTimer(delta);
     }
 }

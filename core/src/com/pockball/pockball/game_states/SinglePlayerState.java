@@ -135,6 +135,11 @@ public class SinglePlayerState implements State {
     public boolean hasAimed() {
         return hasAimed;
     }
+
+    @Override
+    public void updateTimer(float delta) {
+
+    }
 }
 
 

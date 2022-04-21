@@ -43,4 +43,6 @@ public interface State {
     void setHasAimed(boolean aimed);
 
     boolean hasAimed();
+
+    void updateTimer(float delta);
 }
