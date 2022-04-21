@@ -32,6 +32,10 @@ public class EntityFactory {
         return cueFactory.createCue(ball);
     }
 
+    public Entity createDottedLine(Entity ball) {
+        return cueFactory.createDottedLine(ball);
+    }
+
     public Entity createHole(float x, float y, int holeID) {
         return holeFactory.createHole(x, y, holeID);
     }

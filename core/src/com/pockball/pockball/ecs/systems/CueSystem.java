@@ -14,6 +14,7 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
+import com.pockball.pockball.ecs.types.CueType;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.GameController;
 
@@ -57,13 +58,19 @@ public class CueSystem extends IteratingSystem {
                 Gdx.input.getY() / AssetsController.getInstance().getAssetScaler() >= 100 &&
                 ball.dir.len() != 0 &&
                 physics.body.getLinearVelocity().len() <= 0.01f;
+        boolean hasAimed = Context.getInstance().getState().hasAimed();
+        boolean isLine = cue.cueType.equals(CueType.LINE);
 
-        if (canShoot) {
-            direction.rotation = ball.dir.angleDeg();
+        if (canShoot && !(isLine && hasAimed)) {
+            if (isLine) {
+                direction.rotation = ball.dir.cpy().scl(-1).angleDeg();
+            } else {
+                direction.rotation = ball.dir.angleDeg();
+            }
             Vector2 dir = new Vector2(ball.dir).nor();
             position.position.set(ballPos.position.x - size.width + ball.radius - 0.01f, ballPos.position.y - 0.09f)
                     .sub(dir.scl(0.7f + ball.power.len()));
-        } else if (!Context.getInstance().getState().hasAimed()) {
+        } else if (!hasAimed || isLine) {
             position.position.set(100, 100);
         }
     }
