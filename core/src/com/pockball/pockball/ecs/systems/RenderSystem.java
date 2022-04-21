@@ -64,13 +64,13 @@ public class RenderSystem extends IteratingSystem {
                 SizeComponent sizeComponent = sizeMapper.get(entity);
                 DirectionComponent directionComponent = directionMapper.get(entity);
 
-                if (spriteComponent.visible) {
-                    spriteComponent.sprite.setRotation(directionComponent.rotation);
-                    spriteComponent.sprite.setPosition(positionComponent.position.x, positionComponent.position.y);
-                    spriteComponent.sprite.setSize(sizeComponent.width, sizeComponent.height);
+                if (!spriteComponent.visible) continue;
 
-                    spriteComponent.sprite.draw(spriteBatch);
-                }
+                spriteComponent.sprite.setRotation(directionComponent.rotation);
+                spriteComponent.sprite.setPosition(positionComponent.position.x, positionComponent.position.y);
+                spriteComponent.sprite.setSize(sizeComponent.width, sizeComponent.height);
+                spriteComponent.sprite.draw(spriteBatch);
+
             }
             entityArray.clear();
         }
