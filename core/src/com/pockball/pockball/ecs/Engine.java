@@ -151,10 +151,9 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         // Powerup backdrop
         createBackdrop();
 
-        // Powerups
-        for (int i = 0; i < 0; i++) {
-            engineInstance.addEntity(entityFactory.createPowerup(0));
-        }
+        // Give initial powerup
+        givePowerup();
+
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
             balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
@@ -329,7 +328,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
     public void givePowerup() {
         Random random = new Random();
-        addEntity(entityFactory.createPowerup(random.nextInt(1)));
+        addEntity(entityFactory.createPowerup(random.nextInt(2)));
     }
 
     public Entity getBallAt(int i) {

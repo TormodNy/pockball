@@ -7,16 +7,14 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.PowerupComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 
 import java.util.ArrayList;
@@ -72,8 +70,7 @@ public class PowerupSystem extends IteratingSystem {
                 if (inputInWorld.y > position.position.y && inputInWorld.y < position.position.y + size.height) {
                     switch(powerup.powerupID) {
                         case 0:
-                        default:
-                            // Do powerup
+                            // Earthquake
                             for(int i = 0; i < Engine.getInstance().getBallsLength(); i++) {
                                 Entity ball = Engine.getInstance().getBallAt(i);
                                 if (ball != null) {
@@ -83,7 +80,16 @@ public class PowerupSystem extends IteratingSystem {
                                     physicsBodyMapper.get(ball).body.applyForceToCenter(direction.scl(force), true);
                                 }
                             }
+                            break;
+                        case 1:
+                            // Place white ball
+                            Entity whiteBall = Engine.getInstance().getWhiteBallEntity();
+                            whiteBall.getComponent(PlaceEntityComponent.class).placeable = true;
+                            whiteBall.getComponent(SpriteComponent.class).sprite.setAlpha(0);
+                            break;
                     }
+
+                    // Remove this powerup and hide powerup menu
                     GameController.currentController.setShowPowerups(false);
                     puInHand.remove(index);
                     Engine.getInstance().removeEntity(entity);
