@@ -160,6 +160,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             if (i == 0) {
                 whiteBallEntity = balls.get(i);
                 engineInstance.addEntity(entityFactory.createCue(whiteBallEntity));
+                engineInstance.addEntity(entityFactory.createDottedLine(whiteBallEntity));
             }
             engineInstance.addEntity(balls.get(i));
         }
