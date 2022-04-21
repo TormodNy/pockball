@@ -18,7 +18,7 @@ public class SinglePlayerState implements State {
     private final ScoreComponent score;
     private int numberOfShots = 0;
     private float gameVolume;
-    private int lastHole;
+    private int winnerHole;
     private boolean hasAimed = false;
 
     public SinglePlayerState() {
@@ -36,10 +36,10 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if (score.balls < 14 || lastHole != holeID) {
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
-                } else {
+                if (score.balls >= 14 && winnerHole == holeID) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+                } else {
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
                 }
                 break;
 
@@ -47,29 +47,8 @@ public class SinglePlayerState implements State {
             default:
                 score.balls++;
                 Engine.getInstance().givePowerup();
-
-                if (score.balls == 14) {
-                    switch (holeID) {
-                        case 0:
-                            lastHole = 5;
-                            break;
-                        case 1:
-                            lastHole = 4;
-                            break;
-                        case 2:
-                            lastHole = 3;
-                            break;
-                        case 3:
-                            lastHole = 2;
-                            break;
-                        case 4:
-                            lastHole = 1;
-                            break;
-                        case 5:
-                            lastHole = 0;
-                            break;
-                    }
-                }
+                //update the hole opposite of the last hole a ball fell into
+                winnerHole = ((holeID+3) % 6);
         }
     }
 
