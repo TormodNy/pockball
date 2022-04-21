@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
+import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.ecs.components.BallComponent;
@@ -71,7 +72,9 @@ public class BallSystem extends IteratingSystem {
 
                 if (!hasAimed) {
                     // If first touch, set direction
-                    ball.dir = inputInWorld.sub(origin).scl(-1);
+                    if (Gdx.input.getY() / AssetsController.getInstance().getAssetScaler() >= 100) {
+                        ball.dir = inputInWorld.sub(origin).scl(-1);
+                    }
                 }
                 if (hasAimed && !justTouched) {
                     // If first touch after aim, set reference for power

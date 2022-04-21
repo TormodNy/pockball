@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
+import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.components.CueComponent;
 import com.pockball.pockball.ecs.components.DirectionComponent;
@@ -52,13 +53,13 @@ public class CueSystem extends IteratingSystem {
         PhysicsBodyComponent physics = physicsMapper.get(cue.ball);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(cue.ball);
 
+
         // Position cue at ball when shooting
         boolean canShoot = Gdx.input.isTouched() &&
                 !placeEntity.placeable &&
                 !GameController.currentController.getShowPowerups() &&
                 Context.getInstance().getState().canPerformAction() &&
-                (Gdx.input.getY() >= 40 ||
-                        ball.dir.len() != 0) &&
+                Gdx.input.getY()/ AssetsController.getInstance().getAssetScaler() >= 100 &&
                 ball.dir.len() != 0 &&
                 physics.body.getLinearVelocity().len() <= 0.01f;
 
