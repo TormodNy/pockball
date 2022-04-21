@@ -28,6 +28,7 @@ public class SoundController {
     public static SoundController getInstance() {
         if (soundControllerInstance == null) {
             soundControllerInstance = new SoundController();
+            soundControllerInstance.changeGameVolume(100);
         }
         return soundControllerInstance;
     }
