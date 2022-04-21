@@ -152,7 +152,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         createBackdrop();
 
         // Give initial powerup
-        givePowerup();
+        giveInitialPowerup();
 
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
@@ -326,7 +326,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         addEntity(backdrop);
     }
 
-    public void givePowerup() {
+    public void giveInitialPowerup() {
         Random random = new Random();
         addEntity(entityFactory.createPowerup(random.nextInt(2)));
     }

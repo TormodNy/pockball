@@ -22,6 +22,7 @@ public class SinglePlayerState implements State {
     private float gameVolume;
     private int lastHole;
     private boolean hasAimed = false;
+    private boolean idle;
 
     public SinglePlayerState() {
         // Set up player
@@ -29,6 +30,7 @@ public class SinglePlayerState implements State {
         gameVolume = 0;
         score = playerEntity.getComponent(ScoreComponent.class);
         player = playerEntity.getComponent(PlayerComponent.class);
+        this.idle = true;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class SinglePlayerState implements State {
 
             default:
                 score.balls++;
-                Engine.getInstance().givePowerup();
+                Engine.getInstance().giveInitialPowerup();
 
                 if (score.balls == 14) {
                     switch (holeID) {
@@ -121,18 +123,18 @@ public class SinglePlayerState implements State {
 
     @Override
     public void setIdle(boolean idle) {
-        // TODO: Implement
+        this.idle = idle;
+        System.out.println(idle);
     }
 
     @Override
     public boolean getIdle() {
-        return false;
+        return this.idle;
     }
 
     @Override
     public boolean canPerformAction() {
-        // TODO: Implement
-        return true;
+        return getIdle();
     }
 
     public int getNumberOfShots() {
