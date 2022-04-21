@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
@@ -22,6 +23,9 @@ public class SinglePlayerView extends ScreenView {
 
     public SinglePlayerView(ScreenController screenController, ScreenModel.Screen previousScreen) {
         super(screenController, previousScreen);
+
+        // Set new single player state
+        Context.getInstance().setState(new SinglePlayerState());
 
         this.singlePlayerController = SinglePlayerController.getInstance();
         singlePlayerController.reset();

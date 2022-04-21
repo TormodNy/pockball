@@ -17,14 +17,12 @@ public class SinglePlayerState implements State {
     private final Entity playerEntity;
     private final ScoreComponent score;
     private int numberOfShots = 0;
-    private float gameVolume;
     private int winnerHole;
     private boolean hasAimed = false;
 
     public SinglePlayerState() {
         // Set up player
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
-        gameVolume = 0;
         score = playerEntity.getComponent(ScoreComponent.class);
     }
 
@@ -50,16 +48,6 @@ public class SinglePlayerState implements State {
                 //update the hole opposite of the last hole a ball fell into
                 winnerHole = ((holeID+3) % 6);
         }
-    }
-
-    @Override
-    public void changeGameVolume(float gameVolume) {
-        this.gameVolume = gameVolume;
-    }
-
-    @Override
-    public float getGameVolume() {
-        return gameVolume;
     }
 
     @Override

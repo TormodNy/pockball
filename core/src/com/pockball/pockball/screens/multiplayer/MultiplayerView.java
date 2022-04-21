@@ -11,8 +11,6 @@ import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
 
-import javax.swing.ComponentInputMap;
-
 public class MultiplayerView extends ScreenView {
     private final MultiplayerController controller;
 

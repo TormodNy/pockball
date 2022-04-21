@@ -11,6 +11,8 @@ public class SoundController {
     private static SoundController soundControllerInstance;
 
     private final Map<String, Sound> soundLibrary;
+    private float gameVolume;
+
 
     private SoundController () {
         soundLibrary = new HashMap<>();
@@ -20,6 +22,8 @@ public class SoundController {
         soundLibrary.put("cueHit", Gdx.audio.newSound(Gdx.files.internal("sounds/cueHit.wav")));
         soundLibrary.put("holeHit", Gdx.audio.newSound(Gdx.files.internal("sounds/holeHit.wav")));
         soundLibrary.put("wallHit", Gdx.audio.newSound(Gdx.files.internal("sounds/wallHit.wav")));
+
+        // Set initial volume
     }
 
     public static SoundController getInstance() {
@@ -30,7 +34,14 @@ public class SoundController {
     }
 
     public void playSound (String sound, float volume) {
-        float gameVolume = Context.getInstance().getState().getGameVolume();
         soundLibrary.get(sound).play(volume*gameVolume);
+    }
+
+    public void changeGameVolume(float gameVolume) {
+        this.gameVolume = gameVolume;
+    }
+
+    public float getGameVolume() {
+        return gameVolume;
     }
 }

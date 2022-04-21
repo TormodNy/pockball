@@ -10,10 +10,6 @@ import java.util.List;
 public interface State {
     void ballIntoHole(BallType ball, int holeID);
 
-    void changeGameVolume(float gameVolume);
-
-    float getGameVolume();
-
     Entity[] getPlayers();
 
     void addEvent(EventModel event);

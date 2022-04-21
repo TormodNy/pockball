@@ -21,7 +21,6 @@ public class MultiPlayerState implements State {
 
     private final Entity myPlayerEntity, opponentPlayerEntity;
     private boolean ballTypeSet = false;
-    private float gameVolume;
     private boolean hasAimed = false;
 
     private final RoomModel roomModel;
@@ -51,8 +50,6 @@ public class MultiPlayerState implements State {
 
         this.firstBall = true;
         this.putOpponent = false;
-
-        this.gameVolume = Context.getInstance().getState().getGameVolume();
 
         String opponentKey;
         if (isHost) {
@@ -202,16 +199,6 @@ public class MultiPlayerState implements State {
 
     public BallType getMyBallType () {
         return myBallType;
-    }
-
-    @Override
-    public void changeGameVolume(float gameVolume) {
-        this.gameVolume = gameVolume;
-    }
-
-    @Override
-    public float getGameVolume() {
-        return gameVolume;
     }
 
     private void setNextPlayerTurn(boolean myTurn) {

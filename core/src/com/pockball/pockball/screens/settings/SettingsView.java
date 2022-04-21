@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
@@ -29,7 +30,7 @@ public class SettingsView extends ScreenView {
         Label settingsTitle = new Label("Settings: ", assetsController.getSkin());
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
-        volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
+        volumeSlider.setValue(SoundController.getInstance().getGameVolume()*100);
         volumeSlider.getStyle().knob.setMinHeight(assetScaler * 30);
         volumeSlider.getStyle().knob.setMinWidth(assetScaler * 30);
 
@@ -45,7 +46,7 @@ public class SettingsView extends ScreenView {
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Context.getInstance().getState().changeGameVolume(volumeSlider.getValue()/100);
+                SoundController.getInstance().changeGameVolume(volumeSlider.getValue()/100);
             }
         });
 

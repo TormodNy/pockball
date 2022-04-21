@@ -1,7 +1,6 @@
 package com.pockball.pockball.screens.singleplayer;
 
 import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.GameController;
 
 
@@ -9,8 +8,6 @@ public class SinglePlayerController extends GameController {
     public static SinglePlayerController singlePlayerControllerInstance;
 
     private SinglePlayerController() {
-        // Set single player state
-        Context.getInstance().setState(new SinglePlayerState());
     }
 
     public static SinglePlayerController getInstance() {
