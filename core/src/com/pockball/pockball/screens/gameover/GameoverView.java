@@ -1,14 +1,8 @@
 package com.pockball.pockball.screens.gameover;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.assets.AssetsController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
@@ -26,9 +20,9 @@ public class GameoverView extends ScreenView {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label gameoverTitle = new Label("GAME OVER! ", assetsController.getSkin());
-        gameoverTitle.setFontScale(assetScaler);
-        table.add(gameoverTitle);
+        Label gameOverTitle = new Label("GAME OVER! ", assetsController.getSkin());
+        gameOverTitle.setFontScale(assetScaler);
+        table.add(gameOverTitle);
 
         TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
         quitButton.getLabel().setFontScale(assetScaler);

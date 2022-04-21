@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.components.DirectionComponent;
-import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
@@ -18,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderSystem extends IteratingSystem {
-    private SpriteBatch spriteBatch;
-    private List<Array<Entity>> renderQueue;
+    private final SpriteBatch spriteBatch;
+    private final List<Array<Entity>> renderQueue;
 
     private final ComponentMapper<SpriteComponent> spriteMapper;
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -57,7 +56,6 @@ public class RenderSystem extends IteratingSystem {
 
         spriteBatch.begin();
 
-        boolean stopped = true;
 
         for (Array<Entity> entityArray : renderQueue) {
             for (Entity entity : entityArray) {

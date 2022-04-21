@@ -3,7 +3,6 @@ package com.pockball.pockball.ecs.entities;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;

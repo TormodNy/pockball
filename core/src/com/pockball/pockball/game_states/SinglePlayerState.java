@@ -1,13 +1,12 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.ecs.components.PlayerComponent;
 import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
@@ -16,20 +15,16 @@ import java.util.List;
 public class SinglePlayerState implements State {
 
     private final Entity playerEntity;
-    private final PlayerComponent player;
     private final ScoreComponent score;
     private int numberOfShots = 0;
-    private float gameVolume;
-    private int lastHole;
+    private int winnerHole;
     private boolean hasAimed = false;
     private boolean idle;
 
     public SinglePlayerState() {
         // Set up player
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
-        gameVolume = 0;
         score = playerEntity.getComponent(ScoreComponent.class);
-        player = playerEntity.getComponent(PlayerComponent.class);
         this.idle = true;
     }
 
@@ -41,53 +36,21 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if (score.balls < 14 || lastHole != holeID) {
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
-                    System.out.println("Player lost! Black ball into hole.");
+                if (score.balls >= 14 && winnerHole == holeID) {
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER,
+                            ScreenModel.Screen.SINGLEPLAYER);
                 } else {
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
-                    System.out.println("Player won!");
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER,
+                            ScreenModel.Screen.SINGLEPLAYER);
                 }
                 break;
-
 
             default:
                 score.balls++;
                 Engine.getInstance().giveInitialPowerup();
-
-                if (score.balls == 14) {
-                    switch (holeID) {
-                        case 0:
-                            lastHole = 5;
-                            break;
-                        case 1:
-                            lastHole = 4;
-                            break;
-                        case 2:
-                            lastHole = 3;
-                            break;
-                        case 3:
-                            lastHole = 2;
-                            break;
-                        case 4:
-                            lastHole = 1;
-                            break;
-                        case 5:
-                            lastHole = 0;
-                            break;
-                    }
-                }
+                // update the hole opposite of the last hole a ball fell into
+                winnerHole = ((holeID + 3) % 6);
         }
-    }
-
-    @Override
-    public void changeGameVolume(float gameVolume) {
-        this.gameVolume = gameVolume;
-    }
-
-    @Override
-    public float getGameVolume() {
-        return gameVolume;
     }
 
     @Override
@@ -165,6 +128,9 @@ public class SinglePlayerState implements State {
     public boolean hasAimed() {
         return hasAimed;
     }
+
+    @Override
+    public void updateTimer(float delta) {
+
+    }
 }
-
-

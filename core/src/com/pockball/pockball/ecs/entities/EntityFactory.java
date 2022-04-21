@@ -4,11 +4,11 @@ import com.badlogic.ashley.core.Entity;
 
 public class EntityFactory {
     private static EntityFactory entityFactory;
-    private BallFactory ballFactory;
-    private CueFactory cueFactory;
-    private HoleFactory holeFactory;
-    private PlayerFactory playerFactory;
-    private PowerupFactory powerupFactory;
+    private final BallFactory ballFactory;
+    private final CueFactory cueFactory;
+    private final HoleFactory holeFactory;
+    private final PlayerFactory playerFactory;
+    private final PowerupFactory powerupFactory;
 
     private EntityFactory() {
         ballFactory = BallFactory.getInstance();

@@ -14,7 +14,8 @@ import com.pockball.pockball.ecs.types.CueType;
 public class CueFactory {
     private static CueFactory cueFactory;
 
-    private CueFactory() {}
+    private CueFactory() {
+    }
 
     public static CueFactory getInstance() {
         if (cueFactory == null)

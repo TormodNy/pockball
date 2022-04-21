@@ -9,21 +9,16 @@ import com.pockball.pockball.ecs.components.ScoreComponent;
 import com.pockball.pockball.ecs.components.TimeoutComponent;
 
 public class PlayerSystem extends IteratingSystem {
-    private final ComponentMapper<ScoreComponent> scoreMapper;
     private final ComponentMapper<TimeoutComponent> timeoutMapper;
-    private final ComponentMapper<PlayerComponent> playerMapper;
 
     public PlayerSystem() {
         super(Family.all(PlayerComponent.class, ScoreComponent.class, TimeoutComponent.class).get());
 
-        scoreMapper = ComponentMapper.getFor(ScoreComponent.class);
         timeoutMapper = ComponentMapper.getFor(TimeoutComponent.class);
-        playerMapper = ComponentMapper.getFor(PlayerComponent.class);
     }
 
     @Override
     public void processEntity(Entity entity, float deltaTime) {
-        ScoreComponent score = scoreMapper.get(entity);
         TimeoutComponent timeout = timeoutMapper.get(entity);
 
         timeout.timeout -= deltaTime;

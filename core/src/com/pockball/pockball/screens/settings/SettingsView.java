@@ -1,18 +1,12 @@
 package com.pockball.pockball.screens.settings;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.assets.AssetsController;
+import com.pockball.pockball.assets.SoundController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
@@ -24,6 +18,7 @@ public class SettingsView extends ScreenView {
 
     public SettingsView(ScreenController screenController, ScreenModel.Screen previousScreen) {
         super(screenController, previousScreen);
+
     }
 
     @Override
@@ -35,7 +30,7 @@ public class SettingsView extends ScreenView {
         Label settingsTitle = new Label("Settings: ", assetsController.getSkin());
         Label volumeTitle = new Label("Volume ", assetsController.getSkin());
         Slider volumeSlider = new Slider(0, 100, 1, false, assetsController.getSkin());
-        volumeSlider.setValue(Context.getInstance().getState().getGameVolume()*100);
+        volumeSlider.setValue(SoundController.getInstance().getGameVolume()*100);
         volumeSlider.getStyle().knob.setMinHeight(assetScaler * 30);
         volumeSlider.getStyle().knob.setMinWidth(assetScaler * 30);
 
@@ -46,17 +41,17 @@ public class SettingsView extends ScreenView {
         table.row().padTop(50);
         table.add(volumeTitle);
         table.row().padTop(10);
-        table.add(volumeSlider);
+        table.add(volumeSlider).width(400*assetScaler).height(50*assetScaler);
 
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Context.getInstance().getState().changeGameVolume(volumeSlider.getValue()/100);
+                SoundController.getInstance().changeGameVolume(volumeSlider.getValue()/100);
             }
         });
 
         if (previousScreen == ScreenModel.Screen.MAINMENU) {
-            TextButton mainMenuButton = new TextButton("MAIN MENU", assetsController.getSkin());
+            TextButton mainMenuButton = new TextButton(" MAIN MENU ", assetsController.getSkin());
             mainMenuButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(mainMenuButton).uniformX();
@@ -64,12 +59,12 @@ public class SettingsView extends ScreenView {
             Util.addPathToButton(screenController, mainMenuButton, ScreenModel.Screen.MAINMENU, ScreenModel.Screen.SETTINGS);
         }
         else {
-            TextButton quitButton = new TextButton("QUIT", assetsController.getSkin());
+            TextButton quitButton = new TextButton(" QUIT ", assetsController.getSkin());
             quitButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(quitButton).uniformX();
 
-            TextButton resumeButton = new TextButton("RESUME", assetsController.getSkin());
+            TextButton resumeButton = new TextButton(" RESUME ", assetsController.getSkin());
             resumeButton.getLabel().setFontScale(assetScaler);
             table.row().padTop(50);
             table.add(resumeButton).uniformX();
@@ -89,5 +84,13 @@ public class SettingsView extends ScreenView {
             }
 
         }
+    }
+
+    @Override
+    public void render(float delta){
+        super.render(delta);
+
+        //update multiplayer timer in paused state
+        Context.getInstance().getState().updateTimer(delta);
     }
 }

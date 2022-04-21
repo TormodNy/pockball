@@ -1,6 +1,5 @@
 package com.pockball.pockball.db_models;
 
-import com.pockball.pockball.ecs.components.BallComponent;
 import com.pockball.pockball.ecs.types.BallType;
 
 import java.util.ArrayList;
@@ -24,17 +23,6 @@ public class PlayerModel {
 
     public void setBallType(BallType ballType) {
         this.ballType = ballType;
-    }
-
-    public void addBallToScore(String ballId, BallComponent ball) {
-        if (ballType == null) this.ballType = ball.type;
-
-        score.add(ballId);
-    }
-
-    public void addShot(ShotEvent shot) {
-        if (events == null) events = new ArrayList<>();
-        events.add(shot);
     }
 
     @Override

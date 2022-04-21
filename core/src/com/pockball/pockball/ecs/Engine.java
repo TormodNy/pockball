@@ -2,7 +2,6 @@ package com.pockball.pockball.ecs;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -46,9 +45,9 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
     private World world;
 
-    private Array<Entity> balls = new Array<Entity>();
+    private final Array<Entity> balls = new Array<>();
 
-    private List<Body> bodiesToRemove = new ArrayList<>();
+    private final List<Body> bodiesToRemove = new ArrayList<>();
 
     private final Vector2[][] ballLocations = {
             {
@@ -77,7 +76,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<SpriteComponent> spriteMapper;
 
-
     private final Vector2[] holeLocations = {
             // Upper left
             new Vector2(0.5f, 12.5f),
@@ -87,7 +85,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             new Vector2(23.7f, 12.5f),
             // Lower left
             new Vector2(0.5f, 0.45f),
-            // Lower  middle
+            // Lower middle
             new Vector2(12.1f, 0.15f),
             // Lower right
             new Vector2(23.7f, 0.45f),
@@ -281,16 +279,23 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
     public void shootBallWithForce(
             Vector2 force,
-            boolean changeState
-    ) {
-        if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
+            boolean changeState) {
+        if (changeState)
+            Context.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
-        physics.body.applyForceToCenter(force, true);
+
+        physics.body.setAwake(true);
+        // physics.body.applyForceToCenter(force, true);
+        physics.body.applyLinearImpulse(force, physics.body.getPosition(), true);
     }
 
     public void placeWhiteBall(Vector2 position, boolean changeState) {
-        if (changeState) Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
+
+        System.out.println(position);
+
+        if (changeState)
+            Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
         PhysicsBodyComponent physicsBody = physicsBodyMapper.get(whiteBallEntity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(whiteBallEntity);
         BallComponent ball = ballMapper.get(whiteBallEntity);

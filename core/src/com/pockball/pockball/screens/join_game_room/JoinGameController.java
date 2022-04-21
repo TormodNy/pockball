@@ -1,14 +1,11 @@
 package com.pockball.pockball.screens.join_game_room;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
 import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.MultiPlayerState;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
-
-import java.util.List;
 
 
 public class JoinGameController {

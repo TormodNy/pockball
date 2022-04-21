@@ -31,8 +31,8 @@ public class BallSystem extends IteratingSystem {
     private Vector2 powerRef = new Vector2(0, 0);
 
     public BallSystem() {
-        // Må legge til NumberOfShotsComponent.class her, men da funker det heller ikke
-        super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class, PlaceEntityComponent.class).get());
+        super(Family.all(PositionComponent.class, PhysicsBodyComponent.class, BallComponent.class,
+                PlaceEntityComponent.class).get());
 
         soundController = SoundController.getInstance();
 
@@ -41,7 +41,6 @@ public class BallSystem extends IteratingSystem {
         ballMapper = ComponentMapper.getFor(BallComponent.class);
         placeEntityMapper = ComponentMapper.getFor(PlaceEntityComponent.class);
     }
-
 
     @Override
     public void processEntity(Entity entity, float deltaTime) {
@@ -93,16 +92,16 @@ public class BallSystem extends IteratingSystem {
                 }
             } else if (justTouched) {
                 if (hasAimed) {
-                    if (ball.power.len() <= 0) return;
+                    if (ball.power.len() <= 0)
+                        return;
 
                     // Shoot ball in direction with power
-                    float force = 1500;
-                    Vector2 directionWithForce = ball.dir.nor().scl(force * ball.power.len());
+                    Vector2 directionWithForce = ball.dir.nor().scl(30 * ball.power.len());
                     Engine.getInstance().shootBallWithForce(directionWithForce, true);
-                    ball.power = new Vector2(0,0);
+                    ball.power = new Vector2(0, 0);
                     ball.dir = new Vector2(0, 0);
 
-                    // Increments number of shots for singleplayer
+                    // Increments number of shots for singlePlayer
                     Context.getInstance().getState().incNumberOfShots();
 
                     // Play sound

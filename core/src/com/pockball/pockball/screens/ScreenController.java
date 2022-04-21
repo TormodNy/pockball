@@ -3,16 +3,12 @@ package com.pockball.pockball.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Disposable;
-import com.pockball.pockball.screens.join_game_room.JoinGameController;
-import com.pockball.pockball.screens.join_game_room.JoinGameView;
-import com.pockball.pockball.screens.gameover.GameoverView;
-import com.pockball.pockball.screens.main_menu.MainMenuView;
-import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
 import com.pockball.pockball.screens.create_game_room.CreateGameRoomView;
-import com.pockball.pockball.screens.multiplayer.MultiplayerController;
+import com.pockball.pockball.screens.gameover.GameoverView;
+import com.pockball.pockball.screens.join_game_room.JoinGameView;
+import com.pockball.pockball.screens.main_menu.MainMenuView;
 import com.pockball.pockball.screens.multiplayer.MultiplayerView;
 import com.pockball.pockball.screens.settings.SettingsView;
-import com.pockball.pockball.screens.singleplayer.SinglePlayerController;
 import com.pockball.pockball.screens.singleplayer.SinglePlayerView;
 import com.pockball.pockball.screens.tutorial.TutorialView;
 import com.pockball.pockball.screens.won.WinnerView;
@@ -81,7 +77,7 @@ public class ScreenController implements Disposable {
                     this.setScreen(gameoverView);
                     break;
                 case WINNER:
-                    WinnerView winnerView = new WinnerView(this, previousScreenType);
+                    WinnerView winnerView = new WinnerView(this, previousScreenType, previousScreenType == ScreenModel.Screen.MULTIPLAYER);
                     this.setScreen(winnerView);
                     break;
                 case TUTORIAL:

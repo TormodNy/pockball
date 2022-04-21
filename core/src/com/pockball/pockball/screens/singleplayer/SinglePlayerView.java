@@ -1,43 +1,18 @@
 package com.pockball.pockball.screens.singleplayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.assets.AssetsController;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.SinglePlayerState;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.pockball.pockball.PockBall;
-import com.pockball.pockball.assets.AssetsController;
-import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
 
 public class SinglePlayerView extends ScreenView {
 
@@ -48,6 +23,9 @@ public class SinglePlayerView extends ScreenView {
 
     public SinglePlayerView(ScreenController screenController, ScreenModel.Screen previousScreen) {
         super(screenController, previousScreen);
+
+        // Set new single player state
+        Context.getInstance().setState(new SinglePlayerState());
 
         this.singlePlayerController = SinglePlayerController.getInstance();
         singlePlayerController.reset();
@@ -83,16 +61,15 @@ public class SinglePlayerView extends ScreenView {
         Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
                 ScreenModel.Screen.SINGLEPLAYER);
 
-        // TODO: Rename
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        Table powerupTable = new Table();
+        powerupTable.setFillParent(true);
+        stage.addActor(powerupTable);
 
         TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
         powerupsButton.getLabel().setFontScale(buttonScaler);
-        table.add(powerupsButton);
-        table.top().left();
-        table.pad(4);
+        powerupTable.add(powerupsButton);
+        powerupTable.top().left();
+        powerupTable.pad(4);
 
         powerupsButton.addListener(new ChangeListener() {
             @Override

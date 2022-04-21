@@ -1,46 +1,44 @@
 package com.pockball.pockball.game_states;
 
 import com.badlogic.ashley.core.Entity;
+import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.db_models.BallTypeModel;
 
 import java.util.List;
 
 public interface State {
-    public void ballIntoHole(BallType ball, int holeID);
+    void ballIntoHole(BallType ball, int holeID);
 
-    public void changeGameVolume(float gameVolume);
+    Entity[] getPlayers();
 
-    public float getGameVolume();
+    void addEvent(EventModel event);
 
-    public Entity[] getPlayers();
+    void fireOpponentEventChange(List<EventModel> eventModelList);
 
-    public void addEvent(EventModel event);
+    void fireOpponentIsIdle();
 
-    public void fireOpponentEventChange(List<EventModel> eventModelList);
+    void fireBallTypeSet(BallTypeModel ballTypeModel);
 
-    public void fireOpponentIsIdle();
+    void fireHostTurn(boolean hostTurn);
 
-    public void fireBallTypeSet(BallTypeModel ballTypeModel);
+    void setIdle(boolean idle);
 
-    public void fireHostTurn(boolean hostTurn);
+    boolean getIdle();
 
-    public void setIdle(boolean idle);
+    boolean canPerformAction();
 
-    public boolean getIdle();
-
-    public boolean canPerformAction();
-
-    public int getNumberOfShots();
+    int getNumberOfShots();
 
     void incNumberOfShots();
 
     void reset();
 
-    public boolean getIsMyTurn();
+    boolean getIsMyTurn();
 
-    public void setHasAimed(boolean aimed);
+    void setHasAimed(boolean aimed);
 
-    public boolean hasAimed();
+    boolean hasAimed();
+
+    void updateTimer(float delta);
 }

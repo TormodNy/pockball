@@ -30,7 +30,7 @@ public class PowerupSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<PhysicsBodyComponent> physicsBodyMapper;
 
-    private List<Entity> puInHand;
+    private final List<Entity> puInHand;
 
     public PowerupSystem() {
         super(Family.all(PowerupComponent.class, SpriteComponent.class, SizeComponent.class, PositionComponent.class).get());

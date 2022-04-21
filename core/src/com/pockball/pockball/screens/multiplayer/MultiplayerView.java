@@ -1,21 +1,20 @@
 package com.pockball.pockball.screens.multiplayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
 import com.pockball.pockball.screens.Util;
-import com.pockball.pockball.game_states.Context;
 
 public class MultiplayerView extends ScreenView {
     private final MultiplayerController controller;
 
+    private final Label timerLabel;
     private final Label myBallType;
     private final Label waitingForOtherPlayerLabel;
     private boolean showWaitingForOtherPlayer = true;
@@ -29,6 +28,10 @@ public class MultiplayerView extends ScreenView {
         Engine.getInstance().initializeEngine(0);
 
         buttonScaler = assetScaler * 0.65f;
+
+
+        timerLabel = new Label("60", assetsController.getSkin());
+        timerLabel.setFontScale(buttonScaler);
 
         myBallType = new Label("Type", assetsController.getSkin());
         myBallType.setFontScale(buttonScaler);
@@ -44,6 +47,9 @@ public class MultiplayerView extends ScreenView {
 
         myBallType.setPosition(300 * assetScaler, 980 * assetScaler);
         stage.addActor(myBallType);
+
+        timerLabel.setPosition(1500 * assetScaler, 980*assetScaler);
+        stage.addActor(timerLabel);
 
         Table tableScore = new Table();
         tableScore.setFillParent(true);
@@ -63,31 +69,15 @@ public class MultiplayerView extends ScreenView {
         tablePause.padTop(5);
         tablePause.padRight(5);
         tablePause.add(pauseButton);
-        Util.addPathToButton(screenController, pauseButton, ScreenModel.Screen.SETTINGS,
-                ScreenModel.Screen.MULTIPLAYER);
 
-        // TODO: Rename
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
 
-        TextButton powerupsButton = new TextButton("Powerups", assetsController.getSkin());
-        powerupsButton.getLabel().setFontScale(buttonScaler);
-        table.add(powerupsButton);
-        table.top().left();
-        table.pad(4);
-
-        powerupsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // Show powerups
-                if (!Context.getInstance().getState().hasAimed()) {
-                    controller.setShowPowerups(!controller.getShowPowerups());
-                }
-            }
-        });
+        Util.addPathToButton(screenController,
+                            pauseButton,
+                            ScreenModel.Screen.SETTINGS,
+                            ScreenModel.Screen.MULTIPLAYER);
 
     }
+
 
     // Call this method to toggle the text
     private void toggleWaitingForOtherPlayer() {
@@ -100,11 +90,9 @@ public class MultiplayerView extends ScreenView {
 
         // TODO: Performance optimization
         // TODO: If stateChanged
-        if (showWaitingForOtherPlayer) {
-            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
-        } else {
-            waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
-        }
+        waitingForOtherPlayerLabel.setText(controller.getCurrentStateString());
+
+        timerLabel.setText(controller.updateTimerString(delta));
 
         myBallType.setText(controller.getMyBallType());
 
