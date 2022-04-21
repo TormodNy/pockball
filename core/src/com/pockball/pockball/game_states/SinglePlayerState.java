@@ -19,11 +19,13 @@ public class SinglePlayerState implements State {
     private int numberOfShots = 0;
     private int winnerHole;
     private boolean hasAimed = false;
+    private boolean idle;
 
     public SinglePlayerState() {
         // Set up player
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
         score = playerEntity.getComponent(ScoreComponent.class);
+        this.idle = true;
     }
 
     @Override
@@ -35,18 +37,19 @@ public class SinglePlayerState implements State {
 
             case BLACK:
                 if (score.balls >= 14 && winnerHole == holeID) {
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER, ScreenModel.Screen.SINGLEPLAYER);
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER,
+                            ScreenModel.Screen.SINGLEPLAYER);
                 } else {
-                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER, ScreenModel.Screen.SINGLEPLAYER);
+                    ScreenController.getInstance().changeScreen(ScreenModel.Screen.GAMEOVER,
+                            ScreenModel.Screen.SINGLEPLAYER);
                 }
                 break;
 
-
             default:
                 score.balls++;
-                Engine.getInstance().givePowerup();
-                //update the hole opposite of the last hole a ball fell into
-                winnerHole = ((holeID+3) % 6);
+                Engine.getInstance().giveInitialPowerup();
+                // update the hole opposite of the last hole a ball fell into
+                winnerHole = ((holeID + 3) % 6);
         }
     }
 
@@ -83,16 +86,18 @@ public class SinglePlayerState implements State {
 
     @Override
     public void setIdle(boolean idle) {
+        this.idle = idle;
+        System.out.println(idle);
     }
 
     @Override
     public boolean getIdle() {
-        return false;
+        return this.idle;
     }
 
     @Override
     public boolean canPerformAction() {
-        return true;
+        return getIdle();
     }
 
     public int getNumberOfShots() {
@@ -129,5 +134,3 @@ public class SinglePlayerState implements State {
 
     }
 }
-
-

@@ -23,7 +23,6 @@ public class SoundController {
         soundLibrary.put("holeHit", Gdx.audio.newSound(Gdx.files.internal("sounds/holeHit.wav")));
         soundLibrary.put("wallHit", Gdx.audio.newSound(Gdx.files.internal("sounds/wallHit.wav")));
 
-        // Set initial volume
     }
 
     public static SoundController getInstance() {

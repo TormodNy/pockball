@@ -30,14 +30,12 @@ public class PlaceEntitySystem extends IteratingSystem {
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
         BallComponent ball = ballMapper.get(entity);
 
-        boolean canPlaceWhiteBall = Gdx.input.justTouched()
-                && ball.type.equals(BallType.WHITE)
-                && placeEntity.placeable
-                && Context.getInstance().getState().canPerformAction();
-        if (canPlaceWhiteBall) {
+        if (Gdx.input.justTouched() && ball.type.equals(BallType.WHITE) && placeEntity.placeable && Context.getInstance().getState().canPerformAction()) {
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            Engine.getInstance().placeWhiteBall(new Vector2(input.x, input.y), true);
+            if (input.x < 23.5f && input.x > 1.5f && input.y > 1.5f && input.y < 12.25f) {
+                Engine.getInstance().placeWhiteBall(new Vector2(input.x, input.y), true);
+            }
         }
 
     }

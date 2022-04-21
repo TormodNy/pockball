@@ -10,10 +10,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.pockball.pockball.PockBall;
 import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
+import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.PowerupComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
+import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_states.State;
 import com.pockball.pockball.screens.GameController;
 
 import java.util.ArrayList;
@@ -58,10 +61,21 @@ public class PowerupSystem extends IteratingSystem {
         }
 
         position.position.set(12.5f - size.width / 2 + (index - 1) * (size.width + 1), 7.5f - size.height / 2);
-
         sprite.visible = GameController.currentController.getShowPowerups();
 
-        if (Gdx.input.justTouched() && sprite.visible) {
+        // Checks if it should be possible to use a powerup
+        boolean idle = Context.getInstance().getState().getIdle();
+        boolean hasNotAimed = !Context.getInstance().getState().hasAimed();
+        boolean canApplyPowerup = Gdx.input.justTouched() && sprite.visible && idle && hasNotAimed;
+
+        //apply powerup
+        if (canApplyPowerup) {
+
+            //reset aim
+            State state = Context.getInstance().getState();
+            state.setHasAimed(false);
+            state.setIdle(true);
+
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             Vector2 inputInWorld = new Vector2(input.x, input.y);
 
@@ -69,8 +83,7 @@ public class PowerupSystem extends IteratingSystem {
                 if (inputInWorld.y > position.position.y && inputInWorld.y < position.position.y + size.height) {
                     switch(powerup.powerupID) {
                         case 0:
-                        default:
-                            // Do powerup
+                            // Earthquake
                             for(int i = 0; i < Engine.getInstance().getBallsLength(); i++) {
                                 Entity ball = Engine.getInstance().getBallAt(i);
                                 if (ball != null) {
@@ -80,7 +93,17 @@ public class PowerupSystem extends IteratingSystem {
                                     physicsBodyMapper.get(ball).body.applyForceToCenter(direction.scl(force), true);
                                 }
                             }
+                            break;
+                        case 1:
+                            // Place white ball
+                            Entity whiteBall = Engine.getInstance().getWhiteBallEntity();
+                            whiteBall.getComponent(PlaceEntityComponent.class).placeable = true;
+                            whiteBall.getComponent(SpriteComponent.class).sprite.setAlpha(0);
+                            Context.getInstance().getState().setIdle(true);
+                            break;
                     }
+
+                    // Remove this powerup and hide powerup menu
                     GameController.currentController.setShowPowerups(false);
                     puInHand.remove(index);
                     Engine.getInstance().removeEntity(entity);

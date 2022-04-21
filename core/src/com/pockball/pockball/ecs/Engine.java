@@ -76,7 +76,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
     private final ComponentMapper<BallComponent> ballMapper;
     private final ComponentMapper<SpriteComponent> spriteMapper;
 
-
     private final Vector2[] holeLocations = {
             // Upper left
             new Vector2(0.5f, 12.5f),
@@ -86,7 +85,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             new Vector2(23.7f, 12.5f),
             // Lower left
             new Vector2(0.5f, 0.45f),
-            // Lower  middle
+            // Lower middle
             new Vector2(12.1f, 0.15f),
             // Lower right
             new Vector2(23.7f, 0.45f),
@@ -150,11 +149,9 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         // Powerup backdrop
         createBackdrop();
 
-        // Powerups
-        int numberOfStartPowerups = 1;
-        for (int i = 0; i < numberOfStartPowerups; i++) {
-            engineInstance.addEntity(entityFactory.createPowerup(0));
-        }
+        // Give initial powerup
+        giveInitialPowerup();
+
         // Place balls on table
         for (int i = 0; i <= 15; i++) {
             balls.add(entityFactory.createBall(ballLocations[gameMode][i].x, ballLocations[gameMode][i].y, i));
@@ -281,14 +278,14 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
     public void shootBallWithForce(
             Vector2 force,
-            boolean changeState
-    ) {
-        if (changeState) Context.getInstance().getState().addEvent(new ShotEvent(force));
+            boolean changeState) {
+        if (changeState)
+            Context.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
 
         physics.body.setAwake(true);
-        //physics.body.applyForceToCenter(force, true);
+        // physics.body.applyForceToCenter(force, true);
         physics.body.applyLinearImpulse(force, physics.body.getPosition(), true);
     }
 
@@ -296,7 +293,8 @@ public class Engine extends com.badlogic.ashley.core.Engine {
 
         System.out.println(position);
 
-        if (changeState) Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
+        if (changeState)
+            Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
         PhysicsBodyComponent physicsBody = physicsBodyMapper.get(whiteBallEntity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(whiteBallEntity);
         BallComponent ball = ballMapper.get(whiteBallEntity);
@@ -333,9 +331,9 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         addEntity(backdrop);
     }
 
-    public void givePowerup() {
+    public void giveInitialPowerup() {
         Random random = new Random();
-        addEntity(entityFactory.createPowerup(random.nextInt(1)));
+        addEntity(entityFactory.createPowerup(random.nextInt(2)));
     }
 
     public Entity getBallAt(int i) {
