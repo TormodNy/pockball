@@ -28,7 +28,6 @@ import com.pockball.pockball.ecs.systems.BallSystem;
 import com.pockball.pockball.ecs.systems.CueSystem;
 import com.pockball.pockball.ecs.systems.PhysicsSystem;
 import com.pockball.pockball.ecs.systems.PlaceEntitySystem;
-import com.pockball.pockball.ecs.systems.PlayerSystem;
 import com.pockball.pockball.ecs.systems.PowerupSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 import com.pockball.pockball.ecs.systems.WorldContactListener;
@@ -136,15 +135,8 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         engineInstance.addSystem(new BallSystem());
         engineInstance.addSystem(new CueSystem());
         engineInstance.addSystem(new PlaceEntitySystem());
-        engineInstance.addSystem(new PlayerSystem());
         engineInstance.addSystem(new PowerupSystem());
         engineInstance.addSystem(new BackdropSystem());
-
-        // Add players from state context
-        Entity[] players = Context.getInstance().getState().getPlayers();
-        for (Entity player : players) {
-            engineInstance.addEntity(player);
-        }
 
         // Powerup backdrop
         createBackdrop();

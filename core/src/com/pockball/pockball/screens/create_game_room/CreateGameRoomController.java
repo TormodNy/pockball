@@ -7,7 +7,6 @@ import com.pockball.pockball.game_states.Context;
 import com.pockball.pockball.game_states.MultiPlayerState;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
-
 import java.util.Random;
 
 public class CreateGameRoomController {
