@@ -83,12 +83,12 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             new Vector2(12.1f, 12.8f),
             // Upper right
             new Vector2(23.7f, 12.5f),
-            // Lower left
-            new Vector2(0.5f, 0.45f),
-            // Lower middle
-            new Vector2(12.1f, 0.15f),
             // Lower right
             new Vector2(23.7f, 0.45f),
+            // Lower middle
+            new Vector2(12.1f, 0.15f),
+            // Lower left
+            new Vector2(0.5f, 0.45f)
     };
 
     private Engine() {
