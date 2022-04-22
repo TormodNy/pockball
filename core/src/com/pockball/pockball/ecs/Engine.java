@@ -291,9 +291,6 @@ public class Engine extends com.badlogic.ashley.core.Engine {
     }
 
     public void placeWhiteBall(Vector2 position, boolean changeState) {
-
-        System.out.println(position);
-
         if (changeState)
             GameModeContext.getInstance().getState().addEvent(new PlaceBallEvent(position));
         PhysicsBodyComponent physicsBody = physicsBodyMapper.get(whiteBallEntity);

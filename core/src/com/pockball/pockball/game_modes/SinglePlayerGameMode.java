@@ -87,7 +87,6 @@ public class SinglePlayerGameMode implements GameMode {
     @Override
     public void setIdle(boolean idle) {
         this.idle = idle;
-        System.out.println(idle);
     }
 
     @Override
