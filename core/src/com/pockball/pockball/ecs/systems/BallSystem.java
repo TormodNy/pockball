@@ -98,14 +98,15 @@ public class BallSystem extends IteratingSystem {
                     // Shoot ball in direction with power
                     Vector2 directionWithForce = ball.dir.nor().scl(30 * ball.power.len());
                     Engine.getInstance().shootBallWithForce(directionWithForce, true);
+
+                    // Play sound
+                    soundController.playSound("cueHit", ball.power.len() / 3);
+
                     ball.power = new Vector2(0, 0);
                     ball.dir = new Vector2(0, 0);
 
                     // Increments number of shots for singlePlayer
                     Context.getInstance().getState().incNumberOfShots();
-
-                    // Play sound
-                    soundController.playSound("cueHit", ball.power.len() / 3);
 
                     Context.getInstance().getState().setHasAimed(false);
                 } else {

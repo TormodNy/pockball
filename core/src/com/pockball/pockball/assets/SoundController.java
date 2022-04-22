@@ -40,7 +40,7 @@ public class SoundController {
 
         long time = System.currentTimeMillis();
         if (!lastTimePlayed.containsKey(snd) || time - lastTimePlayed.get(snd) > 10) {
-            snd.play(volume*gameVolume);
+            snd.play(Math.min(volume * gameVolume, 1));
             lastTimePlayed.put(snd, time);
         }
     }
