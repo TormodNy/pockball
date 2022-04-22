@@ -3,8 +3,8 @@ package com.pockball.pockball.screens.create_game_room;
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.MultiPlayerState;
+import com.pockball.pockball.game_modes.GameModeContext;
+import com.pockball.pockball.game_modes.MultiPlayerGameMode;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
@@ -69,7 +69,7 @@ public class CreateGameRoomController {
     }
 
     public void startGame() {
-        Context.getInstance().setState(new MultiPlayerState(roomModel, true));
+        GameModeContext.getInstance().setState(new MultiPlayerGameMode(roomModel, true));
         screenController.changeScreen(ScreenModel.Screen.MULTIPLAYER, ScreenModel.Screen.CREATE_GAME);
     }
 }

@@ -1,4 +1,4 @@
-package com.pockball.pockball.game_states;
+package com.pockball.pockball.game_modes;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +17,7 @@ import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiPlayerState implements State {
+public class MultiPlayerGameMode implements GameMode {
 
     private final Entity myPlayerEntity, opponentPlayerEntity;
     private boolean ballTypeSet = false;
@@ -41,7 +41,7 @@ public class MultiPlayerState implements State {
     private float timer = 60f;
 
 
-    public MultiPlayerState(RoomModel roomModel, boolean isHost) {
+    public MultiPlayerGameMode(RoomModel roomModel, boolean isHost) {
         this.roomModel = roomModel;
         this.isHost = isHost;
         this.whiteBallFellDownThisRound = false;

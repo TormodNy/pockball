@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.pockball.pockball.db_models.PlayerModel;
 import com.pockball.pockball.db_models.ShotEvent;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 import com.pockball.pockball.screens.create_game_room.CreateGameRoomController;
-import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 
 public class FirebaseService implements FirebaseInterface {
     private DatabaseReference ref;
@@ -126,7 +125,7 @@ public class FirebaseService implements FirebaseInterface {
                     if (event == null) return;
                     events.add(event);
                 }
-                Context.getInstance().getState().fireOpponentEventChange(events);
+                GameModeContext.getInstance().getState().fireOpponentEventChange(events);
             }
 
             @Override
@@ -156,7 +155,7 @@ public class FirebaseService implements FirebaseInterface {
 
                 if (hostTurn == null) return;
 
-                Context.getInstance().getState().fireHostTurn(hostTurn);
+                GameModeContext.getInstance().getState().fireHostTurn(hostTurn);
             }
 
             @Override
@@ -181,7 +180,7 @@ public class FirebaseService implements FirebaseInterface {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean opponentIdle = snapshot.getValue(Boolean.class);
-                if (opponentIdle != null && opponentIdle) Context.getInstance().getState().fireOpponentIsIdle();
+                if (opponentIdle != null && opponentIdle) GameModeContext.getInstance().getState().fireOpponentIsIdle();
             }
 
             @Override
@@ -229,7 +228,7 @@ public class FirebaseService implements FirebaseInterface {
                 BallTypeModel ballType = snapshot.getValue(BallTypeModel.class);
                 if (ballType == null) return;
 
-                Context.getInstance().getState().fireBallTypeSet(ballType);
+                GameModeContext.getInstance().getState().fireBallTypeSet(ballType);
             }
 
             @Override

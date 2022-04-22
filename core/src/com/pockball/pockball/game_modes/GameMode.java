@@ -1,4 +1,4 @@
-package com.pockball.pockball.game_states;
+package com.pockball.pockball.game_modes;
 
 import com.badlogic.ashley.core.Entity;
 import com.pockball.pockball.db_models.BallTypeModel;
@@ -7,7 +7,7 @@ import com.pockball.pockball.ecs.types.BallType;
 
 import java.util.List;
 
-public interface State {
+public interface GameMode {
     void ballIntoHole(BallType ball, int holeID);
 
     Entity[] getPlayers();

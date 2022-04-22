@@ -15,7 +15,7 @@ import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.types.CueType;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 import com.pockball.pockball.screens.GameController;
 
 public class CueSystem extends IteratingSystem {
@@ -54,11 +54,11 @@ public class CueSystem extends IteratingSystem {
         boolean canShoot = Gdx.input.isTouched() &&
                 !placeEntity.placeable &&
                 !GameController.currentController.getShowPowerups() &&
-                Context.getInstance().getState().canPerformAction() &&
+                GameModeContext.getInstance().getState().canPerformAction() &&
                 Gdx.input.getY() / AssetsController.getInstance().getAssetScaler() >= 100 &&
                 ball.dir.len() != 0 &&
                 physics.body.getLinearVelocity().len() <= 0.01f;
-        boolean hasAimed = Context.getInstance().getState().hasAimed();
+        boolean hasAimed = GameModeContext.getInstance().getState().hasAimed();
         boolean isLine = cue.cueType.equals(CueType.LINE);
 
         if (canShoot && !(isLine && hasAimed)) {

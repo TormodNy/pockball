@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
@@ -38,7 +38,7 @@ public class MultiplayerView extends ScreenView {
 
         waitingForOtherPlayerLabel = new Label("Waiting for other player...", assetsController.getSkin());
         waitingForOtherPlayerLabel.setFontScale(buttonScaler);
-        Context.getInstance().getState().setIdle(true);
+        GameModeContext.getInstance().getState().setIdle(true);
     }
 
     @Override

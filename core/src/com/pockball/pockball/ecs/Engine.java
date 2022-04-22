@@ -32,7 +32,7 @@ import com.pockball.pockball.ecs.systems.PlayerSystem;
 import com.pockball.pockball.ecs.systems.PowerupSystem;
 import com.pockball.pockball.ecs.systems.RenderSystem;
 import com.pockball.pockball.ecs.systems.WorldContactListener;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +141,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         engineInstance.addSystem(new BackdropSystem());
 
         // Add players from state context
-        Entity[] players = Context.getInstance().getState().getPlayers();
+        Entity[] players = GameModeContext.getInstance().getState().getPlayers();
         for (Entity player : players) {
             engineInstance.addEntity(player);
         }
@@ -281,7 +281,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
             Vector2 force,
             boolean changeState) {
         if (changeState)
-            Context.getInstance().getState().addEvent(new ShotEvent(force));
+            GameModeContext.getInstance().getState().addEvent(new ShotEvent(force));
 
         PhysicsBodyComponent physics = physicsBodyMapper.get(whiteBallEntity);// TODO: Becomes null
 
@@ -295,7 +295,7 @@ public class Engine extends com.badlogic.ashley.core.Engine {
         System.out.println(position);
 
         if (changeState)
-            Context.getInstance().getState().addEvent(new PlaceBallEvent(position));
+            GameModeContext.getInstance().getState().addEvent(new PlaceBallEvent(position));
         PhysicsBodyComponent physicsBody = physicsBodyMapper.get(whiteBallEntity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(whiteBallEntity);
         BallComponent ball = ballMapper.get(whiteBallEntity);

@@ -16,7 +16,7 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 import com.pockball.pockball.screens.GameController;
 
 public class BallSystem extends IteratingSystem {
@@ -49,7 +49,7 @@ public class BallSystem extends IteratingSystem {
         BallComponent ball = ballMapper.get(entity);
         PlaceEntityComponent placeEntity = placeEntityMapper.get(entity);
 
-        boolean hasAimed = Context.getInstance().getState().hasAimed();
+        boolean hasAimed = GameModeContext.getInstance().getState().hasAimed();
 
         // Stop balls when they are slow (Drag is not enough)
         if (physics.body.getLinearVelocity().len() <= 0.15f) {
@@ -59,7 +59,7 @@ public class BallSystem extends IteratingSystem {
 
         // Only shoot white ball with almost no speed
         boolean canShoot = ball.type.equals(BallType.WHITE)
-                && Context.getInstance().getState().canPerformAction()
+                && GameModeContext.getInstance().getState().canPerformAction()
                 && physics.body.getLinearVelocity().len() <= 0.01f
                 && !placeEntity.placeable
                 && !GameController.currentController.getShowPowerups();
@@ -106,11 +106,11 @@ public class BallSystem extends IteratingSystem {
                     ball.dir = new Vector2(0, 0);
 
                     // Increments number of shots for singlePlayer
-                    Context.getInstance().getState().incNumberOfShots();
+                    GameModeContext.getInstance().getState().incNumberOfShots();
 
-                    Context.getInstance().getState().setHasAimed(false);
+                    GameModeContext.getInstance().getState().setHasAimed(false);
                 } else {
-                    Context.getInstance().getState().setHasAimed(true);
+                    GameModeContext.getInstance().getState().setHasAimed(true);
                 }
 
                 justTouched = false;

@@ -15,8 +15,8 @@ import com.pockball.pockball.ecs.components.PositionComponent;
 import com.pockball.pockball.ecs.components.PowerupComponent;
 import com.pockball.pockball.ecs.components.SizeComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.game_modes.GameModeContext;
+import com.pockball.pockball.game_modes.GameMode;
 import com.pockball.pockball.screens.GameController;
 
 import java.util.ArrayList;
@@ -64,17 +64,17 @@ public class PowerupSystem extends IteratingSystem {
         sprite.visible = GameController.currentController.getShowPowerups();
 
         // Checks if it should be possible to use a powerup
-        boolean idle = Context.getInstance().getState().getIdle();
-        boolean hasNotAimed = !Context.getInstance().getState().hasAimed();
+        boolean idle = GameModeContext.getInstance().getState().getIdle();
+        boolean hasNotAimed = !GameModeContext.getInstance().getState().hasAimed();
         boolean canApplyPowerup = Gdx.input.justTouched() && sprite.visible && idle && hasNotAimed;
 
         //apply powerup
         if (canApplyPowerup) {
 
             //reset aim
-            State state = Context.getInstance().getState();
-            state.setHasAimed(false);
-            state.setIdle(true);
+            GameMode gameMode = GameModeContext.getInstance().getState();
+            gameMode.setHasAimed(false);
+            gameMode.setIdle(true);
 
             Vector3 input = PockBall.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             Vector2 inputInWorld = new Vector2(input.x, input.y);
@@ -99,7 +99,7 @@ public class PowerupSystem extends IteratingSystem {
                             Entity whiteBall = Engine.getInstance().getWhiteBallEntity();
                             whiteBall.getComponent(PlaceEntityComponent.class).placeable = true;
                             whiteBall.getComponent(SpriteComponent.class).sprite.setAlpha(0);
-                            Context.getInstance().getState().setIdle(true);
+                            GameModeContext.getInstance().getState().setIdle(true);
                             break;
                     }
 

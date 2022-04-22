@@ -1,4 +1,4 @@
-package com.pockball.pockball.game_states;
+package com.pockball.pockball.game_modes;
 
 import com.badlogic.ashley.core.Entity;
 import com.pockball.pockball.db_models.BallTypeModel;
@@ -12,7 +12,7 @@ import com.pockball.pockball.screens.ScreenModel;
 
 import java.util.List;
 
-public class SinglePlayerState implements State {
+public class SinglePlayerGameMode implements GameMode {
 
     private final Entity playerEntity;
     private final ScoreComponent score;
@@ -21,7 +21,7 @@ public class SinglePlayerState implements State {
     private boolean hasAimed = false;
     private boolean idle;
 
-    public SinglePlayerState() {
+    public SinglePlayerGameMode() {
         // Set up player
         playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
         score = playerEntity.getComponent(ScoreComponent.class);

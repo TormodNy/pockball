@@ -14,7 +14,7 @@ import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PlaceEntityComponent;
 import com.pockball.pockball.ecs.components.SpriteComponent;
 import com.pockball.pockball.ecs.types.BallType;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 
 
 public class WorldContactListener implements ContactListener {
@@ -76,7 +76,7 @@ public class WorldContactListener implements ContactListener {
             BallType ballType = ball.getComponent(BallComponent.class).type;
 
             // Fire state change
-            Context.getInstance().getState().ballIntoHole(ballType, holeID);
+            GameModeContext.getInstance().getState().ballIntoHole(ballType, holeID);
 
             switch (ballType) {
                 case WHITE:
