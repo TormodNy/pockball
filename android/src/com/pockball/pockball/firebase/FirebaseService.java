@@ -24,8 +24,6 @@ import com.pockball.pockball.screens.multiplayer.MultiplayerController;
 public class FirebaseService implements FirebaseInterface {
     private DatabaseReference ref;
     private final FirebaseDatabase db;
-    private FirebaseController firebaseController;
-    private static final String TAG = "ReadAndWriteSnippets";
 
     private ValueEventListener eventsListener, opponentListener, hostTurnListener, idleStateListener, ballTypeListener;
     private DatabaseReference eventsRef, opponentRef, hostTurnRef, idleStateRef, ballTypeRef;
@@ -33,13 +31,12 @@ public class FirebaseService implements FirebaseInterface {
     public FirebaseService() {
         db = FirebaseDatabase.getInstance("https://pockball-a5e58-default-rtdb.europe-west1.firebasedatabase.app");
         ref = db.getReference();
-        firebaseController = FirebaseController.getInstance();
     }
 
     private DatabaseReference getRefFromNestedTarget(String nestedTarget) {
         String[] targets = nestedTarget.split("\\.");
 
-        ref = db.getReference().child("test");
+        ref = db.getReference().child("rooms");
 
         for (String target : targets) {
             ref = ref.child(target);
@@ -62,7 +59,7 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void listenToClientsInGame(String target) {
-        opponentRef = db.getReference().child("test").child(target).child("client");
+        opponentRef = db.getReference().child("rooms").child(target).child("client");
 
         opponentListener = new ValueEventListener() {
             @Override
@@ -148,7 +145,7 @@ public class FirebaseService implements FirebaseInterface {
     @Override
     public void listenToHostTurn(String gameId) {
         hostTurnRef = db
-                .getReference("test")
+                .getReference("rooms")
                 .child(gameId)
                 .child("hostTurn");
 
@@ -204,7 +201,7 @@ public class FirebaseService implements FirebaseInterface {
     @Override
     public void getRoom(String roomId) {
         // Returns the room with given roomId
-        db.getReference().child("test").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        db.getReference().child("rooms").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 JoinGameController.getInstance().joinGame(task.getResult().getValue(RoomModel.class));
@@ -214,7 +211,7 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void checkRoomId(String roomId) {
-        db.getReference().child("test").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        db.getReference().child("rooms").child(roomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 CreateGameRoomController.getInstance().idIsFree(task.getResult().getValue(RoomModel.class) == null);
@@ -224,7 +221,7 @@ public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void listenToBallType(String roomId) {
-        ballTypeRef = db.getReference().child("test").child(roomId).child("ballTypes");
+        ballTypeRef = db.getReference().child("rooms").child(roomId).child("ballTypes");
 
         ballTypeListener = new ValueEventListener() {
             @Override

@@ -1,10 +1,12 @@
 package com.pockball.pockball.desktop.firebase;
 
-import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.db_models.ShotEvent;
 import com.pockball.pockball.firebase.FirebaseInterface;
 
-public class FirebaseController implements FirebaseInterface {
+/**
+ * Dummy class for implementing FirebaseInterface on desktop.
+ */
+public class FirebaseService implements FirebaseInterface {
 
     @Override
     public void writeToDb(String target, Object value) {

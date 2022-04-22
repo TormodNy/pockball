@@ -18,13 +18,12 @@ public class PockBall extends Game {
 	public static Camera camera;
 
 	private final ScreenController screenController;
-	private final FirebaseInterface firebaseInterface;
 	private final FirebaseController firebaseController;
 
 	public PockBall(FirebaseInterface firebaseInterface) {
 		this.screenController = ScreenController.getInstance();
-		this.firebaseInterface = firebaseInterface;
 		this.firebaseController = FirebaseController.getInstance();
+		firebaseController.setFirebaseInterface(firebaseInterface);
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class PockBall extends Game {
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		camera.update();
 
-		firebaseController.setFirebaseInterface(firebaseInterface);
+
 	}
 
 	@Override
