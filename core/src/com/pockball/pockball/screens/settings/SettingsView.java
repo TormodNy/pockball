@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.assets.SoundController;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
@@ -91,6 +91,6 @@ public class SettingsView extends ScreenView {
         super.render(delta);
 
         //update multiplayer timer in paused state
-        Context.getInstance().getState().updateTimer(delta);
+        GameModeContext.getInstance().getState().updateTimer(delta);
     }
 }

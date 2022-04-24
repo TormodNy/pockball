@@ -2,8 +2,8 @@ package com.pockball.pockball.screens.join_game_room;
 
 import com.pockball.pockball.db_models.RoomModel;
 import com.pockball.pockball.firebase.FirebaseController;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.MultiPlayerState;
+import com.pockball.pockball.game_modes.GameModeContext;
+import com.pockball.pockball.game_modes.MultiPlayerGameMode;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 
@@ -40,7 +40,7 @@ public class JoinGameController {
         }
 
         // Join room in db
-        Context.getInstance().setState(new MultiPlayerState(roomModel, false));
+        GameModeContext.getInstance().setState(new MultiPlayerGameMode(roomModel, false));
         ScreenController.getInstance().changeScreen(
                 ScreenModel.Screen.MULTIPLAYER,
                 ScreenModel.Screen.JOIN_GAME

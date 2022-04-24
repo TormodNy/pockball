@@ -33,14 +33,7 @@ public class PowerupFactory {
 
         position.position.set(12.5f - size.width / 2, 7.5f - size.height / 2);
 
-        switch(powerupID) {
-            case 0:
-                sprite.sprite = new Sprite(new Texture("powerups/earthquake.png"));
-                break;
-            case 1:
-                sprite.sprite = new Sprite(new Texture("powerups/moveWhiteBall.png"));
-                break;
-        }
+        sprite.sprite = new Sprite(new Texture("powerups/pu" + powerupID + ".png"));
 
         sprite.visible = false;
         sprite.layer = 4;

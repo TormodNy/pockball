@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.pockball.pockball.ecs.Engine;
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.SinglePlayerState;
+import com.pockball.pockball.game_modes.GameModeContext;
+import com.pockball.pockball.game_modes.SinglePlayerGameMode;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
 import com.pockball.pockball.screens.ScreenView;
@@ -25,12 +25,12 @@ public class SinglePlayerView extends ScreenView {
         super(screenController, previousScreen);
 
         // Set new single player state
-        Context.getInstance().setState(new SinglePlayerState());
+        GameModeContext.getInstance().setState(new SinglePlayerGameMode());
 
         this.singlePlayerController = SinglePlayerController.getInstance();
         singlePlayerController.reset();
         Engine.getInstance().initializeEngine(0);
-        Context.getInstance().getState().setIdle(true);
+        GameModeContext.getInstance().getState().setIdle(true);
 
         buttonScaler = assetScaler * 0.65f;
 
@@ -76,11 +76,11 @@ public class SinglePlayerView extends ScreenView {
             public void changed(ChangeEvent event, Actor actor) {
                 // Show powerups
 
-                boolean canPerformAction = Context.getInstance().getState().canPerformAction();
+                boolean canPerformAction = GameModeContext.getInstance().getState().canPerformAction();
                 //boolean hasNotAimed = !Context.getInstance().getState().hasAimed();
                 boolean canUsePowerup = canPerformAction; // && hasNotAimed;
                 if (canUsePowerup) {
-                    Context.getInstance().getState().setHasAimed(false);
+                    GameModeContext.getInstance().getState().setHasAimed(false);
                     singlePlayerController.setShowPowerups(!singlePlayerController.getShowPowerups());
                 }
             }

@@ -3,7 +3,7 @@ package com.pockball.pockball.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.pockball.pockball.PockBall;
-import com.pockball.pockball.desktop.firebase.FirebaseController;
+import com.pockball.pockball.desktop.firebase.FirebaseService;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.width = PockBall.WIDTH * 32;
 		config.height = PockBall.HEIGHT * 32;
 		config.title = PockBall.TITLE;
-		new LwjglApplication(new PockBall(new FirebaseController()), config);
+		new LwjglApplication(new PockBall(new FirebaseService()), config);
 	}
 }

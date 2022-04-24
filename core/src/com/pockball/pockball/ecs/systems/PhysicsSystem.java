@@ -8,7 +8,7 @@ import com.pockball.pockball.ecs.Engine;
 import com.pockball.pockball.ecs.components.DirectionComponent;
 import com.pockball.pockball.ecs.components.PhysicsBodyComponent;
 import com.pockball.pockball.ecs.components.PositionComponent;
-import com.pockball.pockball.game_states.Context;
+import com.pockball.pockball.game_modes.GameModeContext;
 
 public class PhysicsSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> positionMapper;
@@ -44,10 +44,10 @@ public class PhysicsSystem extends IteratingSystem {
 
             if (moving && timeLastMovement + 1000L < now) {
                 moving = false;
-                Context.getInstance().getState().setIdle(!moving);
+                GameModeContext.getInstance().getState().setIdle(!moving);
             } else if (!moving && timeLastMovement + 1000L >= now) {
                 moving = true;
-                Context.getInstance().getState().setIdle(!moving);
+                GameModeContext.getInstance().getState().setIdle(!moving);
             }
         }
 

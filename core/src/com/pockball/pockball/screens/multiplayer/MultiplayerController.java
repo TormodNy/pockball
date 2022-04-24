@@ -1,8 +1,8 @@
 package com.pockball.pockball.screens.multiplayer;
 
-import com.pockball.pockball.game_states.Context;
-import com.pockball.pockball.game_states.MultiPlayerState;
-import com.pockball.pockball.game_states.State;
+import com.pockball.pockball.game_modes.GameModeContext;
+import com.pockball.pockball.game_modes.MultiPlayerGameMode;
+import com.pockball.pockball.game_modes.GameMode;
 import com.pockball.pockball.screens.GameController;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
@@ -24,7 +24,7 @@ public class MultiplayerController extends GameController {
     }
 
     public String getMyBallType () {
-        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        MultiPlayerGameMode state = (MultiPlayerGameMode) GameModeContext.getInstance().getState();
 
         if (state.getMyBallType() != null) {
             return state.getMyBallType().toString();
@@ -34,12 +34,12 @@ public class MultiplayerController extends GameController {
     }
 
     public void removeRoom () {
-        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        MultiPlayerGameMode state = (MultiPlayerGameMode) GameModeContext.getInstance().getState();
         state.removeRoom();
     }
 
     public String updateTimerString(float delta) {
-        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        MultiPlayerGameMode state = (MultiPlayerGameMode) GameModeContext.getInstance().getState();
         state.updateTimer(delta);
         boolean myTurn = state.getIsMyTurn();
         int timer = state.getTimerInt();
@@ -58,7 +58,7 @@ public class MultiplayerController extends GameController {
         }
     }
     public void gameOver(){
-        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        MultiPlayerGameMode state = (MultiPlayerGameMode) GameModeContext.getInstance().getState();
         boolean myTurn = state.getIsMyTurn();
         state.reset();
         if (myTurn){
@@ -67,7 +67,7 @@ public class MultiplayerController extends GameController {
     }
 
     public int getMyScore(){
-        MultiPlayerState state = (MultiPlayerState) Context.getInstance().getState();
+        MultiPlayerGameMode state = (MultiPlayerGameMode) GameModeContext.getInstance().getState();
         int score;
         if (state.getIsMyTurn()){
             score = state.getActivePlayerModel().score.size();
@@ -89,10 +89,10 @@ public class MultiplayerController extends GameController {
 
     @Override
     public String getCurrentStateString() {
-        State state = Context.getInstance().getState();
-        if (!state.getIdle()) return "Waiting for balls to stop.";
-        if (state.canPerformAction()) return "Your turn. Make a shot!";
-        if (!state.getIsMyTurn()) return "Opponents turn";
+        GameMode gameMode = GameModeContext.getInstance().getState();
+        if (!gameMode.getIdle()) return "Waiting for balls to stop.";
+        if (gameMode.canPerformAction()) return "Your turn. Make a shot!";
+        if (!gameMode.getIsMyTurn()) return "Opponents turn";
 
         return "Unhandled state";
     }
