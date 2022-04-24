@@ -19,6 +19,7 @@ import java.util.List;
 
 public class MultiPlayerState implements State {
 
+    private final Entity myPlayerEntity, opponentPlayerEntity;
     private boolean ballTypeSet = false;
     private boolean hasAimed = false;
 
@@ -78,6 +79,10 @@ public class MultiPlayerState implements State {
         firebaseController.listenToOpponentIdleState(roomModel.roomId + "." + opponentKey + ".idle");
         firebaseController.listenToBallType(roomModel.roomId);
         firebaseController.listenToHostTurn(roomModel.roomId);
+
+        // Create player entities
+        myPlayerEntity = EntityFactory.getInstance().createPlayer("player1");
+        opponentPlayerEntity = EntityFactory.getInstance().createPlayer("player2");
     }
 
     @Override
@@ -204,6 +209,14 @@ public class MultiPlayerState implements State {
 
     private void setNextPlayerTurn() {
         setNextPlayerTurn(!myTurn);
+    }
+
+    @Override
+    public Entity[] getPlayers() {
+        Entity[] players = new Entity[2];
+        players[0] = myPlayerEntity;
+        players[1] = opponentPlayerEntity;
+        return players;
     }
 
     @Override

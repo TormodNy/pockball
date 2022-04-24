@@ -1,8 +1,11 @@
 package com.pockball.pockball.game_states;
 
+import com.badlogic.ashley.core.Entity;
 import com.pockball.pockball.db_models.BallTypeModel;
 import com.pockball.pockball.db_models.EventModel;
 import com.pockball.pockball.ecs.Engine;
+import com.pockball.pockball.ecs.components.ScoreComponent;
+import com.pockball.pockball.ecs.entities.EntityFactory;
 import com.pockball.pockball.ecs.types.BallType;
 import com.pockball.pockball.screens.ScreenController;
 import com.pockball.pockball.screens.ScreenModel;
@@ -11,15 +14,18 @@ import java.util.List;
 
 public class SinglePlayerState implements State {
 
-    private int score;
+    private final Entity playerEntity;
+    private final ScoreComponent score;
     private int numberOfShots = 0;
     private int winnerHole;
     private boolean hasAimed = false;
     private boolean idle;
 
     public SinglePlayerState() {
-        score = 0;
-        idle = true;
+        // Set up player
+        playerEntity = EntityFactory.getInstance().createPlayer("singlePlayerPlayer");
+        score = playerEntity.getComponent(ScoreComponent.class);
+        this.idle = true;
     }
 
     @Override
@@ -30,7 +36,7 @@ public class SinglePlayerState implements State {
                 break;
 
             case BLACK:
-                if (score >= 14 && winnerHole == holeID) {
+                if (score.balls >= 14 && winnerHole == holeID) {
                     ScreenController.getInstance().changeScreen(ScreenModel.Screen.WINNER,
                             ScreenModel.Screen.SINGLEPLAYER);
                 } else {
@@ -40,11 +46,18 @@ public class SinglePlayerState implements State {
                 break;
 
             default:
-                score++;
+                score.balls++;
                 Engine.getInstance().giveInitialPowerup();
                 // update the hole opposite of the last hole a ball fell into
                 winnerHole = ((holeID + 3) % 6);
         }
+    }
+
+    @Override
+    public Entity[] getPlayers() {
+        Entity[] players = new Entity[1];
+        players[0] = playerEntity;
+        return players;
     }
 
     @Override
@@ -74,6 +87,7 @@ public class SinglePlayerState implements State {
     @Override
     public void setIdle(boolean idle) {
         this.idle = idle;
+        System.out.println(idle);
     }
 
     @Override
