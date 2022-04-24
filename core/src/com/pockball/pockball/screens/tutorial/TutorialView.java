@@ -29,16 +29,22 @@ public class TutorialView extends ScreenView {
         this.setCurrentPng(0);
 
         textures = new Array<>();
-        textures.add(new Texture("tutorial/tutorial1.png"));
-        textures.add(new Texture("tutorial/tutorial2.png"));
-        textures.add(new Texture("tutorial/tutorial3.png"));
-        textures.add(new Texture("tutorial/tutorial4.png"));
-        textures.add(new Texture("tutorial/tutorial5.png"));
-        textures.add(new Texture("tutorial/tutorial6.png"));
-        textures.add(new Texture("tutorial/tutorial7.png"));
-        textures.add(new Texture("tutorial/tutorial8.png"));
-        textures.add(new Texture("tutorial/tutorial9.png"));
-        textures.add(new Texture("tutorial/tutorial10.png"));
+        textures.add(new Texture("tutorial/tutorial_sp.png"));
+        textures.add(new Texture("tutorial/tutorial_modes.png"));
+        textures.add(new Texture("tutorial/tutorial_sp_shoot.png"));
+        textures.add(new Texture("tutorial/tutorial_sp_buttons.png"));
+        textures.add(new Texture("tutorial/tutorial_powerup.png"));
+        textures.add(new Texture("tutorial/tutorial_pause.png"));
+        textures.add(new Texture("tutorial/tutorial_blackball.png"));
+        textures.add(new Texture("tutorial/tutorial_mp.png"));
+        textures.add(new Texture("tutorial/tutorial_menu_room.png"));
+        textures.add(new Texture("tutorial/tutorial_mp_room.png"));
+        textures.add(new Texture("tutorial/tutorial_menu_join.png"));
+        textures.add(new Texture("tutorial/tutorial_join.png"));
+        textures.add(new Texture("tutorial/tutorial_mp_win.png"));
+        textures.add(new Texture("tutorial/tutorial_mp_balltype.png"));
+        textures.add(new Texture("tutorial/tutorial_mp_shot.png"));
+        textures.add(new Texture("tutorial/tutorial_pause_mp.png"));
         Gdx.input.setInputProcessor(stage);
     }
 
